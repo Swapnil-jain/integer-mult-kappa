@@ -49,7 +49,7 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Closed form `X = n(n+2 beta_j)`, segment and recentred factorisations, cross-wrap bound `X >= 2` | Exact rational checks on five `(s,t)` pairs (`scripts/check_identities.py`) |
 | Segmented inverse | Written proof (`notes/segmented-inverse.tex`); 260-digit comparisons against a direct solve, with cyclic indices, for whole segments (`scripts/check_segmented_inverse.py`), recentred sub-blocks (`scripts/check_subblock_inverse.py`), and the reuse path, which uses one stored inverse rescaled per block, elimination without pivoting, and a fixed-point negative control that must fail (`scripts/check_reuse_inverse.py`) |
 | A, C, D, E' | Written arguments, each attacked by a refute-by-default check, with the resulting fixes in the notes |
-| Prior results from PR #3, #5 and #7 on integer-mult-bounds (networks, chirped Gaussian lemma) | Assumed, and unmerged there. We recomputed PR #7's W, m, N, L, s, eta and their complex counterparts exactly from its formulas. Its h=28 role counts come from that PR's own enumeration. |
+| Prior results from PR #3, #5 and #7 on integer-mult-bounds (networks, chirped Gaussian lemma) | Assumed, and unmerged there. We recomputed PR #7's W, m, N, L, s, eta and their complex counterparts exactly from its formulas. An independent re-implementation (`independent/pr7-role-counts`, `make roles`) reproduces its h=28 role counts, 11840940 and 93838, exactly. |
 | Full upstream multiplication theorem | Assumed |
 | Independent review / formalisation | Not supplied |
 
@@ -58,8 +58,12 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 Requires Python 3.9 or newer, standard library only.
 
 ```sh
-make verify
+make verify      # exact checks, numerical inverse checks, certificate, tests
+make roles       # independent recount of PR #7's role counts (clang++, ~1 GB)
+make notes       # PDF notes (tectonic)
 ```
+
+The PDFs are in `artifacts/`.
 
 ## Attribution
 

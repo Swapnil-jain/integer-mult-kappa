@@ -249,9 +249,15 @@ costs $O(s(1+w^3(1/\lambda+\theta))P^{1+\delta})$. The vectors of $T_\lambda$ an
 (for the final short block of each segment) are computed once per line by Levinson recursion,
 in $O(\lambda^2P^{1+\delta})$. This is negligible because $\lambda^2\le s/p$ for large $L$.
 
-\paragraph{Numerical check.} \texttt{scripts/check_subblock_inverse.py} cuts the
+\paragraph{Numerical check.} \texttt{scripts/check\_subblock\_inverse.py} cuts the
 segments of the $(60,67)$, $\alpha^2=9$ instance into blocks of length $2$ and $3$, solves each
 block by its own recentred Toeplitz system at $120$ digits, couples all cuts and wraps by
 Woodbury, and matches the direct solve to $3\cdot10^{-64}$, against a target of $2^{-200}$.
+\texttt{scripts/check\_reuse\_inverse.py} tests the reuse path itself. It stores one inverse of
+$T_\lambda$ per block length in floating point, rescales it per block by $G_c$, uses near-equal
+blocks of length at least $2w$, and eliminates the capacitance without pivoting. On $(241,256)$
+with $\alpha^2=17,24$ and on $(113,128)$ with $\alpha^2=8$, it matches the direct solve within
+target. With fixed-point storage of the same inverse, the error rises to $5\cdot10^{-10}$ and the
+check fails, as the precision argument predicts.
 
 \end{document}

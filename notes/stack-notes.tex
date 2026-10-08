@@ -3,7 +3,7 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 \theoremstyle{remark}\newtheorem*{remark}{Remark}
-\title{Four layout and precision changes beyond the $a_b/2$ ceiling}
+\title{Layout and precision changes beyond the $a_b/2$ ceiling}
 \date{Draft, October 8, 2026}
 \begin{document}
 \maketitle
@@ -82,7 +82,7 @@ makes each axis the innermost address field before running its line algorithm, a
 $O(Tp\,d^2(1+\ell^\tau))$ upstream and $O(Tp\,d(1+\ell^\tau))$ with nonadjacent routing.
 Instead, write the axis-$i$ coordinate as $j=J2^f+u$ with
 $f=\lceil\log_2(c\,W_{\rm line})\rceil$. Here $W_{\rm line}$ is the largest window the line
-algorithm reads: $3m+3$ for $\mathsf S'$, a segment length plus $2w$ for the inverse of
+algorithm reads: $3m+3$ for $\mathsf S'$, a block length $\lambda$ plus $2w$ for the inverse of
 Idea~B$'$, and the periodic halo. Move only the $f$-bit field $u$ to the innermost address
 position, leaving $J$ in place.
 
@@ -156,13 +156,13 @@ See \texttt{certificate.py}. The rows are:
 \item prefix moves, $1-\epsilon$;
 \item butterflies, $\epsilon(1-\lambda')$, which binds;
 \item fine exposures, $1-\epsilon-o(1)$;
-\item the Gaussian maps with B$'$, $1-\tfrac32\epsilon-o(1)$;
+\item the Gaussian maps with recentred sub-blocks (\texttt{segmented-inverse.tex}, last section), $1-\epsilon-o(1)$;
 \item chirps, $1-\epsilon-o(1)$;
 \item pointwise products, $\epsilon$;
 \item reserved axes, $1-\epsilon-o(1)$;
 \item CRT reversal, $\epsilon(1-\tau)$.
 \end{itemize}
-The side conditions are the guard $\epsilon C_1/(1+x)<1$, precision $2\epsilon<1+x$, and
+The side conditions are the guard $\epsilon C_1<1+x$; precision $2\epsilon+y<1+x$, where the oversampling is $\theta\approx1/(4dL^y)$; sub-block coupling $y\ge\epsilon$; and
 $\lambda'$ above $\tau$, $\sigma$, $\chi$ and the leaf exponent.
 
 \end{document}

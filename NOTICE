@@ -12,7 +12,13 @@ This work builds on, and does not modify, the following:
   not collaborators), from open pull requests on that repository:
   #3 and #5 (eumemic: compressed complex network, fast Gaussian resampling),
   #4 (dleen), #6 (eumemic), #7 (Zhihao Chen / jacklightChen: ternary five-subset
-  networks, a_b = 3/(4*10^8), a_c = 39/10^9).
+  networks, a_b = 3/(4*10^8), a_c = 39/10^9),
+  #10 (icekylinx: batched recursion, controlled projector basis, whole-residual
+  complex children, Gaussian input-error correction),
+  #13 (eumemic: auxiliary source frames, third whole-residual complex class),
+  #15 (eumemic, head a17cab3: full complex batching of every residual rank).
+- Aurel Prosz (Paureel), github.com/Paureel/integer-mult-bounds commit c82d09e:
+  the two-stage motif with partial-swap frames and charged endpoint correction.
 
 Research, implementation and drafting were done with assistance from Claude
 (Anthropic). AI assistance is not independent review.

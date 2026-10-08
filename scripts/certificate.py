@@ -18,7 +18,7 @@ import json
 A_B, A_C = Q(3, 4 * 10**8), Q(39, 10**9)          # PR #7 bit / complex savings
 M_C, S_C = 21952, 45772350635112192                # PR #7 complex network constants
 # Certified upper bound on log_m(s). Colkitt's guard uses 5 instead; with 5 this witness still
-# passes (eps*C1/(1+x) = 0.99903), so the tighter exponent is not load-bearing.
+# passes (eps*C1/(1+x) is about 0.75), so the tighter exponent is not load-bearing.
 LOG_M_S = Q(38376, 10000)
 
 DEFAULT = dict(eps=Q(9999, 10**4), x=Q(3), y=Q(9999, 10**4), beta=Q(1, 2), zeta=Q(1, 10**4),
@@ -50,7 +50,7 @@ def evaluate(**overrides):
         # alpha^2 theta >= 1 with alpha^2 ~ Q/(48 d), theta ~ 1/(4 d L^y), Q = Theta(L^(1+x))
         'precision: 2 eps + y < 1 + x': 1 + x - 2 * eps - y,
         # coupling cost w^3 (1/lambda + theta) = O(L^((eps - y)/2)) per output is O(1)
-        'sub-block coupling: y >= eps': y - eps + Q(1, 10**30),
+        'sub-block coupling: y >= eps': Q(1) if y >= eps else Q(-1),
         'reservations below layer: (2eps-1)/eps < lambda_prime': lamp - (2 * eps - 1) / eps,
         'record regime: eps < 1': 1 - eps,
         'delta < 1/8': Q(1, 8) - delta,

@@ -8,7 +8,7 @@
 \begin{document}
 \maketitle
 
-\paragraph{Conditional status.} Every statement here assumes the pinned upstream interfaces and these unmerged results on \texttt{CrocSwap/integer-mult-bounds}: PR~\#5's chirped-correlation Gaussian lemma and its choice of $\alpha$; PR~\#3's compressed complex network; and PR~\#7's networks, with $a_b=3/(4\cdot10^8)$, $a_c=39/10^9$, $m=21952$ and $s=45772350635112192$.
+\paragraph{Conditional status.} Every statement here assumes the pinned upstream interfaces and these unmerged results on \texttt{CrocSwap/integer-mult-bounds}: PR~\#5's chirped-correlation Gaussian lemma and its choice of $\alpha$; PR~\#3's compressed complex network; and PR~\#7's networks, with $a_b=3/(4\cdot10^8)$, $a_c=39/10^9$, $m=21952$ and $s=45772350635112192$. These are the round-two values; the round-three savings, and the further results they assume, are in \texttt{round3-combination.tex}.
 
 \paragraph{Deliberate departures from upstream hypotheses.} The prime-interval condition $1-2\epsilon>0$ is replaced by the prime number theorem (Section~1). The resampling hypothesis $\theta>p/\alpha^4$ is replaced by $\alpha^2\theta\ge1$, and the oversampling is reduced to $\theta\approx1/(4dL^y)$ (\texttt{segmented-inverse.tex}). The band $r\ge2^{a_rp/d}$ is replaced by $r\ge2^{p^\mu}$ (Section~1). $K=o(\ell)$ is dropped (Section~2). The guard exponent uses the certified bound $\log_ms<3.8376$ in place of~5; the witness also passes with~5.
 
@@ -74,6 +74,8 @@ exponent $(2\epsilon-1)/\epsilon$, which must stay below $\lambda'$, that is $\e
 \end{itemize}
 
 \section{Idea A: expose only the fine bits of an axis}
+
+The full statement and proof, with a 12-tape schedule, the corrected input window and the movement bounds, are in \texttt{notes/fine-field-lemma.tex}. \texttt{scripts/check\_fine\_field.py} simulates every data movement on explicit tapes and checks outputs and movement bounds. The summary below is superseded where it differs. In particular, a block reads input slabs $J',J'+1,J'+2$ with $J'=\lfloor(c(J2^f)-W)/2^f\rfloor$, the lowest input read, not $J'-1,J',J'+1$.
 
 \paragraph{Change.} The tensor interface (\texttt{07-resampling.tex}, lem:tensor-resampling)
 makes each axis the innermost address field before running its line algorithm, at cost

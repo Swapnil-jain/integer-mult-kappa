@@ -6,6 +6,8 @@ verify:
 	python3 scripts/check_reuse_inverse.py
 	python3 scripts/check_reuse_inverse.py 113 128 8 120 50
 	! python3 scripts/check_reuse_inverse.py 241 256 17 150 60 1
+	python3 scripts/check_gs_path.py
+	python3 scripts/check_fine_field.py
 	python3 scripts/certificate.py
 	python3 -m unittest discover -s tests -v
 
@@ -15,3 +17,6 @@ roles:
 notes:
 	tectonic -X compile --outdir artifacts notes/segmented-inverse.tex
 	tectonic -X compile --outdir artifacts notes/stack-notes.tex
+	tectonic -X compile --outdir artifacts notes/fine-field-lemma.tex
+	tectonic -X compile --outdir artifacts notes/partial-swap-batching.tex
+	tectonic -X compile --outdir artifacts notes/round3-combination.tex

@@ -12,7 +12,7 @@
   "lambda_prime below one": "37499/5000000000000",
   "guard: eps C1 < 1 + x": "158134189/100000000",
   "precision: 2 eps + y < 1 + x": "10003/10000",
-  "sub-block coupling: y >= eps": "1/1000000000000000000000000000000",
+  "sub-block coupling: y >= eps": "1",
   "reservations below layer: (2eps-1)/eps < lambda_prime": "4999625047499/49995000000000000",
   "record regime: eps < 1": "1/10000",
   "delta < 1/8": "124999/1000000",

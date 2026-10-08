@@ -1,0 +1,153 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}\newtheorem*{remark}{Remark}
+\title{Segmented inversion of the Gaussian correction and large-coefficient precision}
+\date{Draft, October 8, 2026}
+\begin{document}
+\maketitle
+
+\section*{Setting}
+This uses PR~\#5's chirped-correlation lemma for the correlations and its parameter conventions. PR~\#5 is unmerged on \texttt{CrocSwap/integer-mult-bounds}.
+
+Keep the notation of the one-dimensional resampling lemma:
+$2\le s<t$, $\sigma=t/s$, $\theta=\sigma-1\le1/4$, $\alpha\ge2$ with $\alpha^2\theta\ge1$,
+$q_j=\lfloor tj/s+1/2\rfloor$, $\beta_j=tj/s-q_j\in[-1/2,1/2)$, defined for all
+integers $j$, so $q_{j+s}=q_j+t$ and $\beta_{j+s}=\beta_j$. The matrix $N=C\mathsf T\mathsf D$
+acts on $s$-periodic sequences by
+\[
+ (Nu)_\ell=\sum_{j\in\mathbb Z}e^{-\pi\alpha^2X_{\ell,j}}u_j,\qquad
+ X_{\ell,j}=(\sigma j-q_\ell)^2-\beta_j^2 .
+\]
+
+\section{Exact structure}
+
+\begin{lemma}[Closed form]\label{lem:closed}
+Put $n=q_j-q_\ell\in\mathbb Z$. Then $X_{\ell,j}=n(n+2\beta_j)$.
+\end{lemma}
+\begin{proof}
+$\sigma j-q_\ell=(q_j+\beta_j)-q_\ell=n+\beta_j$, so
+$X=(n+\beta_j)^2-\beta_j^2=n(n+2\beta_j)$.
+\end{proof}
+
+Since $\sigma=1+\theta$ with $\theta<1$, consecutive values satisfy
+$q_{j+1}-q_j\in\{1,2\}$. Call $j$ a \emph{wrap} when the difference is $2$;
+between wraps $\beta_{j+1}=\beta_j+\theta$. A \emph{segment} is a maximal run of
+indices containing no wrap step. Each segment has $\lfloor1/\theta\rfloor$ or
+$\lceil1/\theta\rceil$ indices, up to one boundary index, and wraps have density
+$t/s-1=\theta$.
+
+\begin{lemma}[Chirp--Toeplitz segments]\label{lem:segment}
+Let $\ell,j$ lie in one segment and choose the real centre
+$\ell^*=\ell-(\beta_\ell+1/2)/\theta$, which is the same for the whole segment.
+With $u=\ell-\ell^*$, $v=j-\ell^*$ and $h=j-\ell$,
+\[
+ e^{-\pi\alpha^2X_{\ell,j}}
+  =e^{\pi\alpha^2\theta u^2}\;\tau_h\;e^{-\pi\alpha^2\theta v^2},
+ \qquad \tau_h=e^{-\pi\alpha^2(\sigma h^2-h)} .
+\]
+Thus the principal block $M_k$ of $N$ on segment $k$ equals $D_kT_{L_k}D_k^{-1}$, a similarity,
+where $T_L$ is the $L\times L$ Toeplitz matrix with symbol $(\tau_h)$, which does not
+depend on the segment, and $D_k,D'_k$ are diagonal.
+\end{lemma}
+\begin{proof}
+Inside a segment $n=h$ and $\beta_j=\beta_\ell+\theta h=\theta v-1/2$. By
+Lemma~\ref{lem:closed}, $X=h(h+2\theta v-1)$. Using $2hv=v^2-u^2+h^2$ gives
+$X=(1+\theta)h^2-h+\theta v^2-\theta u^2$, which is the stated factorisation.
+\end{proof}
+
+\begin{lemma}[Cross-wrap entries]\label{lem:cross}
+If $\ell,j$ lie in different segments then $|n|\ge|h|+1\ge2$ and
+$X_{\ell,j}\ge|n|(|n|-1)\ge2$. In particular every cross-segment entry is at most
+$e^{-2\pi\alpha^2}$. An entry exceeds $2^{-Q}$ only if $|n|(|n|-1)<Q/(\pi\alpha^2\log_2e)$.
+\end{lemma}
+\begin{proof}
+Crossing $k\ge1$ wrap steps adds $k$ to $|q_j-q_\ell|$ beyond $|h|$. Lemma~\ref{lem:closed}
+with $|\beta_j|\le1/2$ gives $X\ge|n|(|n|-1)$.
+\end{proof}
+
+The identities in Lemmas~\ref{lem:closed}--\ref{lem:cross} were checked in exact rational
+arithmetic for $(s,t)=(113,128)$ and $(1009,1024)$, over three periods and $|j-\ell|\le30$:
+no mismatches, and the minimum cross-segment exponent was $228/113$ and $2020/1009$.
+
+\paragraph{Indexing.} Indices live in $\mathbb Z/s\mathbb Z$. Index $0$ has $\beta_0=0$, so it lies mid-segment, and one segment always crosses the period boundary; on tape it is stitched from the two line ends. Aliased terms $j+ms$ belong to $\Delta$, not to $M_k$. They matter only if one segment covers a whole period ($t-s=1$), which the parameters exclude.
+
+\section{Applying $N^{-1}$}
+
+Write $N=M+\Delta$ with $M=\bigoplus_kM_k$. Fix a target accuracy $2^{-Q}$ and drop
+entries of $\Delta$ below $2^{-Q-\log_2 s-4}$. By Lemma~\ref{lem:cross}, what remains of
+$\Delta$ sits in $w\times w$ corner blocks at each wrap, with
+\[
+ w\le1+\sqrt{Q/(4.53\,\alpha^2)} .
+\]
+
+\begin{proposition}[Segmented inverse]\label{prop:inverse}
+Assume $\|N-I\|<1/2$, which holds when $\alpha^2\theta\ge1$. Then $N^{-1}u$ can be computed
+to absolute error $2^{-Q}$, for $\|u\|\le1$, using
+\begin{enumerate}
+\item two applications of $M^{-1}$;
+\item per wrap, $O(w^3)$ arithmetic operations at precision $P$ to form and factor the
+capacitance block, and $O(w^2)$ to apply it;
+\end{enumerate}
+with working precision $P=Q+\lceil10.2\,\alpha^2/\theta\rceil+O(\log s)$.
+Each application of $M^{-1}$ costs a constant number of chirped correlations of segment
+length, hence $O(P^{1+\delta})$ per output. The setup computes the Gohberg--Semencul
+vectors of $T_L$ and $T_{L+1}$ once per line, in $O(L^2)$ operations.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+\emph{Segment blocks.} $M_k$ is a principal submatrix of $N=I+E$, so
+$\|M_k-I\|\le\|E\|<1/2$ and $\|M_k^{-1}\|\le2$. Also
+$\|T_L-I\|\le\sum_{h\ne0}\tau_h<2e^{-\pi\alpha^2\theta}<0.1$, so $T_L$ is well conditioned
+and has a Gohberg--Semencul representation
+$T_L^{-1}=x_0^{-1}\bigl(L(x)U(y)-L(z)U(w)\bigr)$ with triangular Toeplitz factors.
+Applying $M_k^{-1}=D_k'^{-1}T_L^{-1}D_k^{-1}$ means: scale by
+$e^{-\pi\alpha^2\theta u^2}\le1$, perform four triangular Toeplitz products (correlations,
+evaluated as in the chirped-correlation lemma), then scale by
+$e^{\pi\alpha^2\theta v^2}\le e^{\pi\alpha^2\theta(L+1)^2}$. Since $L\le1/\theta+1$, the
+last factor is at most $2^{10.2\alpha^2/\theta}$ for $\theta\le1/4$ (and about $2^{4.53\alpha^2/\theta}$ as $\theta\to0$), and this is the precision
+reserve in $P$. The exact result has norm at most $2\|u\|$.
+
+\emph{Coupling.} Write $\Delta=UV^{\mathsf T}$, where $V$ selects the $2w$ columns
+around each wrap and $U$ holds the corresponding columns of $\Delta$. Woodbury gives
+\[
+ N^{-1}=M^{-1}-M^{-1}U\,C^{-1}V^{\mathsf T}M^{-1},\qquad C=I+V^{\mathsf T}M^{-1}U .
+\]
+$C$ is cyclic block tridiagonal with $2w\times2w$ blocks, because $M^{-1}$ is block diagonal, each block of $U$ touches the two segments adjacent to its wrap, and indices are taken modulo $s$. This needs $2w<L$, which holds for $d\ge3$. Solve it by bordered (cyclic) block elimination, still $O(w^3)$ per wrap, with one forward and one backward sweep. Its entries need only
+the corner entries of each $M_k^{-1}$. From the Gohberg--Semencul form, entry $(a,b)$ is a sum of $\min(a,b)+1$ products. For the bottom-right corner use persymmetry, $(T^{-1})_{L-1-a,L-1-b}=(T^{-1})_{b,a}$, so every corner entry costs $O(w)$, and $O(w^3)$ per wrap. Also
+$\|C-I\|\le\|M^{-1}\|\,\|\Delta\|\le4we^{-2\pi\alpha^2}$, so block elimination without
+pivoting is stable, at $O(w^3)$ per wrap.
+$V^{\mathsf T}M^{-1}u$ reads entries of the first $M^{-1}u$. The vector $Uz$ is supported
+near wraps, and the second $M^{-1}$ application handles it.
+\end{proof}
+
+\begin{remark}[Cost per output]
+Wraps have density $\theta$. Per output the coupling therefore costs
+$O(\theta w^3)$ operations at precision $P$.
+\end{remark}
+
+\section{Large coefficients}
+
+Split the inputs into $b'$-bit digits instead of $b=\lceil\log_2n\rceil$-bit digits, with
+$b'=\lceil b^{1+x}\rceil$ for a fixed $x>0$, and set $p=6b'$. Then $T\in[4n/b',8n/b')$,
+the volume is $Tp=\Theta(n)$, and the address length is $\log_2T=b-(1+x)\log_2b+O(1)$.
+Choose $d=\lfloor b^\epsilon\rfloor$ and $r$, $\ell$ from $T$ as before.
+The capacity bound becomes $c_j<2^{3b'}$, and the final error bound becomes
+\[
+ 2^{2b'+4}S\cdot28\cdot2^\gamma T^2L\cdot2^{-6b'}<448\,b'\,2^{-b'+\gamma}<\tfrac12
+ \quad\text{whenever }\gamma\le b'/4 .
+\]
+With $\alpha^2=\lfloor b'/(8d)\rfloor$ we have $\gamma=2d\alpha^2\le b'/4$ and
+$\alpha^2\theta\ge b'/(32d^2)\ge1$ once $2\epsilon<1+x$. All uses of
+$r\ge2^{a_rp/d}$ in the layer and transform proofs only need $r$ to outgrow every fixed
+power of $p$. Here $r=2^{\Theta(b^{1-\epsilon})}$ and $p=\Theta(b^{1+x})$, so that still holds.
+
+\section{Gaussian row}
+
+For each axis take $Q=p$. Then $\alpha^2/\theta\approx4d\alpha^2\le b'/2$, so $P=O(p)$.
+Also $w^2=O(p/\alpha^2)=O(d)$, so $\theta w^3=O(d^{1/2})$. Summing over $d$ axes gives a
+normalised cost of $O(d^{3/2}p^\delta)$. This is the exponent $\tfrac32\epsilon$, measured in
+powers of $\log n$, used in the certificate.
+
+\end{document}

@@ -1,0 +1,18 @@
+Past the a_b/2 ceiling for integer multiplication
+Copyright 2026 Swapnil Jain
+
+This work builds on, and does not modify, the following:
+
+- OpenAI, "Integer multiplication below n log n" (September 23, 2026), pinned at
+  commit adc7f1241b42e322a6451854ab7e4b4c146bf78a of github.com/openai/math.
+- Douglas Colkitt, github.com/CrocSwap/integer-mult-bounds (Apache-2.0), commit
+  6e564879f51ae16f23d392e9e196c605f36d90df: compact controls and the conditional
+  83/10^12 witness.
+- Prior published results this witness assumes and cites (citations of prior work,
+  not collaborators), from open pull requests on that repository:
+  #3 and #5 (eumemic: compressed complex network, fast Gaussian resampling),
+  #4 (dleen), #6 (eumemic), #7 (Zhihao Chen / jacklightChen: ternary five-subset
+  networks, a_b = 3/(4*10^8), a_c = 39/10^9).
+
+Research, implementation and drafting were done with assistance from Claude
+(Anthropic). AI assistance is not independent review.

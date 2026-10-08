@@ -12,9 +12,8 @@ T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
 \boxed{\kappa=\frac{59861145819}{5\cdot10^{15}}\approx1.19722\times10^{-5}>2^{-17}}.
 $$
 
-That is level with the strongest open pull request on that repository (#27, `1.19720853e-5`,
-which uses the same bit network; ours is higher by about 0.001%), and about 2.86 times our
-previous `4.1878e-6`. These figures
+That is about 2.86 times our round-three witness `4.1878e-6`, and about 1600 times our first
+witness `7499/10^12`. These figures
 compare asymptotic exponents, not practical runtimes.
 
 ## Round four

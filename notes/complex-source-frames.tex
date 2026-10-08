@@ -58,7 +58,7 @@ $1048009/(2.5\cdot10^{11})$ to $4079603/(2.5\cdot10^{11})\approx1.632\cdot10^{-5
 $m-h\le m-1$, so the topology-free guard is unchanged.
 
 \paragraph{Checks.} On PR~\#7's network at $h=8$ and $h=10$, every source-framed role has $D_0$ inside its first
-and last stage-two labels, and the exact label and phase checks pass: entrance and exit phase identities, $G$
+and last stage-two labels (\texttt{sourceframe\_trace.py}, which traces every role through PR~\#7's stage-two schedule), and the exact label and phase checks pass: entrance and exit phase identities, $G$
 nondegenerate and nonalternating, ranks $m-h$ and $m-h+1$ (\texttt{sourceframe\_labels.py}). A full three-stage
 scalar simulation of PR~\#7's network with source frames (\texttt{sourceframe\_sim.py}), in the Hadamard domain
 modulo $2^{64}-59$ with random gate phases, random data-endpoint phases and arbitrary scratch, restores scratch

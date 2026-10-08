@@ -1,4 +1,4 @@
-.PHONY: verify roles round4 notes
+.PHONY: verify roles round4 lean notes
 verify:
 	python3 scripts/check_identities.py
 	python3 scripts/check_segmented_inverse.py
@@ -18,6 +18,10 @@ round4:
 	python3 independent/complex-network/fullbatch_hist.py 28 /tmp/fb28sf.json sf
 	python3 scripts/certificate_round4.py /tmp/fb28sf.json
 	python3 independent/two-stage-bit/checkside.py 47
+
+lean:
+	python3 lean/gen.py
+	lean lean/Round5.lean
 
 notes:
 	tectonic -X compile --outdir artifacts notes/segmented-inverse.tex

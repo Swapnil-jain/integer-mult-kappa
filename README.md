@@ -1,4 +1,4 @@
-# Integer multiplication: a conditional witness above 2^-17
+# Integer multiplication: a conditional witness above 2^-16
 
 **Conditional research draft by Swapnil Jain.**
 
@@ -9,14 +9,44 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{59861145819}{5\cdot10^{15}}\approx1.19722\times10^{-5}>2^{-17}}.
+\boxed{\kappa=\frac{309575208081}{2\cdot10^{16}}\approx1.54788\times10^{-5}>2^{-16}}.
 $$
 
-That is about 2.86 times our round-three witness `4.1878e-6`, and about 1600 times our first
-witness `7499/10^12`. These figures
+That is about 1.29 times our round-four witness `1.19722e-5`, 3.7 times our round-three witness `4.1878e-6`,
+and about 2060 times our first witness `7499/10^12`. These figures
 compare asymptotic exponents, not practical runtimes.
 
-## Round four
+## Round five
+
+`scripts/certificate_round5.py` assembles the witness from our own two-stage bit interchange (Paureel's
+two-stage motif), with no outside bit network:
+
+- **A common flag basis** (`notes/flag-basis.tex`). One rational basis makes the corners of every auxiliary and
+  centre edge of the two-stage motif lower triangular, in both stages at once, so each role's `h` corner
+  transpositions become one contiguous run instead of `h` singleton calls. The same basis gives the data edges
+  their batched profiles one level down, including one run of width `h-2` inside the data-entrance corner (a
+  triangular corner plus a rank-one term). `independent/two-stage-bit/flagbasis.py` checks every edge class
+  exactly, and `flag_existence.py` checks the nonvanishing conditions at the working dimensions `h = 46, 47`.
+- **A cheaper side circuit** (`independent/two-stage-bit/gmside.py`): a global matching of the points shares
+  pair sums and exclusion chains between centres, cutting the side roles at `h = 47` from 418678 to 403248;
+  `checkgm.py` re-derives every support and output exactly.
+- PR #7's complex network, fully batched with complex source frames, as in round four.
+
+- **Side roles batched one level down.** In the flag basis every side-role edge has the form `pi (x) P_b`, whose
+  profile is that of the `h x h` idempotent `pi`: an edge of rank `r > h/2` becomes `h-r` singletons and one
+  block of width `2r-h`. `independent/two-stage-bit/side_chains.py` derives every side role's frame chain from
+  the compiled side program.
+
+The two moment certificates are also checked in Lean 4's kernel (`lean/Round5.lean`, `make lean`, core Lean
+only): both child-width histograms sum to their total rank, the rational upper bounds on `ln(m/w)` are computed from
+their series, the moment bound holds at the claimed savings, and the assembly (every constraint row and cost margin of
+`scripts/certificate_round3.py`, with the guard constant bounded through the same ln series) gives the headline
+`kappa`. The analytic facts behind those bounds (the atanh
+tail and `(m/w)^a <= 1/(1 - a ln(m/w))`) are stated premises, not formalised.
+
+Together these certify `a_b = 15479/10^9` at `h = 47` and `kappa = 309575208081/(2*10^16) > 2^-16`.
+
+## Round four (previous witness, `59861145819/(5*10^15)`)
 
 `scripts/certificate_round4.py` assembles the witness from:
 

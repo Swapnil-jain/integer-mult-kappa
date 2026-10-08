@@ -21,6 +21,9 @@ round4:
 
 round7:
 	python3 scripts/certificate_round7.py
+	python3 independent/joint-frame-stack/check_frames.py
+	python3 independent/joint-frame-stack/check_schedule.py
+	python3 independent/joint-frame-stack/check_design.py
 	python3 independent/deferred-readout/check_word.py 23
 	python3 independent/deferred-readout/check_frames.py 23
 	python3 independent/deferred-readout/check_lifted.py 23

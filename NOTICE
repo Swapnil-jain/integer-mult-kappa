@@ -23,9 +23,13 @@ This work builds on, and does not modify, the following:
   #16 (jacklightChen: nested controlled bases) and #29 (jacklightChen: controlled inner basis compiling local
   edges as blocks), related to our flag basis and side-role batching, which were developed independently,
   #36 (icekylinx: copied retained centres, used on both our interchanges in rounds six and seven),
-  #62 (ikeboy: interval strips and core-aware pair assembly; its producer builds our round-seven side program),
-  #41 (RaD / hipotures: the alternating order and links, used in that side program),
+  #62 (ikeboy: interval strips and core-aware pair assembly; its producer builds the side DAG of both our
+  round-seven witnesses),
+  #41 (RaD / hipotures: the alternating order and links, used in those side programs),
   #44 (rohanarun: weighted matching, which our moment-weighted choice of links follows),
+  #57 (eumemic: the joint frame compiler, which compiles the side program of our round-seven headline witness),
+  #60 (chafreaky: rank-first reclamation, the compiler's reclamation order in that witness),
+  #69 (eumemic: balanced coarse sums, used in the side DAG of that witness),
   #24 (icekylinx, head ed90fd9: endpoint-gauge bit network; certificates/external/pr24-bit-network.json
   extracts its published counts and child-width multiplicities, Apache-2.0).
 - Aurel Prosz (Paureel), github.com/Paureel/integer-mult-bounds commit c82d09e:

@@ -4,11 +4,13 @@ from fractions import Fraction as Q
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 sys.path.insert(0, str(ROOT / 'independent' / 'deferred-readout'))
+sys.path.insert(0, str(ROOT / 'independent' / 'joint-frame-stack'))
 import certificate_round7 as c7
 import deferred as dr
 
 
 class Round7(unittest.TestCase):
+    """witness 1: PR #62's producer"""
     @classmethod
     def setUpClass(cls):
         cls.S, cls.rk, cls.ylev, cls.xd = c7.build(c7.WITNESSES[0])
@@ -48,6 +50,41 @@ class Round7(unittest.TestCase):
             self.assertNotEqual(sum(w * n for w, n in c['hist'].items()), c['s'])
         finally:
             S.f[s] += 1
+
+
+class Round7JointFrame(unittest.TestCase):
+    """witness 2 (the headline): the joint frame compiler side program"""
+    @classmethod
+    def setUpClass(cls):
+        cls.wit = c7.WITNESSES[1]
+        cls.S, cls.rk, cls.ylev, cls.xd = c7.build(cls.wit)
+
+    def test_headline(self):
+        self.assertIs(c7.HEADLINE, self.wit)
+
+    def test_shape_and_orders(self):
+        S = self.S
+        self.assertEqual((S.h, S.R, len(S.readout), len(S.vstart)), (23, 27794, 10922, 11099))
+        self.assertEqual(S.readout, sorted(S.readout, key=lambda s: (S.f[s], s)))
+        self.assertTrue(all(sum(x) == S.h - 1 for x in self.xd))
+
+    def test_savings_and_kappa(self):
+        for key, _, corner in c7.CORNERS:
+            a, c = c7.saving(self.S, self.rk, self.ylev, self.xd, corner(self.S.h))
+            self.assertEqual(sum(w * n for w, n in c['hist'].items()), c['s'])
+            self.assertEqual(c['s'], c['W'] * c['m'] - c['N'] + c['L'])
+            self.assertEqual(a, self.wit[key][0])
+            r = c7.kappa(a)
+            self.assertTrue(r['ok'], r['bad'])
+            self.assertEqual(r['kappa'], self.wit[key][1])
+            self.assertGreater(r['kappa'], Q(1, 2**14))
+
+    def test_frozen_y_and_x_steps(self):
+        import jfdata
+        K = jfdata.load()
+        yd = [[b - a for a, b in zip(ds, ds[1:])] for ds in (sorted(set([0] + self.ylev[t] + [self.S.h - 1])) for t in range(self.S.v))]
+        self.assertEqual(yd, K['W']['yd'])
+        self.assertEqual(sorted(map(tuple, self.xd)), sorted(map(tuple, K['W']['xdata'])))
 
 
 if __name__ == '__main__':

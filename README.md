@@ -1,4 +1,4 @@
-# Integer multiplication: a conditional witness above 2^-18
+# Integer multiplication: a conditional witness above 2^-17
 
 **Conditional research draft by Swapnil Jain.**
 
@@ -9,14 +9,34 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{13086957581}{3.125\cdot10^{15}}\approx4.1878\times10^{-6}>2^{-18}}.
+\boxed{\kappa=\frac{59861145819}{5\cdot10^{15}}\approx1.19722\times10^{-5}>2^{-17}}.
 $$
 
-That is about 2.2 times the strongest open pull request on that repository
-(#18, `1.884586e-6`), and about 558 times our previous `7499/10^12`. These figures
+That is level with the strongest open pull request on that repository (#27, `1.19720853e-5`,
+which uses the same bit network; ours is higher by about 0.001%), and about 2.86 times our
+previous `4.1878e-6`. These figures
 compare asymptotic exponents, not practical runtimes.
 
-## Round three
+## Round four
+
+`scripts/certificate_round4.py` assembles the witness from:
+
+- the stack below, which drives `eps` toward 1 (the bit side binds);
+- PR #24's endpoint-gauge bit network, built on PR #18's partial-swap networks. We take its published
+  counts and child-width multiplicities (`certificates/external/pr24-bit-network.json`), check the rank sum
+  and deficit, and certify `a_b = 4788949/(4*10^11)` with our own moment bisection;
+- PR #7's complex network at `h=28`, fully batched, with **complex source frames**
+  (`notes/complex-source-frames.tex`): starting each stage-two auxiliary role in the phase frame of `D0`
+  merges its entrance and exit into one child of rank `m-h`. Our histogram certifies
+  `a_c = 4079603/(2.5*10^11)`, more than the bit side needs. PR #21 contains the same translation,
+  independently and in a more complete form.
+
+The same script also reports a witness using only our own bit side: the two-stage interchange with
+**data-edge batching** (`notes/data-edge-batching.tex`, `independent/two-stage-bit`). Both stage-two data
+entrances have idempotent difference `Q1 (x) Q2`, of rank `(h-1)^2 > m/2`, so the partial-swap batching
+lemma applies to them too; at `h=47` this certifies `a_b = 10033/10^9` and `kappa = 1003289933971/10^17`.
+
+## Round three (previous witness, `13086957581/(3.125*10^15)`)
 
 `notes/round3-combination.tex` assembles the witness from four components:
 
@@ -66,6 +86,10 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Prior results from PR #3, #5 and #7 on integer-mult-bounds (networks, chirped Gaussian lemma) | Assumed, and unmerged there. We recomputed PR #7's W, m, N, L, s, eta and their complex counterparts exactly from its formulas. An independent re-implementation (`independent/pr7-role-counts`, `make roles`) reproduces its h=28 role counts, 11840940 and 93838, exactly. The finite-alphabet version of the interchange lemmas that its ternary payloads need is proved in `notes/stack-notes.tex`, Appendix A. |
 | Partial-swap batching (bit side) | Written proof (`notes/partial-swap-batching.tex`); exact Bruhat profiles on random, sparse and adversarial idempotents, and two-stage frames at h=6,7,8 (`independent/partial-swap`) |
 | Fully batched complex saving | Independent rebuild of PR #7's producer, exact label checks (0 bad edges at h=28), the residual rank of every edge with an exact sum check against s, and a certified moment bisection (`independent/complex-network`) |
+| PR #24's bit network | Its published counts and child-width multiplicities, pinned by commit and SHA-256; we check that the widths sum to the total rank, the deficit, and that every child is narrower than m, and certify the moment ourselves. We also re-derived its frame identities and confirmed it is compatible with our stack (separate bit and complex arities, crude guard, payload and prime choice); its producers and common basis are assumed |
+| Data-edge batching (bit side) | Written proof (`notes/data-edge-batching.tex`): closed form `Q1 (x) Q2` checked in exact rationals; corners invertible under one common basis for every auxiliary edge and every data pair at h=6,7,8 (all 3136 pairs at h=8, `corners.py`); exact Bruhat profiles (`bruhat8.py`) |
+| Two-stage side circuit at h=47 | Our generator (`independent/two-stage-bit/sidegen.py`) reproduces the published h=32 count, 123157, and an exact checker (`checkside.py`) verifies supports, disjoint children, common points and every output at h=28 to 50; `moment.py` builds the child histogram role by role and checks it sums to s |
+| Complex source frames | Written proof (`notes/complex-source-frames.tex`); exact label and phase checks of every endpoint case (`independent/complex-network/sourceframe_labels.py`); a three-stage scalar simulation of PR #7's network with source frames, arbitrary scratch and a negative control (`sourceframe_sim.py`); the histogram option `sf` keeps the exact rank sum s |
 | Topology-free guard | Written argument (docstring of `scripts/certificate_round3.py`); the witness is stated with this guard |
 | Prior results from PR #10, #13 and #15, and the two-stage motif | Assumed. We reproduced their rank moments, certified at least PR #15's fully batched saving from our own histogram, and found controlled-basis witnesses for PR #10 at h=8 to 14 |
 | Full upstream multiplication theorem | Assumed |
@@ -76,9 +100,9 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 Requires Python 3.9 or newer, standard library only.
 
 ```sh
-python3 scripts/certificate_round3.py
-python3 independent/complex-network/fullbatch_hist.py 28 /tmp/fb28.json
-python3 independent/complex-network/fullbatch_cert.py /tmp/fb28.json
+python3 independent/complex-network/fullbatch_hist.py 28 /tmp/fb28sf.json sf   # ~4 min
+python3 scripts/certificate_round4.py /tmp/fb28sf.json
+python3 independent/two-stage-bit/checkside.py 47
 make verify      # exact checks, numerical inverse checks, certificate, tests
 make roles       # independent recount of PR #7's role counts (clang++, ~1 GB)
 make notes       # PDF notes (tectonic)

@@ -19,7 +19,7 @@ class Trace:
             if o>dim: s.desc.append(o-dim)
             s.dim[r]=dim
 
-def invocation(c,k,dims,stage,inverse):
+def invocation(c,k,dims,stage,inverse,sf=False):
     h=c.h; m=h**3; v=len(c.triples); R=k['size']
     x={t:i for i,t in enumerate(c.triples)}; y={t:v+i for i,t in enumerate(c.triples)}
     side=lambda sl:2*v+sl
@@ -27,6 +27,13 @@ def invocation(c,k,dims,stage,inverse):
     cent=tuple(range(2*v+R,2*v+R+ncent))
     a=h**(stage-1); low,high=(a-1)*h,a*h
     tr=Trace([a]*v+[a-1]*v+[h if stage==3 else 0]*(R+ncent))
+    # Source frames (stage two only, notes/complex-source-frames.tex): an auxiliary role starts in D0, of dim
+    # low, and its exit child to the sink wt+q_D0 has rank (m+low) - last dim. Input-pivot slots are left
+    # at source 0: their first stage-two gate is the copy in the data frame, not a frame above D0, so
+    # starting them at D0 would charge a descent and break the rank sum.
+    keep=set(k['src'].values())|set(k['rout'].values())
+    sfr={2*v+sl for sl in range(R) if sf and stage==2 and sl not in keep}
+    for r in sfr: tr.dim[r]=low
     pieces={t:[] for t in c.triples}
     for i,sl in k['pout'].items(): pieces[c.pieces[i][0]].append(side(sl))
     def mix(md,rev=False):
@@ -51,16 +58,16 @@ def invocation(c,k,dims,stage,inverse):
             mix('high',True)
     for r in x.values(): tr.gate((r,),high)
     for r in y.values(): tr.gate((r,),high-1)
-    for r in range(2*v,len(tr.dim)): tr.gate((r,),h if stage==1 else m)
+    for r in range(2*v,len(tr.dim)): tr.gate((r,),(m+low) if r in sfr else (h if stage==1 else m))
     return tr.hist, tr.desc
 
-def run(h):
+def run(h,sf=False):
     c=Side(h)
     k=compile_roles(c); ch=Checker(c); chk=ch.run()
     dims={n:len(ch.label(n)) for n in c.active}
     H=Counter(); D=[]
     for st,inv in ((1,False),(2,True),(3,False)):
-        hh,dd=invocation(c,k,dims,st,inv); H.update(hh); D.append(sorted(Counter(dd).items()))
+        hh,dd=invocation(c,k,dims,st,inv,sf); H.update(hh); D.append(sorted(Counter(dd).items()))
     v=len(c.triples); m=h**3; N=v**3; Rb=k['size']+h+1
     loss=h*(h+1)
     W=2*N+2*v*v*Rb; L=3*v*v*loss; s=W*m-2*N+2*L
@@ -70,6 +77,6 @@ def run(h):
 
 if __name__=='__main__':
     h=int(sys.argv[1]); out=sys.argv[2] if len(sys.argv)>2 else f'/tmp/fullbatch_hist_{h}.json'
-    r=run(h)
+    r=run(h,sf=len(sys.argv)>3 and sys.argv[3]=='sf')
     json.dump({**r,'hist':{str(a):b for a,b in r['hist'].items()}},open(out,'w'))
     print({k:v for k,v in r.items() if k!='hist'}); print(r['hist'])

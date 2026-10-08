@@ -16,7 +16,12 @@ This work builds on, and does not modify, the following:
   #10 (icekylinx: batched recursion, controlled projector basis, whole-residual
   complex children, Gaussian input-error correction),
   #13 (eumemic: auxiliary source frames, third whole-residual complex class),
-  #15 (eumemic, head a17cab3: full complex batching of every residual rank).
+  #15 (eumemic, head a17cab3: full complex batching of every residual rank),
+  #18 (icekylinx, head f2ab41a: partial-swap networks, producers and common rational basis),
+  #21 (jacklightChen, head 5ba6cf0: translated partial-swap frames; it also contains, independently
+  and earlier in public, the complex source-frame translation we use),
+  #24 (icekylinx, head ed90fd9: endpoint-gauge bit network; certificates/external/pr24-bit-network.json
+  extracts its published counts and child-width multiplicities, Apache-2.0).
 - Aurel Prosz (Paureel), github.com/Paureel/integer-mult-bounds commit c82d09e:
   the two-stage motif with partial-swap frames and charged endpoint correction.
 

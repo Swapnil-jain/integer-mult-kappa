@@ -1,0 +1,1703 @@
+{
+  "phase": "refine",
+  "search": [
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.9584471428121048e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.286542252531766e-05,
+      "roles": 21021
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.408222291263029e-05,
+      "roles": 25440
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.5746577888455614e-05,
+      "roles": 29535
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.575526942523455e-05,
+      "roles": 35156
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.622576455135029e-05,
+      "roles": 46800
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.562838823190808e-05,
+      "roles": 61269
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.5751701706469356e-05,
+      "roles": 68352
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.489191101997585e-05,
+      "roles": 77868
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.478213547392378e-05,
+      "roles": 86292
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.380205682779033e-05,
+      "roles": 97590
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.365870932446918e-05,
+      "roles": 107124
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.273854797523558e-05,
+      "roles": 119904
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.2469602055048994e-05,
+      "roles": 131064
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.9584471428121048e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.285682304678887e-05,
+      "roles": 21021
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.408222291263029e-05,
+      "roles": 25440
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.5746577888455614e-05,
+      "roles": 29535
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.575526942523455e-05,
+      "roles": 35156
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.622576455135029e-05,
+      "roles": 46800
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.565238301183247e-05,
+      "roles": 61230
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.587790283474167e-05,
+      "roles": 68109
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.5008455513287315e-05,
+      "roles": 77616
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.481802496511063e-05,
+      "roles": 86205
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.383411525164108e-05,
+      "roles": 97500
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.368889494349546e-05,
+      "roles": 107031
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.276579800224926e-05,
+      "roles": 119808
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "original",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.249522351779404e-05,
+      "roles": 130965
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.957587272162795e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.285721839958836e-05,
+      "roles": 21021
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.4075111135419445e-05,
+      "roles": 25440
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.573846288259356e-05,
+      "roles": 29535
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.574838487058485e-05,
+      "roles": 35156
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.667017576975124e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.6220440330194414e-05,
+      "roles": 46800
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.6554243721992216e-05,
+      "roles": 52863
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.567153001809406e-05,
+      "roles": 61191
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.5790380005295725e-05,
+      "roles": 68271
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.492640532325044e-05,
+      "roles": 77784
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.4814015514984977e-05,
+      "roles": 86205
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.383065282155539e-05,
+      "roles": 97500
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.368552780771118e-05,
+      "roles": 107031
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.276304589463751e-05,
+      "roles": 119808
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.24923591798839e-05,
+      "roles": 130965
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.957587272162795e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.285721839958836e-05,
+      "roles": 21021
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.4075111135419445e-05,
+      "roles": 25440
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.573846288259356e-05,
+      "roles": 29535
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.574838487058485e-05,
+      "roles": 35156
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.667017576975124e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.6220440330194414e-05,
+      "roles": 46800
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.6554243721992216e-05,
+      "roles": 52863
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.5741287773578034e-05,
+      "roles": 61074
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.581677426530599e-05,
+      "roles": 68217
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.495319639702446e-05,
+      "roles": 77728
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.477814759001792e-05,
+      "roles": 86292
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.3798478074363806e-05,
+      "roles": 97590
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.365517251865693e-05,
+      "roles": 107124
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.273573653738545e-05,
+      "roles": 119904
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "original",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.2466742232279514e-05,
+      "roles": 131064
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.9584471428121048e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.265870557560731e-05,
+      "roles": 21165
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.398098706791934e-05,
+      "roles": 25520
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.554834815034985e-05,
+      "roles": 29715
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.571116513580092e-05,
+      "roles": 35200
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.649577583541815e-05,
+      "roles": 40297
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.613984133941707e-05,
+      "roles": 46920
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.639630176965368e-05,
+      "roles": 53127
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.562838823190808e-05,
+      "roles": 61269
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.560624185518898e-05,
+      "roles": 68664
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.482312898798673e-05,
+      "roles": 78036
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.46520532944076e-05,
+      "roles": 86656
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.376912562758442e-05,
+      "roles": 97680
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.354225791346799e-05,
+      "roles": 107544
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.2683321057790825e-05,
+      "roles": 120128
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "power",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.2365112226885275e-05,
+      "roles": 131544
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.9584471428121048e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.2650213925829234e-05,
+      "roles": 21165
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.398098706791934e-05,
+      "roles": 25520
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.554834815034985e-05,
+      "roles": 29715
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.571116513580092e-05,
+      "roles": 35200
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.649577583541815e-05,
+      "roles": 40297
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.613984133941707e-05,
+      "roles": 46920
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.639630176965368e-05,
+      "roles": 53127
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.565238301183247e-05,
+      "roles": 61230
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.57314163455835e-05,
+      "roles": 68421
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.493921368188448e-05,
+      "roles": 77784
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.468767470210812e-05,
+      "roles": 86569
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.380112158655865e-05,
+      "roles": 97590
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.357223492951555e-05,
+      "roles": 107451
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.271047918723151e-05,
+      "roles": 120032
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "large",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.23905689858388e-05,
+      "roles": 131445
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.957587272162795e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.2650604321256185e-05,
+      "roles": 21165
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.3973917474193415e-05,
+      "roles": 25520
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.554032289095481e-05,
+      "roles": 29715
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.57042975541273e-05,
+      "roles": 35200
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.6489029118381936e-05,
+      "roles": 40297
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.613454234448161e-05,
+      "roles": 46920
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.639060461558269e-05,
+      "roles": 53127
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.567153001809406e-05,
+      "roles": 61191
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.5644605891899396e-05,
+      "roles": 68583
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.485748736195602e-05,
+      "roles": 77952
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.4683695216260286e-05,
+      "roles": 86569
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.379766590604415e-05,
+      "roles": 97590
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.3568891073099965e-05,
+      "roles": 107451
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.270773636462532e-05,
+      "roles": 120032
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.238772306806484e-05,
+      "roles": 131445
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 18,
+        "order": "gm"
+      },
+      "saving": 2.957587272162795e-05,
+      "roles": 17820
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 19,
+        "order": "gm"
+      },
+      "saving": 3.2650604321256185e-05,
+      "roles": 21165
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 20,
+        "order": "gm"
+      },
+      "saving": 3.3973917474193415e-05,
+      "roles": 25520
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 21,
+        "order": "gm"
+      },
+      "saving": 3.554032289095481e-05,
+      "roles": 29715
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 22,
+        "order": "gm"
+      },
+      "saving": 3.57042975541273e-05,
+      "roles": 35200
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.6489029118381936e-05,
+      "roles": 40297
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 24,
+        "order": "gm"
+      },
+      "saving": 3.613454234448161e-05,
+      "roles": 46920
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 25,
+        "order": "gm"
+      },
+      "saving": 3.639060461558269e-05,
+      "roles": 53127
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 26,
+        "order": "gm"
+      },
+      "saving": 3.5741287773578034e-05,
+      "roles": 61074
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 27,
+        "order": "gm"
+      },
+      "saving": 3.567078550369436e-05,
+      "roles": 68529
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 28,
+        "order": "gm"
+      },
+      "saving": 3.488417276881575e-05,
+      "roles": 77896
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 29,
+        "order": "gm"
+      },
+      "saving": 3.464809518304303e-05,
+      "roles": 86656
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 30,
+        "order": "gm"
+      },
+      "saving": 3.3765553843876156e-05,
+      "roles": 97680
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 31,
+        "order": "gm"
+      },
+      "saving": 3.3538745538241605e-05,
+      "roles": 107544
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 32,
+        "order": "gm"
+      },
+      "saving": 3.268051909724135e-05,
+      "roles": 120128
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 4,
+        "split": "small",
+        "loo": "prefix",
+        "join": "reverse",
+        "h": 33,
+        "order": "gm"
+      },
+      "saving": 3.2362270780784635e-05,
+      "roles": 131544
+    }
+  ],
+  "best": {
+    "config": {
+      "group_size": 2,
+      "cutoff": 4,
+      "split": "power",
+      "loo": "prefix",
+      "join": "original",
+      "h": 23,
+      "order": "gm"
+    },
+    "saving": 3.6676989649409445e-05,
+    "roles": 40077,
+    "network": {
+      "m": 529,
+      "W": 148225616,
+      "hist": {
+        "483": 141952734,
+        "23": 141952734,
+        "1": 2189921195,
+        "19": 10147830,
+        "13": 35653772,
+        "7": 6970656,
+        "15": 13498562,
+        "11": 4363744,
+        "3": 5667200,
+        "5": 11716936,
+        "9": 14731178,
+        "17": 4562096,
+        "21": 18900112,
+        "439": 6272882
+      },
+      "rank_sum": 78410006675
+    }
+  }
+}

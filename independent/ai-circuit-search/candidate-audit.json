@@ -1,0 +1,11 @@
+{
+  "active_nodes": 36512,
+  "rank_checks": 36512,
+  "roles": 40077,
+  "exclusion_outputs": 5313,
+  "retained_outputs": 23,
+  "status": "PASS",
+  "saving": "36676989649409445933/1000000000000000000000000",
+  "scope": "Side sums, span ranks, role nesting and moments; common-basis/tape/analytic transfer remains conditional",
+  "corrupted_support_rejected": true
+}

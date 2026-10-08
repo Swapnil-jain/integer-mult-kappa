@@ -1,0 +1,663 @@
+{
+  "phase": "smallbase",
+  "search": [
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.667017576975124e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.387825632122339e-05,
+      "roles": 43645
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "balanced",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.39400972378923e-05,
+      "roles": 43392
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "balanced",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.153478421839041e-05,
+      "roles": 46960
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "balanced",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.530063533895177e-05,
+      "roles": 41704
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "balanced",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.2705986769432407e-05,
+      "roles": 45272
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "power",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.388407201188017e-05,
+      "roles": 43645
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "power",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.394593417975073e-05,
+      "roles": 43392
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "power",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.1539823062997854e-05,
+      "roles": 46960
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "power",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.530694969234659e-05,
+      "roles": 41704
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "power",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.271140689995033e-05,
+      "roles": 45272
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "left",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.550479045189584e-05,
+      "roles": 41641
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "left",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.2881157832424104e-05,
+      "roles": 45209
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "left",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.29394094598476e-05,
+      "roles": 44956
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "left",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.066909729799895e-05,
+      "roles": 48524
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "left",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.421938950792097e-05,
+      "roles": 43268
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "left",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.177575097457383e-05,
+      "roles": 46836
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "right",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.549840513594608e-05,
+      "roles": 41641
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "right",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.287568130207315e-05,
+      "roles": 45209
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "right",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.293391351126535e-05,
+      "roles": 44956
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "right",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.0664332818208096e-05,
+      "roles": 48524
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "right",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.421345814775478e-05,
+      "roles": 43268
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 2,
+        "split": "right",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.177063646426297e-05,
+      "roles": 46836
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.667017576975124e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "balanced",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.387825632122339e-05,
+      "roles": 43645
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "balanced",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.39400972378923e-05,
+      "roles": 43392
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "balanced",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.153478421839041e-05,
+      "roles": 46960
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "balanced",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.530063533895177e-05,
+      "roles": 41704
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "balanced",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.2705986769432407e-05,
+      "roles": 45272
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "power",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "power",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.388407201188017e-05,
+      "roles": 43645
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "power",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.394593417975073e-05,
+      "roles": 43392
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "power",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.1539823062997854e-05,
+      "roles": 46960
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "power",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.530694969234659e-05,
+      "roles": 41704
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "power",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.271140689995033e-05,
+      "roles": 45272
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "left",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.550479045189584e-05,
+      "roles": 41641
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "left",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.2881157832424104e-05,
+      "roles": 45209
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "left",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.29394094598476e-05,
+      "roles": 44956
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "left",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.066909729799895e-05,
+      "roles": 48524
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "left",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.421938950792097e-05,
+      "roles": 43268
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "left",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.177575097457383e-05,
+      "roles": 46836
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "right",
+        "loo": "prefix",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.549840513594608e-05,
+      "roles": 41641
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "right",
+        "loo": "prefix",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.287568130207315e-05,
+      "roles": 45209
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "right",
+        "loo": "balanced",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.293391351126535e-05,
+      "roles": 44956
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "right",
+        "loo": "balanced",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.0664332818208096e-05,
+      "roles": 48524
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "right",
+        "loo": "power",
+        "join": "original",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.421345814775478e-05,
+      "roles": 43268
+    },
+    {
+      "config": {
+        "group_size": 2,
+        "cutoff": 3,
+        "split": "right",
+        "loo": "power",
+        "join": "cross",
+        "h": 23,
+        "order": "gm"
+      },
+      "saving": 3.177063646426297e-05,
+      "roles": 46836
+    }
+  ],
+  "best": {
+    "config": {
+      "group_size": 2,
+      "cutoff": 2,
+      "split": "power",
+      "loo": "prefix",
+      "join": "original",
+      "h": 23,
+      "order": "gm"
+    },
+    "saving": 3.6676989649409445e-05,
+    "roles": 40077,
+    "network": {
+      "m": 529,
+      "W": 148225616,
+      "hist": {
+        "483": 141952734,
+        "23": 141952734,
+        "1": 2189921195,
+        "19": 10147830,
+        "13": 35653772,
+        "7": 6970656,
+        "15": 13498562,
+        "11": 4363744,
+        "3": 5667200,
+        "5": 11716936,
+        "9": 14731178,
+        "17": 4562096,
+        "21": 18900112,
+        "439": 6272882
+      },
+      "rank_sum": 78410006675
+    }
+  }
+}

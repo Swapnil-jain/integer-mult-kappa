@@ -1,0 +1,465 @@
+{
+  "search": [
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 3,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 3,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 3,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 4,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 4,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 4,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 6,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 6,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "pair",
+      "priority": "large",
+      "minimum": 6,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 3,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 3,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 3,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 4,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 4,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 4,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 6,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 6,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "pair",
+      "priority": "small",
+      "minimum": 6,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 3,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 3,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 3,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 4,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 4,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 4,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 6,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 6,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "triple",
+      "priority": "large",
+      "minimum": 6,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 3,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 3,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 3,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 4,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 4,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 4,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 6,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 6,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "triple",
+      "priority": "small",
+      "minimum": 6,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 3,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 3,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 3,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 4,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 4,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 4,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 6,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 6,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "greedy",
+      "priority": "large",
+      "minimum": 6,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 3,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 3,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 3,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 4,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 4,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 4,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 6,
+      "h": 21,
+      "saving": 3.574657788845563e-05,
+      "roles": 29535
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 6,
+      "h": 23,
+      "saving": 3.6676989649409445e-05,
+      "roles": 40077
+    },
+    {
+      "mode": "greedy",
+      "priority": "small",
+      "minimum": 6,
+      "h": 25,
+      "saving": 3.655999223495598e-05,
+      "roles": 52863
+    }
+  ],
+  "best": {
+    "mode": "pair",
+    "priority": "large",
+    "minimum": 3,
+    "h": 23,
+    "saving": 3.6676989649409445e-05,
+    "roles": 40077,
+    "network": {
+      "m": 529,
+      "W": 148225616,
+      "hist": {
+        "483": 141952734,
+        "23": 141952734,
+        "1": 2189921195,
+        "19": 10147830,
+        "13": 35653772,
+        "7": 6970656,
+        "15": 13498562,
+        "11": 4363744,
+        "3": 5667200,
+        "5": 11716936,
+        "9": 14731178,
+        "17": 4562096,
+        "21": 18900112,
+        "439": 6272882
+      },
+      "rank_sum": 78410006675
+    }
+  }
+}

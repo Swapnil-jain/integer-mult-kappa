@@ -1,0 +1,66 @@
+Pinned inputs and source hashes PASS
+jain_bit root bracket 3.667017576975124e-05 3.667017576975124e-05 PASS
+jain_complex root bracket 7.386111386081776e-05 7.386111386081776e-05 PASS
+community_bit root bracket 3.886826921529446e-05 3.886826921529446e-05 PASS
+community_complex root bracket 7.174462103094092e-05 7.174462103094092e-05 PASS
+power_split_bit root bracket 3.6676989649409445e-05 3.6676989649409445e-05 PASS
+community_candidate_bit root bracket 3.9554359469713356e-05 3.9554359469713356e-05 PASS
+published kappa 3666565558019/100000000000000000 all 19 strict constraints PASS
+jain_bit_sharpened kappa 733376622345377943/20000000000000000000000 all 19 strict constraints PASS
+power_split_bit_sharpened kappa 36675644497175837593/1000000000000000000000000 all 19 strict constraints PASS
+published kappa 971668963/25000000000000 all 47 strict constraints PASS
+sharpened kappa 38866758531660326637/1000000000000000000000000 all 47 strict constraints PASS
+changed_circuit kappa 3955279/100000000000 all 47 strict constraints PASS
+Finite arithmetic verified; upstream network and multiplication proofs remain assumptions.
+{
+  "active_nodes": 36512,
+  "rank_checks": 36512,
+  "roles": 40077,
+  "exclusion_outputs": 5313,
+  "retained_outputs": 23,
+  "status": "PASS",
+  "saving": "36676989649409445933/1000000000000000000000000",
+  "scope": "Side sums, span ranks, role nesting and moments; common-basis/tape/analytic transfer remains conditional",
+  "corrupted_support_rejected": true
+}
+{
+  "status": "PASS",
+  "active_nodes": 38099,
+  "unique_subspaces": 26695,
+  "gate_inclusions": 72656,
+  "matching_inclusions": 4044,
+  "output_interfaces": 5336,
+  "roles": 37620,
+  "rank_sum": 866272,
+  "all_scalar_outputs_exact": true,
+  "integer_bases_independent": true,
+  "positive_form_identity_exact": true,
+  "all_inclusions_exact": true,
+  "augmented_dependency_order_acyclic": true,
+  "histogram_recomputed": true,
+  "invalid_vector_rejected": true,
+  "scope": "Finite circuit/subspace/matching/transition audit; physical simultaneous-basis, tape, analytic and exact-recovery transfer remain inherited hypotheses",
+  "full_child_histogram_reconstructed": true
+}
+PASS: finite arithmetic and circuit audits; inherited multiplication arguments remain assumptions.
+
+test_above_fixed_profile_limit_fails_assembly (__main__.CertificateTests.test_above_fixed_profile_limit_fails_assembly) ... ok
+test_community_negative_controls (__main__.CertificateTests.test_community_negative_controls) ... ok
+test_corrupted_counts_rejected (__main__.CertificateTests.test_corrupted_counts_rejected) ... ok
+test_exp_zero_and_monotonic_enclosure (__main__.CertificateTests.test_exp_zero_and_monotonic_enclosure) ... ok
+test_log_series_against_rational_identities (__main__.CertificateTests.test_log_series_against_rational_identities) ... ok
+test_next_grid_saving_rigorously_fails (__main__.CertificateTests.test_next_grid_saving_rigorously_fails) ... ok
+test_stale_bridge_rejected (__main__.CertificateTests.test_stale_bridge_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.133s
+
+OK
+test_copied_bit_saving (test_round6.Round6.test_copied_bit_saving) ... ok
+test_kappa (test_round6.Round6.test_kappa) ... ok
+test_retained_totals_saving (test_round6.Round6.test_retained_totals_saving) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.749s
+
+OK

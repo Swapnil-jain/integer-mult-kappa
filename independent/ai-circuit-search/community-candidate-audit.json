@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "active_nodes": 38099,
+  "unique_subspaces": 26695,
+  "gate_inclusions": 72656,
+  "matching_inclusions": 4044,
+  "output_interfaces": 5336,
+  "roles": 37620,
+  "rank_sum": 866272,
+  "all_scalar_outputs_exact": true,
+  "integer_bases_independent": true,
+  "positive_form_identity_exact": true,
+  "all_inclusions_exact": true,
+  "augmented_dependency_order_acyclic": true,
+  "histogram_recomputed": true,
+  "invalid_vector_rejected": true,
+  "scope": "Finite circuit/subspace/matching/transition audit; physical simultaneous-basis, tape, analytic and exact-recovery transfer remain inherited hypotheses",
+  "full_child_histogram_reconstructed": true
+}

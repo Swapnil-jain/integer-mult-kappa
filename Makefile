@@ -33,3 +33,7 @@ notes:
 	tectonic -X compile --outdir artifacts notes/round3-combination.tex
 	tectonic -X compile --outdir artifacts notes/data-edge-batching.tex
 	tectonic -X compile --outdir artifacts notes/complex-source-frames.tex
+
+.PHONY: ai-circuit-check
+ai-circuit-check:
+	python3 independent/ai-circuit-search/run_checks.py

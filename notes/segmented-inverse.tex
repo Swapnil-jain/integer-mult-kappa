@@ -150,4 +150,60 @@ Also $w^2=O(p/\alpha^2)=O(d)$, so $\theta w^3=O(d^{1/2})$. Summing over $d$ axes
 normalised cost of $O(d^{3/2}p^\delta)$. This is the exponent $\tfrac32\epsilon$, measured in
 powers of $\log n$, used in the certificate.
 
+
+\section{Sub-blocks with recentred chirps}
+
+\begin{lemma}[Recentred blocks]\label{lem:recentred}
+Let $\ell,j$ and a centre $c$ lie in one segment. Put $u=\ell-c$, $v=j-c$ and $h=j-\ell$. Then
+\[
+ X_{\ell,j}=\sigma h^2+2\beta_ch+\theta(v^2-u^2).
+\]
+Hence the principal block of $N$ on any run of consecutive indices inside a segment
+starting at $c$ equals $D_cT_cD_c^{-1}$, with $D_c=\operatorname{diag}(e^{\pi\alpha^2\theta u^2})$ and
+$T_c$ the Toeplitz matrix with symbol $e^{-\pi\alpha^2(\sigma h^2+2\beta_ch)}$.
+\end{lemma}
+\begin{proof}
+In a segment $\beta_\ell=\beta_c+\theta u$ and $\beta_j=\beta_c+\theta v$. Expand
+$X=(\sigma h+\beta_\ell)^2-\beta_j^2$, use $\sigma-\theta=1$ and $2hu=v^2-u^2-h^2$.
+\end{proof}
+This was checked in exact rational arithmetic for three centres per pair on all five test cases.
+
+\paragraph{One Toeplitz inverse serves all blocks.} The symbol of $T_c$ is
+$t_h\rho_c^{h}$, with $t_h=e^{-\pi\alpha^2(\sigma h^2-h)}$ and $\rho_c=e^{-\pi\alpha^2(2\beta_c+1)}$.
+So $T_c=G_cT_\lambda G_c^{-1}$ with $G_c=\operatorname{diag}(\rho_c^{-i})$, and
+$T_c^{-1}=G_cT_\lambda^{-1}G_c^{-1}$. The Gohberg--Semencul vectors of $T_c$ are the vectors
+of $T_\lambda$, the block-length Toeplitz matrix with symbol $t_h$, scaled entrywise by
+$\rho_c^{\mp i}$. They are computed once per line and rescaled in $O(\lambda)$ per block.
+The scaled lower vectors decay like $e^{-\pi\alpha^2(\sigma+2\beta_c)i}$, and the upper ones like
+$e^{-\pi\alpha^2(\sigma-2\beta_c)i}$. Since $|\beta_c|\le1/2$ and $\sigma-1=\theta>0$, every scaled
+entry has modulus at most one, and $\|T_c-I\|<2e^{-\pi\alpha^2\theta}<0.1$.
+
+\paragraph{Cuts.} Cut every segment into blocks of length at most $\lambda$, and treat each cut
+like a wrap. Coupling entries across a cut have $n=h$, so $X\ge|h|(|h|-1)$. The same
+$w\times w$ corner blocks therefore suffice. All block solves use principal blocks of $N=I+E$,
+hence $\|M^{-1}\|\le2$. The Woodbury capacitance is cyclic block tridiagonal as before,
+with one block per cut or wrap.
+
+\paragraph{Precision and cost.} Inside a block, the chirp $D_c$ spans at most
+$e^{\pi\alpha^2\theta\lambda^2}$, that is $4.53\,\alpha^2\theta\lambda^2$ bits. Choose
+\[
+ \lambda=\Bigl\lfloor\sqrt{Q/(4.53\,\alpha^2\theta)}\Bigr\rfloor,
+\]
+so that the precision reserve is at most $Q$. Couplings occur with density
+$1/\lambda+\theta$ per output, each costing $O(w^3)$ with $w^2=O(Q/\alpha^2)$.
+
+\paragraph{Reduced oversampling.} Take $\theta_i\approx\eta=1/(4dL^y)$ in prime selection
+(Section~1 of the stack notes), so the padding factor is $\prod_i(1+\theta_i)=1+o(1)$.
+Take $\alpha^2=\lfloor Q/(48d)\rfloor$ with $Q=\Theta(p)$. Then $\gamma=2d\alpha^2\le b'/4$, and
+$\alpha^2\theta\ge1$ once $Q\ge192\,d^2L^y$, which holds when $2\epsilon+y<1+x$. This gives
+$w^2=O(d)$ and $\lambda=\Theta(dL^{y/2})$, so the coupling costs
+$O(w^3(1/\lambda+\theta))=O(d^{1/2}L^{-y/2}+d^{1/2}L^{-y})=O(1)$ per output for $y=\epsilon$.
+Including the $O(1)$ chirped correlations, each axis costs $O(p^{1+\delta})$ per output. The
+Gaussian row is therefore $O(d\,p^\delta)$: exponent $\epsilon+(1+x)\delta$.
+
+\paragraph{Numerical check.} \texttt{scripts/check_subblock_inverse.py} cuts the
+segments of the $(60,67)$, $\alpha^2=9$ instance into blocks of length $2$ and $3$, solves each
+block by its own recentred Toeplitz system at $120$ digits, couples all cuts and wraps by
+Woodbury, and matches the direct solve to $3\cdot10^{-64}$, against a target of $2^{-200}$.
+
 \end{document}

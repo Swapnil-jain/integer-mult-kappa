@@ -6,7 +6,8 @@
   "checks": {
    "closed_form": 20340,
    "segment": 2226,
-   "cross": 18114
+   "cross": 18114,
+   "recentred": 4914
   },
   "min_cross_exponent": "228/113"
  },
@@ -17,7 +18,8 @@
   "checks": {
    "closed_form": 43380,
    "segment": 10896,
-   "cross": 32484
+   "cross": 32484,
+   "recentred": 28620
   },
   "min_cross_exponent": "484/241"
  },
@@ -28,7 +30,8 @@
   "checks": {
    "closed_form": 181620,
    "segment": 139770,
-   "cross": 41850
+   "cross": 41850,
+   "recentred": 411030
   },
   "min_cross_exponent": "2020/1009"
  },
@@ -39,7 +42,8 @@
   "checks": {
    "closed_form": 183420,
    "segment": 169470,
-   "cross": 13950
+   "cross": 13950,
+   "recentred": 505650
   },
   "min_cross_exponent": "2040/1019"
  },
@@ -50,7 +54,8 @@
   "checks": {
    "closed_form": 736740,
    "segment": 728370,
-   "cross": 8370
+   "cross": 8370,
+   "recentred": 2183454
   },
   "min_cross_exponent": "8188/4093"
  }

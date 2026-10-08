@@ -6,7 +6,9 @@ rational arithmetic:
   1. X = n (n + 2 beta_j) with n = q_j - q_l;
   2. inside a wrap-free segment, X = (1+theta) h^2 - h + theta (v^2 - u^2), with
      h = j - l, u = l - l*, v = j - l*, and l* = l - (beta_l + 1/2)/theta;
-  3. every pair in different segments (n != j - l) has X >= 2.
+  3. every pair in different segments (n != j - l) has X >= 2;
+  4. for any centre c in the same segment as l and j, with u = l - c and v = j - c,
+     X = sigma h^2 + 2 beta_c h + theta (v^2 - u^2).
 """
 from fractions import Fraction as F
 import json, math, sys
@@ -33,6 +35,12 @@ def check(s, t, periods=3, band=30):
                 if X != (1 + th) * h * h - h + th * (v * v - u * u):
                     raise AssertionError(f'segment form fails at s={s} t={t} l={l} j={j}')
                 counts['segment'] += 1
+                for c in (l - 3, l - 1, l + 2):
+                    if q(c) - c == q(l) - l and q(c) - c == q(j) - j:
+                        uc, vc = l - c, j - c
+                        if X != sig * h * h + 2 * beta(c) * h + th * (vc * vc - uc * uc):
+                            raise AssertionError(f'recentred form fails at s={s} t={t} l={l} j={j} c={c}')
+                        counts['recentred'] = counts.get('recentred', 0) + 1
             else:
                 if X < 2:
                     raise AssertionError(f'cross-wrap bound fails at s={s} t={t} l={l} j={j}')

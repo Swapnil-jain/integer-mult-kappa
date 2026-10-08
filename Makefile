@@ -22,6 +22,8 @@ round4:
 lean:
 	python3 lean/gen.py
 	lean lean/Round5.lean
+	python3 lean/gen.py round6-histograms.json Round6.lean
+	lean lean/Round6.lean
 
 notes:
 	tectonic -X compile --outdir artifacts notes/segmented-inverse.tex

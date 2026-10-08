@@ -1,4 +1,4 @@
-# Integer multiplication: a conditional witness above 2^-16
+# Integer multiplication: a conditional witness above 2^-15
 
 **Conditional research draft by Swapnil Jain.**
 
@@ -9,14 +9,34 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{309575208081}{2\cdot10^{16}}\approx1.54788\times10^{-5}>2^{-16}}.
+\boxed{\kappa=\frac{3666565558019}{10^{17}}\approx3.66657\times10^{-5}>2^{-15}}.
 $$
 
-That is about 1.29 times our round-four witness `1.19722e-5`, 3.7 times our round-three witness `4.1878e-6`,
-and about 2060 times our first witness `7499/10^12`. These figures
+That is about 2.37 times our round-five witness `1.54788e-5`, 3.06 times our round-four witness `1.19722e-5`,
+and about 4900 times our first witness `7499/10^12`. These figures
 compare asymptotic exponents, not practical runtimes.
 
-## Round five
+## Round six
+
+`scripts/certificate_round6.py` (bit side) and `independent/complex-twostage/` (complex side) assemble the witness:
+
+- **Copied centres** (`notes/copied-centres.tex`), after PR #36's copied retained-centre schedule. A centre must be
+  read at `D0` by the second scatter and then gathered at `D1`; instead, a temporary copy goes down to `D0` for the
+  reads and is erased, and the original never leaves `D1`. Each centre loses one rank-`h` return per stage, the rank
+  budget becomes `s = Wm - N + L`, and the deficit `v(v - 2h^2)` is positive at much smaller `h`. On our bit
+  interchange (flag basis, gm side circuit, side roles batched one level down, data-entrance run) this certifies
+  `a_b = 34919/10^9` at `h = 25`.
+- **Retained point totals** replace the direct centre wires: each total is a side role built from existing side
+  nodes, its copy pays rank `h-1` and the original rank `1`, so the loss per centre drops from `h` to `h-1` and the
+  centre roles leave `W` (`independent/two-stage-bit/rtgm.py`). This certifies `a_b = 36667/10^9` at `h = 23`.
+- **The two-stage complex interchange** with our pair-exclusion producer, copied retained centres, complex data-edge
+  batching and every residual batched as one whole-residual child, certifies `a_c = 36926111/(5*10^11)` at `h = 24`
+  (`cd independent/complex-twostage && python3 run.py 24`: rank sum exact, labels 0 bad, `a_c >= 73861113/10^12`).
+
+The bit side binds: `kappa = 3666565558019/10^17`. Both moment certificates and the assembly are also checked in
+Lean 4's kernel (`lean/Round6.lean`, `make lean`), as in round five.
+
+## Round five (previous witness, `309575208081/(2*10^16)`)
 
 `scripts/certificate_round5.py` assembles the witness from our own two-stage bit interchange (Paureel's
 two-stage motif), with no outside bit network:

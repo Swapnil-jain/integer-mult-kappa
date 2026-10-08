@@ -22,6 +22,7 @@ This work builds on, and does not modify, the following:
   and earlier in public, the complex source-frame translation we use),
   #16 (jacklightChen: nested controlled bases) and #29 (jacklightChen: controlled inner basis compiling local
   edges as blocks), related to our flag basis and side-role batching, which were developed independently,
+  #36 (icekylinx: copied retained centres, used on both our interchanges in round six),
   #24 (icekylinx, head ed90fd9: endpoint-gauge bit network; certificates/external/pr24-bit-network.json
   extracts its published counts and child-width multiplicities, Apache-2.0).
 - Aurel Prosz (Paureel), github.com/Paureel/integer-mult-bounds commit c82d09e:

@@ -1,4 +1,4 @@
-# Integer multiplication: a conditional witness above 2^-15
+# Integer multiplication: a conditional witness above 2^-14
 
 **Conditional research draft by Swapnil Jain.**
 
@@ -9,14 +9,54 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{3666565558019}{10^{17}}\approx3.66657\times10^{-5}>2^{-15}}.
+\boxed{\kappa=\frac{1599247689723}{2.5\times10^{16}}\approx6.39699\times10^{-5}>2^{-14}}.
 $$
 
-That is about 2.37 times our round-five witness `1.54788e-5`, 3.06 times our round-four witness `1.19722e-5`,
-and about 4900 times our first witness `7499/10^12`. These figures
+That is about 1.74 times our round-six witness `3.66657e-5`, 4.13 times our round-five witness `1.54788e-5`,
+5.34 times our round-four witness `1.19722e-5`, and about 8500 times our first witness `7499/10^12`. These figures
 compare asymptotic exponents, not practical runtimes.
 
-## Round six
+## Round seven
+
+`scripts/certificate_round7.py` rebuilds the bit side's child-width histogram from a frozen schedule
+(`certificates/round7/`, about 2.3 MB compressed) and certifies it; the complex side is round six's. The bit side at
+`h = 23` (`notes/deferred-readout.tex`):
+
+- **PR #62's producer** (interval strips and core-aware pair assembly), with PR #41's alternating order and links
+  and a moment-weighted choice of links after PR #44's weighted matching, builds the side program
+  (`R = 28866` slots).
+- **Lifted frames and late copies.** Every addition acts at `M_n = span(n) + (U_n cap F_j)`, after Paureel's
+  complement-frame construction, and a node with several free uses copies itself late, at the intersection of the
+  frames of its remaining users, so the copy starts higher up its chain.
+- **Deferred readouts (B-defer).** The second pass of stage one runs in two phases: first everything the retained
+  totals need (their copies then read every target at `0`), then every slot that phase did not touch reads its
+  garbage out at a nonzero frame `sigma_u` inside its start frame and every target's `t_T^perp`. Only the order of
+  the word changes; it is still a mirror. Readouts go in increasing `dim sigma_u`, which keeps every target's frame
+  sequence nested.
+- **V leaves.** Each use of a leaf gets its own `V` gate on the data wire `X_S`, as a late copy there: the use slot
+  starts at the intersection `s_i` of the frames of the remaining uses, and the deferred `V` gates follow in
+  increasing dimension.
+
+The rank sum is exactly round six's budget `s = Wm - N + L`. With the staircase data-entrance corner (runs
+`h-2, h-5, 1^6`) this certifies `a_b = 31987/(5*10^8)` and `kappa = 1599247689723/(2.5*10^16)`; with the
+round-six entrance corner, `a_b = 12599/(2*10^8)` and `kappa = 6299103187973/10^17 > 2^-14`.
+
+The checks are standard-library Python, one process each (`make round7`, about 25 minutes and at most 1.2 GB of memory):
+
+- `independent/deferred-readout/check_word.py` replays the reordered word over F2 and over Z with arbitrary
+  scratch, checks that the schedule computes the side DAG, the phase split and the ordering rule, with negative
+  controls;
+- `check_frames.py` rebuilds every frame exactly over Q and checks the deferred and V-leaf frames, the nesting of
+  every target and data chain in time order, G-nondegeneracy, the side lemma on every new high-rank step, and the
+  histogram, with negative controls;
+- `check_lifted.py` checks the base side program: DAG, compilation, dirty-scratch replay, exact frame dimensions,
+  nesting facts, G-nondegeneracy and the side lemma on all of its high-rank steps;
+- `check_stair.py` certifies the staircase entrance corner at the same integer point.
+
+Stage two is the complement time-reversal of stage one, as in round six; this is assumed, not machine-checked. The
+moment certificates and both assemblies are also checked in Lean 4's kernel (`lean/Round7.lean`, `make lean`).
+
+## Round six (previous witness, `3666565558019/10^17`)
 
 `scripts/certificate_round6.py` (bit side) and `independent/complex-twostage/` (complex side) assemble the witness:
 
@@ -139,6 +179,7 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Data-edge batching (bit side) | Written proof (`notes/data-edge-batching.tex`): closed form `Q1 (x) Q2` checked in exact rationals; corners invertible under one common basis for every auxiliary edge and every data pair at h=6,7,8 (all 3136 pairs at h=8, `corners.py`); exact Bruhat profiles (`bruhat8.py`) |
 | Two-stage side circuit at h=47 | Our generator (`independent/two-stage-bit/sidegen.py`) reproduces the published h=32 count, 123157, and an exact checker (`checkside.py`) verifies supports, disjoint children, common points and every output at h=28 to 50; `moment.py` builds the child histogram role by role and checks it sums to s |
 | Complex source frames | Written proof (`notes/complex-source-frames.tex`); exact label and phase checks of every endpoint case (`independent/complex-network/sourceframe_labels.py`); a three-stage scalar simulation of PR #7's network with source frames, arbitrary scratch and a negative control (`sourceframe_sim.py`); the histogram option `sf` keeps the exact rank sum s |
+| Round-seven bit side (deferred readouts, V leaves, lifted frames, late copies) | Frozen schedule and frames (`certificates/round7/`); stdlib replays over F2 and Z with arbitrary scratch, exact frame checks over Q, side lemma at one integer point, histogram rebuilt from the schedule, negative controls (`independent/deferred-readout/`); Lean kernel check of the moment certificates and assembly. Stage two as the complement time-reversal of stage one is assumed |
 | Topology-free guard | Written argument (docstring of `scripts/certificate_round3.py`); the witness is stated with this guard |
 | Prior results from PR #10, #13 and #15, and the two-stage motif | Assumed. We reproduced their rank moments, certified at least PR #15's fully batched saving from our own histogram, and found controlled-basis witnesses for PR #10 at h=8 to 14 |
 | Full upstream multiplication theorem | Assumed |
@@ -154,6 +195,8 @@ python3 scripts/certificate_round4.py /tmp/fb28sf.json
 python3 independent/two-stage-bit/checkside.py 47
 make verify      # exact checks, numerical inverse checks, certificate, tests
 make roles       # independent recount of PR #7's role counts (clang++, ~1 GB)
+make round7      # round-seven certificate and checks (~25 min)
+make lean        # Lean 4 kernel checks of rounds five to seven
 make notes       # PDF notes (tectonic)
 ```
 

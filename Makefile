@@ -1,4 +1,4 @@
-.PHONY: verify roles round4 lean notes
+.PHONY: verify roles round4 round7 lean notes
 verify:
 	python3 scripts/check_identities.py
 	python3 scripts/check_segmented_inverse.py
@@ -19,11 +19,22 @@ round4:
 	python3 scripts/certificate_round4.py /tmp/fb28sf.json
 	python3 independent/two-stage-bit/checkside.py 47
 
+round7:
+	python3 scripts/certificate_round7.py
+	python3 independent/deferred-readout/check_word.py 23
+	python3 independent/deferred-readout/check_frames.py 23
+	python3 independent/deferred-readout/check_lifted.py 23
+	python3 independent/deferred-readout/check_stair.py 23
+	python3 independent/deferred-readout/check_stair.py 23 --control | grep -q 'certified=False'
+
 lean:
 	python3 lean/gen.py
 	lean lean/Round5.lean
 	python3 lean/gen.py round6-histograms.json Round6.lean
 	lean lean/Round6.lean
+	python3 lean/dump7.py
+	python3 lean/gen.py round7-histograms.json Round7.lean
+	lean lean/Round7.lean
 
 notes:
 	tectonic -X compile --outdir artifacts notes/segmented-inverse.tex
@@ -33,3 +44,4 @@ notes:
 	tectonic -X compile --outdir artifacts notes/round3-combination.tex
 	tectonic -X compile --outdir artifacts notes/data-edge-batching.tex
 	tectonic -X compile --outdir artifacts notes/complex-source-frames.tex
+	tectonic -X compile --outdir artifacts notes/deferred-readout.tex

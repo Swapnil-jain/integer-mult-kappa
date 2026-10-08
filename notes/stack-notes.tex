@@ -109,7 +109,7 @@ cyclic-convolution layout) reverses the order of the $d$ axes so that every targ
 its controls. With chunk interchanges this costs $O(Vd\ell^\tau)$, which is the row
 $(1-\tau)(1-\epsilon)$ and caps $\kappa$ at $a_b/2$.
 
-\paragraph{Primitive.} Colkitt's Proposition~1 (\texttt{artifacts/compact-control-note.pdf},
+\paragraph{Primitive.} Colkitt's Proposition~1 (\texttt{artifacts/compact-control-note.pdf} in his repository,
 compact-control selected-bit addition) toggles, for slots $x,y$ of $fK$ bits with selected
 positions $j_i=\rho+iK$, each $y_{j_i}$ by $x_{j_i}$ at cost $O(V((f\log p)^\tau+1))$.
 \begin{itemize}
@@ -129,7 +129,7 @@ pairing. The bad-address predicate is a function of the same digits.
 So the permuted selected-bit addition $y_{j_{\pi(i)}}\mathrel{\oplus}=x_{j_i}$ has the same cost. The four-update identity holds for any control bit that stays fixed during it, and $x$ is never written. The bad-address predicate reads only the $t,u$ digits and the guard bits $g_i$, which contain no selected bit, so the ideal map still preserves the bad set.
 
 \paragraph{Reversal.} Let $x$ be axes $1,\dots,d/2$ and $y$ axes $d/2+1,\dots,d$, each a slot of
-$f=d/2$ chunks with $K=\ell$. Let $\pi$ reverse the chunk order. For each level
+$f=d/2$ chunks with $K=\ell-1$, after the top bits of the long axes are extracted (see the placement constraints below). Let $\pi$ reverse the chunk order. For each level
 $\rho\in[0,\ell)$, three permuted additions $x\oplus=\pi^{-1}y$, $y\oplus=\pi x$,
 $x\oplus=\pi^{-1}y$ exchange bit $\rho$ of axis $i$ with bit $\rho$ of axis $d+1-i$ for every
 $i\le d/2$. The temporaries are reserved from existing axes as in Colkitt's layout note. The

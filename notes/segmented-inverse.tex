@@ -49,7 +49,7 @@ With $u=\ell-\ell^*$, $v=j-\ell^*$ and $h=j-\ell$,
 \]
 Thus the principal block $M_k$ of $N$ on segment $k$ equals $D_kT_{L_k}D_k^{-1}$, a similarity,
 where $T_L$ is the $L\times L$ Toeplitz matrix with symbol $(\tau_h)$, which does not
-depend on the segment, and $D_k,D'_k$ are diagonal.
+depend on the segment, and $D_k=\operatorname{diag}(e^{\pi\alpha^2\theta u^2})$.
 \end{lemma}
 \begin{proof}
 Inside a segment $n=h$ and $\beta_j=\beta_\ell+\theta h=\theta v-1/2$. By
@@ -102,7 +102,7 @@ $\|M_k-I\|\le\|E\|<1/2$ and $\|M_k^{-1}\|\le2$. Also
 $\|T_L-I\|\le\sum_{h\ne0}\tau_h<2e^{-\pi\alpha^2\theta}<0.1$, so $T_L$ is well conditioned
 and has a Gohberg--Semencul representation
 $T_L^{-1}=x_0^{-1}\bigl(L(x)U(y)-L(z)U(w)\bigr)$ with triangular Toeplitz factors.
-Applying $M_k^{-1}=D_k'^{-1}T_L^{-1}D_k^{-1}$ means: scale by
+Applying $M_k^{-1}=D_kT_L^{-1}D_k^{-1}$ means: scale by
 $e^{-\pi\alpha^2\theta u^2}\le1$, perform four triangular Toeplitz products (correlations,
 evaluated as in the chirped-correlation lemma), then scale by
 $e^{\pi\alpha^2\theta v^2}\le e^{\pi\alpha^2\theta(L+1)^2}$. Since $L\le1/\theta+1$, the

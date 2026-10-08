@@ -201,6 +201,28 @@ $O(w^3(1/\lambda+\theta))=O(d^{1/2}L^{-y/2}+d^{1/2}L^{-y})=O(1)$ per output for 
 Including the $O(1)$ chirped correlations, each axis costs $O(p^{1+\delta})$ per output. The
 Gaussian row is therefore $O(d\,p^\delta)$: exponent $\epsilon+(1+x)\delta$.
 
+
+\paragraph{Tape schedule and setup.} Process one line in increasing index order.
+\begin{itemize}
+\item For each block, compute $\beta_c$ from the counters that already generate $q_j$, in $O(p)$
+time.
+\item Form $\rho_c^{\pm i}$ for $0\le i<\lambda$ by repeated multiplication at precision $P$. That is
+$\lambda$ products, so $O(P^{1+\delta})$ per output.
+\item Rescale the four stored Gohberg--Semencul vectors of $T_\lambda$, and apply the scaled
+triangular Toeplitz products as correlations of length $\lambda$. Each block uses the packed
+multiplication of the chirped-correlation lemma, at $O(\lambda P^{1+\delta})$ per block.
+\item Write the block's corner entries ($O(w^2)$ numbers) to a capacitance tape in index order.
+\item The cyclic block-tridiagonal solve makes one forward sweep and one backward sweep over
+that tape, reading fixed-width records in each direction. The single cyclic border is carried
+on a separate work tape.
+\item A second pass applies $M^{-1}$ to $Uz$, which is supported near cuts and wraps, and then
+subtracts.
+\end{itemize}
+All passes move the line tape $O(1)$ times, so the line costs $O(sP)$ in movement. Arithmetic
+costs $O(s(1+w^3(1/\lambda+\theta))P^{1+\delta})$. The vectors of $T_\lambda$ and $T_{\lambda'}$
+(for the final short block of each segment) are computed once per line by Levinson recursion,
+in $O(\lambda^2P^{1+\delta})$. This is negligible because $\lambda^2\le s/p$ for large $L$.
+
 \paragraph{Numerical check.} \texttt{scripts/check_subblock_inverse.py} cuts the
 segments of the $(60,67)$, $\alpha^2=9$ instance into blocks of length $2$ and $3$, solves each
 block by its own recentred Toeplitz system at $120$ digits, couples all cuts and wraps by

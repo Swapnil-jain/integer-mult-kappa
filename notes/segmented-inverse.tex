@@ -90,7 +90,7 @@ to absolute error $2^{-Q}$, for $\|u\|\le1$, using
 \item per wrap, $O(w^3)$ arithmetic operations at precision $P$ to form and factor the
 capacitance block, and $O(w^2)$ to apply it;
 \end{enumerate}
-with working precision $P=Q+\lceil10.2\,\alpha^2/\theta\rceil+O(\log s)$.
+with working precision $P=Q+\lceil10.2\,\alpha^2/\theta\rceil+O(\log s)$ when whole segments are used as blocks. With the recentred sub-blocks of the last section, the reserve is at most $Q$ instead.
 Each application of $M^{-1}$ costs a constant number of chirped correlations of segment
 length, hence $O(P^{1+\delta})$ per output. The setup computes the Gohberg--Semencul
 vectors of $T_L$ and $T_{L+1}$ once per line, in $O(L^2)$ operations.
@@ -138,18 +138,18 @@ The capacity bound becomes $c_j<2^{3b'}$, and the final error bound becomes
  2^{2b'+4}S\cdot28\cdot2^\gamma T^2L\cdot2^{-6b'}<448\,b'\,2^{-b'+\gamma}<\tfrac12
  \quad\text{whenever }\gamma\le b'/4 .
 \]
-With $\alpha^2=\lfloor b'/(8d)\rfloor$ we have $\gamma=2d\alpha^2\le b'/4$ and
-$\alpha^2\theta\ge b'/(32d^2)\ge1$ once $2\epsilon<1+x$. All uses of
+With $\alpha^2=\lfloor b'/(8d)\rfloor$ we have $\gamma=2d\alpha^2\le b'/4$, and with
+$\theta\approx1/(4dL^y)$, $\alpha^2\theta\ge b'/(32d^2L^y)\ge1$ once $2\epsilon+y<1+x$. All uses of
 $r\ge2^{a_rp/d}$ in the layer and transform proofs only need $r$ to outgrow every fixed
 power of $p$. Here $r=2^{\Theta(b^{1-\epsilon})}$ and $p=\Theta(b^{1+x})$, so that still holds.
 
 \section{Gaussian row}
 
-For each axis take $Q=p$. Then $\alpha^2/\theta\approx4d\alpha^2\le b'/2$, so $P=O(p)$.
-Also $w^2=O(p/\alpha^2)=O(d)$, so $\theta w^3=O(d^{1/2})$. Summing over $d$ axes gives a
-normalised cost of $O(d^{3/2}p^\delta)$. This is the exponent $\tfrac32\epsilon$, measured in
-powers of $\log n$, used in the certificate.
-
+With whole segments as blocks, $w^2=O(d)$ and the oversampling $\theta\approx1/(4d)$ give
+$\theta w^3=O(d^{1/2})$ coupling work per output. With the recentred sub-blocks and reduced
+oversampling of the next section, the coupling work is $O(1)$ per output. The Gaussian row is
+then $O(d\,p^\delta)$, with exponent $\epsilon+(1+x)\delta$ measured in powers of $\log n$. This
+is the row used in the certificate.
 
 \section{Sub-blocks with recentred chirps}
 
@@ -171,26 +171,52 @@ This was checked in exact rational arithmetic for three centres per pair on all 
 \paragraph{One Toeplitz inverse serves all blocks.} The symbol of $T_c$ is
 $t_h\rho_c^{h}$, with $t_h=e^{-\pi\alpha^2(\sigma h^2-h)}$ and $\rho_c=e^{-\pi\alpha^2(2\beta_c+1)}$.
 So $T_c=G_cT_\lambda G_c^{-1}$ with $G_c=\operatorname{diag}(\rho_c^{-i})$, and
-$T_c^{-1}=G_cT_\lambda^{-1}G_c^{-1}$. The Gohberg--Semencul vectors of $T_c$ are the vectors
-of $T_\lambda$, the block-length Toeplitz matrix with symbol $t_h$, scaled entrywise by
-$\rho_c^{\mp i}$. They are computed once per line and rescaled in $O(\lambda)$ per block.
-The scaled lower vectors decay like $e^{-\pi\alpha^2(\sigma+2\beta_c)i}$, and the upper ones like
-$e^{-\pi\alpha^2(\sigma-2\beta_c)i}$. Since $|\beta_c|\le1/2$ and $\sigma-1=\theta>0$, every scaled
-entry has modulus at most one, and $\|T_c-I\|<2e^{-\pi\alpha^2\theta}<0.1$.
+$T_c^{-1}=G_cT_\lambda^{-1}G_c^{-1}$, where $T_\lambda$ is the block-length Toeplitz matrix with
+symbol $t_h$. Entry $(a,b)$ of $T_c^{-1}$ is $\rho_c^{\,b-a}(T_\lambda^{-1})_{ab}$.
+\begin{itemize}
+\item The factor $\rho_c^{\,b-a}$ can reach $e^{2\pi\alpha^2\lambda}$, so the entries of
+$T_\lambda^{-1}$ (equivalently its Gohberg--Semencul vectors) must be known to \emph{relative}
+precision $P$, not absolute.
+\item Compute them once per line and block length at absolute precision
+$P+\lceil9.06\,\alpha^2\lambda\rceil$, and store each as a floating-point number with a $P$-bit
+mantissa and an $O(\log P)$-bit exponent. That costs $O(\lambda^2)$ operations at that
+precision once per line, which is negligible.
+\item Each block multiplies mantissas and adds exponents, then converts to fixed point. Every
+rescaled entry is the corresponding entry of $T_c^{-1}$, whose modulus is at most
+$1/(1-\|T_c-I\|)<1.12$.
+\end{itemize}
+The scaled entries decay away from the diagonal: those with $b>a$ like
+$e^{-\pi\alpha^2(\sigma+2\beta_c)(b-a)}$ and those with $b<a$ like
+$e^{-\pi\alpha^2(\sigma-2\beta_c)(a-b)}$. Since $|\beta_c|\le1/2$ and $\sigma-1=\theta>0$,
+$\|T_c-I\|<2e^{-\pi\alpha^2\theta}<0.1$.
 
-\paragraph{Cuts.} Cut every segment into blocks of length at most $\lambda$, and treat each cut
-like a wrap. Coupling entries across a cut have $n=h$, so $X\ge|h|(|h|-1)$. The same
-$w\times w$ corner blocks therefore suffice. All block solves use principal blocks of $N=I+E$,
-hence $\|M^{-1}\|\le2$. The Woodbury capacitance is cyclic block tridiagonal as before,
-with one block per cut or wrap.
+\paragraph{Cuts.} Cut every segment into near-equal blocks of length between $2w$ and
+$\lambda$, and treat each cut like a wrap.
+\begin{itemize}
+\item Coupling entries across a cut have $n=h$ and $X=h(h+2\beta_j)\ge|h|(|h|-1)$, which is
+at least $2\theta$ for $h=\pm1$. So they are at most $e^{-2\pi\alpha^2\theta}\le e^{-2\pi}$, and
+only entries with $|h|\le w$ matter.
+\item All block solves use principal blocks of $N=I+E$, hence $\|M^{-1}\|\le2$.
+\item With $\|\Delta\|\le e^{-2\pi\alpha^2\theta}+2.01e^{-2\pi\alpha^2}$, we get
+$\|C-I\|\le\|M^{-1}\|\|\Delta\|<0.005$. Also $C^{-1}=I-V^{\mathsf T}N^{-1}U$ gives
+$\|C^{-1}\|\le1+\|N^{-1}\|\|\Delta\|<1.01$.
+\item The capacitance is cyclic block tridiagonal, with one block per cut or wrap, because
+every block has length at least $2w$. Eliminate without pivoting.
+\end{itemize}
 
 \paragraph{Precision and cost.} Inside a block, the chirp $D_c$ spans at most
 $e^{\pi\alpha^2\theta\lambda^2}$, that is $4.53\,\alpha^2\theta\lambda^2$ bits. Choose
 \[
  \lambda=\Bigl\lfloor\sqrt{Q/(4.53\,\alpha^2\theta)}\Bigr\rfloor,
 \]
-so that the precision reserve is at most $Q$. Couplings occur with density
+so that the $D_c$ precision reserve is at most $Q$. The working precision is $P=2Q+O(\log s)=O(p)$. Couplings occur with density
 $1/\lambda+\theta$ per output, each costing $O(w^3)$ with $w^2=O(Q/\alpha^2)$.
+
+\paragraph{Replaced hypothesis.} Upstream's resampling lemma assumes $\theta>p/\alpha^4$, which is used only
+to get $\alpha^2\theta>1$ and to bound its Neumann count. Here the Neumann series is gone, so that
+hypothesis is replaced by $\alpha^2\theta\ge1$. PR~\#5's lemmas, which assume the hypotheses of the
+upstream lemma, are used under this replacement. Every remaining use of $\alpha^2\theta\ge1$ is
+$\|N-I\|<2.01e^{-\pi\alpha^2\theta/2}<0.42$.
 
 \paragraph{Reduced oversampling.} Take $\theta_i\approx\eta=1/(4dL^y)$ in prime selection
 (Section~1 of the stack notes), so the padding factor is $\prod_i(1+\theta_i)=1+o(1)$.

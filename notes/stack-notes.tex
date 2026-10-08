@@ -35,9 +35,9 @@ upstream does.
 eq.~final-error). The coefficients satisfy $c_j\le q(2^{b'}-1)^2<2^{3b'}$, since $q\le2^{b'}$.
 The final error is $2^{2b'+4}S\cdot28\cdot2^\gamma T^2L\cdot2^{-6b'}<448\,b'\,2^{-b'+\gamma}$,
 using $S\le T<2^{b'}$ and $L<b'$. This is below $1/2$ whenever $\gamma\le b'/4$.
-\item \emph{Gaussian width} (PR~\#5). Take $\alpha^2=\lfloor b'/(8d)\rfloor$. Then
-$\gamma=2d\alpha^2\le b'/4$, and $\alpha^2\theta_i\ge\alpha^2/(4d)\ge1$ once $b'\ge32d^2$,
-which holds eventually when $2\epsilon<1+x$.
+\item \emph{Gaussian width.} Take $\alpha^2=\lfloor Q/(48d)\rfloor$ with $Q=p=6b'$, that is $\alpha^2=\lfloor b'/(8d)\rfloor$, and oversampling $\theta_i\approx\eta=1/(4dL^y)$ (\texttt{segmented-inverse.tex}, last section). Then
+$\gamma=2d\alpha^2\le b'/4$, and
+becomes $\alpha^2\theta_i\ge b'/(32d^2L^y)\ge1$, which holds eventually when $2\epsilon+y<1+x$.
 \item \emph{Record regime.} Every use of $r\ge2^{a_rp/d}$ (\texttt{05-layers.tex} lines 20--32
 and 948--962, \texttt{06-transforms.tex} 297 and 384, \texttt{08-assembly.tex} 96, 168 and 293)
 only needs $r$ to outgrow every fixed power of $p$. Here $r=2^{\Theta(L/d)}=2^{\Theta(b^{1-\epsilon})}$

@@ -165,4 +165,40 @@ See \texttt{certificate.py}. The rows are:
 The side conditions are the guard $\epsilon C_1<1+x$; precision $2\epsilon+y<1+x$, where the oversampling is $\theta\approx1/(4dL^y)$; sub-block coupling $y\ge\epsilon$; and
 $\lambda'$ above $\tau$, $\sigma$, $\chi$ and the leaf exponent.
 
+
+\appendix
+\section{Finite payload alphabets}
+
+The bit network of PR~\#7 carries ternary payloads. The pinned interchange lemmas are stated for
+bit arrays and pointwise bit gates (\texttt{04-swap.tex}: the circuit transfer before
+prop:power-interchange, its descriptor paragraph, and lem:chunk-swap). The witness needs their
+versions for a fixed finite alphabet.
+
+\begin{lemma}[Finite alphabet]\label{lem:finite-alphabet}
+Let $\Sigma$ be a fixed finite alphabet. Replace ``bit array'' by ``$\Sigma$-array'' and ``pointwise
+bit gates'' by ``pointwise gates on $\Sigma$'' in lem:elementary-streams, prop:power-interchange
+and lem:chunk-swap. The statements still hold, with the same exponent $\tau$ and constants that
+depend on $|\Sigma|$.
+\end{lemma}
+
+\begin{proof}
+Encode each symbol of $\Sigma$ as a fixed-width record of $B_0=\lceil\log_2|\Sigma|\rceil$ bits.
+This adds one innermost suffix field $[2^{B_0}]$, which lem:chunk-swap allows ($[B]$ in its
+statement). Volumes change by the fixed factor $B_0$.
+\begin{itemize}
+\item Every operation other than a gate is an address permutation. It moves whole records and
+never reads their contents, so it is unaffected.
+\item A pointwise gate on $\Sigma$ is a fixed finite map applied to records at matching
+addresses of a fixed number of aligned role streams. That is item~3 of lem:elementary-streams
+with records of $B_0$ bits, so it costs $O(V)$.
+\item The frame identity in prop:power-interchange uses only that a common address permutation
+commutes with every pointwise gate. That holds for any alphabet.
+\item The descriptor paragraph assumes a one-bit payload only to bound $V_j\ge q^{2e_0}$. With
+$B_0$-bit records the volume is larger by a factor $B_0$, so the bound still holds.
+\end{itemize}
+The recursion, its rank count $s$, the role split and the depth-first schedule do not refer to
+payload values, so the recurrence $F_k\le(s/W)F_{k-1}+O(1)$ and the bound $O(Ve^\tau)$ hold
+unchanged.
+\end{proof}
+
 \end{document}

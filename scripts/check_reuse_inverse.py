@@ -7,15 +7,16 @@ G_c = diag(rho_c^{-i}) and rho_c = exp(-pi a2 (2 beta_c + 1)). Segments are spli
 near-equal blocks of length at least 2w. Cuts and wraps are coupled by Woodbury, and the
 capacitance system is solved by elimination without pivoting. The result is compared with a
 direct solve of N.
-Args: s t alpha^2 Q_bits P_digits.
+Args: s t alpha^2 Q_bits P_digits [1 = fixed-point storage, expected to fail].
 """
 from decimal import Decimal as Dm, getcontext, Context
 from fractions import Fraction as F
 import math, sys, random
 
-s, t, a2, Qbits, Pdig = [int(a) for a in sys.argv[1:]] or [241, 256, 17, 150, 60]
-HI = 200 + int(9.06 * a2 * 40 / 3.32)
-getcontext().prec = HI
+argv = [int(a) for a in sys.argv[1:]] or [241, 256, 17, 150, 60]
+s, t, a2, Qbits, Pdig = argv[:5]
+FIXED_POINT = len(argv) > 5 and argv[5] == 1     # negative control: absolute precision storage
+getcontext().prec = 140
 PI = Dm('3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196442881097566593344612847564823378678316527120190914564856692346034861045432664821339360726024914127372458700660631558817488152092096282925409171536436789259036001133053054882046652138414695194151160943305727036575959195309218611738193261179310511854807446237996274956735188575272489122793818301194912983367336244065664308602139494639522473719070217986094370277053921717629317675238467481846766940513200056812714526356082778577134275778960917363717872146844090122495343014654958537105079227968925892354201995611212902196086403441815981362977477130996051870721134999999837297804995105973173281609631859502445945534690830264252230825334468503526193118817101000313783875288658753320838142061717766914730359825349042875546873115956286388235378759375195778185778053217122680661300192787661119590921642019893809525720106548586327')
 sig = F(t, s); th = sig - 1
 q = lambda j: math.floor(F(t*j, s) + F(1, 2)); beta = lambda j: F(t*j, s) - q(j)
@@ -57,10 +58,16 @@ lengths = sorted({len(g) for g in blocks})
 assert min(lengths) >= 2*w, (lengths, w)
 base = {}
 for L in lengths:
+    getcontext().prec = Pdig + int(9.06 * a2 * L / 3.32) + 20      # absolute precision P + 9.06 a2 L bits
     T = [[E(sig*(b-a)**2 - (b-a)) for b in range(L)] for a in range(L)]
     Ti = inverse(T)
+    getcontext().prec = 140
     ctx = Context(prec=Pdig)
-    base[L] = [[ctx.plus(v) for v in row] for row in Ti]          # floating point, P significant digits
+    if FIXED_POINT:
+        unit = Dm(10) ** -Pdig
+        base[L] = [[(v / unit).to_integral_value() * unit for v in row] for row in Ti]
+    else:
+        base[L] = [[ctx.plus(v) for v in row] for row in Ti]      # floating point, P significant digits
 random.seed(2)
 u = [Dm(random.uniform(-1, 1)) for _ in range(s)]
 x = solve(N, u)

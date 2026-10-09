@@ -31,7 +31,16 @@ This work builds on, and does not modify, the following:
   #60 (chafreaky: rank-first reclamation, the compiler's reclamation order in that witness),
   #69 (eumemic: balanced coarse sums, used in the side DAG of that witness),
   #24 (icekylinx, head ed90fd9: endpoint-gauge bit network; certificates/external/pr24-bit-network.json
-  extracts its published counts and child-width multiplicities, Apache-2.0).
+  extracts its published counts and child-width multiplicities, Apache-2.0; its normal form for alternating
+  residuals is used on our round-eight complex word),
+  #104 (icekylinx: opposite bank orders with a common generic basis, the involution factorization and the stopped
+  interchange, used on our round-eight bit side; carrier matching and the odd-denominator grid for retained
+  centres, used on our round-eight complex word),
+  #117 (eumemic: the h = 24 complex addition DAG, read as data and frozen in certificates/round8/pr117_dag.json.gz,
+  Apache-2.0; the producer of our round-eight complex word),
+  #128 (an664: completed-core sharing, reimplemented from its description on our round-eight complex word, and its
+  87-group orthonormal triple partition after Zhang and Ge (2010), frozen in
+  certificates/round8/pr128_partition_mrp24.json, Apache-2.0).
 - Aurel Prosz (Paureel), github.com/Paureel/integer-mult-bounds commit c82d09e:
   the two-stage motif with partial-swap frames and charged endpoint correction, and its complement-frame
   construction, which our lifted frames follow in round seven.

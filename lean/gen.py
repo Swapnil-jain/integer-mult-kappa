@@ -1,11 +1,16 @@
 """Emit a Lean 4 (core only) file that checks, in the kernel with exact arithmetic, the moment certificates of a
-witness (round five by default; rounds six and seven from their histogram files): for every child-width histogram,
+witness (round five by default; rounds six, seven and eight from their histogram files): for every child-width histogram,
   (1) the widths times multiplicities sum to the total rank s;
   (2) every width w < m, and the rational upper bound L_w of ln(m/w) is computed from its series formula
       (ln x = k ln 2 + 2 atanh((y-1)/(y+1)), partial sum of 30 terms plus a geometric tail);
   (3) a * L_w < 1 and  sum_w  n_w * w / (m * (1 - a * L_w))  <  W   (the moment bound at the claimed saving a).
 The analytic facts behind (2) and (3) -- the atanh tail bound and (m/w)^a <= 1/(1 - a ln(m/w)) -- are premises,
-not checked here: Lean core has no real logarithm."""
+not checked here: Lean core has no real logarithm.
+Round eight adds two options per side, emitted only when a histogram file uses them:
+  bound = 'exp': the moment uses (m/w)^a = exp(a ln(m/w)) <= E(a L_w), E(x) = 1 + x + x^2/2 + x^3/(6(1 - x/4)) for
+      0 <= x < 4 (momentExpOK; the Taylor tail bound is a premise, like the atanh tail);
+  stop = {theta, a_old, ab}: the stopped saving ab = (1 - theta) a + theta a_old with theta > ab is checked exactly,
+      and the assembly uses ab instead of a."""
 import json, os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = sys.argv[1] if len(sys.argv) > 1 else 'round5-histograms.json'
@@ -84,6 +89,29 @@ def kappaOK (ab ac beta eps x c1 kappa : Q) (mc sc : Nat) : Bool :=
   c1ok && cons && margins.all (fun g => qlt kappa g)
 '''
 
+EXTRA = r'''
+-- E(x) = 1 + x + x^2/2 + x^3/(6(1 - x/4)), an upper bound of exp x on [0, 4)
+def expUp (x : Q) : Q :=
+  qadd (qadd (qadd (1, 1) x) (qdiv (qmul x x) (2, 1)))
+    (qdiv (qmul x (qmul x x)) (qmul (6, 1) (qsub (1, 1) (qdiv x (4, 1)))))
+
+-- moment bound through exp: every a * L_w < 4, every w < m, and sum n w E(a L_w) / m < W
+def momentExpOK (h : List (Nat × Nat)) (a : Q) (m W : Nat) : Bool :=
+  let step := fun (acc : Bool × Q) (p : Nat × Nat) =>
+    let w := p.1; let n := p.2
+    let al := qmul a (lnUp (m, w))
+    let ok := acc.1 && (w < m) && qlt al (4, 1)
+    if ok then (true, qadd acc.2 (qdiv (qmul (n * w, 1) (expUp al)) (m, 1))) else (false, acc.2)
+  let r := h.foldl step (true, (0, 1))
+  r.1 && qlt r.2 (W, 1)
+
+-- stopped saving: ab = (1 - theta) a + theta aold, and ab < theta
+def stopOK (a aold theta ab : Q) : Bool :=
+  let v := qadd (qmul (qsub (1, 1) theta) a) (qmul theta aold)
+  v.1 * ab.2 == ab.1 * v.2 && qlt ab theta
+'''
+
+
 def lst(h): return '[' + ', '.join('(%d, %d)' % (w, n) for w, n in h) + ']'
 
 body = []
@@ -93,7 +121,12 @@ for k, label in SIDES:
     body.append('-- %s' % label)
     body.append('def %sHist : List (Nat × Nat) := %s' % (k, lst(o['hist'])))
     body.append('theorem %s_rank_sum : rankSum %sHist = %d := by decide' % (k, k, o['s']))
-    body.append('theorem %s_moment : momentOK %sHist (%d, %d) %d %d = true := by decide' % (k, k, o['a'][0], o['a'][1], o['m'], o['W']))
+    pred = 'momentExpOK' if o.get('bound') == 'exp' else 'momentOK'
+    body.append('theorem %s_moment : %s %sHist (%d, %d) %d %d = true := by decide' % (k, pred, k, o['a'][0], o['a'][1], o['m'], o['W']))
+    if 'stop' in o:
+        st = o['stop']
+        body.append('theorem %s_stopped : stopOK (%d, %d) (%d, %d) (%d, %d) (%d, %d) = true := by decide' % (
+            k, *o['a'], *st['a_old'], *st['theta'], *st['ab']))
 # each assembly: (kappa entry, bit side it uses); the default is the single headline assembly of rounds five and six
 for kk, bk in D.get('kappas', [['kappa', 'bit']]):
     kap = D.get(kk)
@@ -102,6 +135,7 @@ for kk, bk in D.get('kappas', [['kappa', 'bit']]):
     body.append('-- assembly: kappa = %d/%d with the two savings above' % tuple(kap['kappa']) if bk == 'bit' else
                 '-- assembly: kappa = %d/%d with the savings %s and cx above' % (tuple(kap['kappa']) + (bk,)))
     body.append('theorem %s : kappaOK (%d, %d) (%d, %d) (%d, %d) (%d, %d) (%d, %d) (%d, %d) (%d, %d) %d %d = true := by decide +kernel' % (
-        name, *D[bk]['a'], *D['cx']['a'], *kap['beta'], *kap['eps'], *kap['x'], *kap['c1'], *kap['kappa'], kap['mc'], D['cx']['s']))
-open(os.path.join(HERE, DST), 'w').write(HEAD + '\n' + '\n'.join(body) + '\n')
+        name, *D[bk].get('stop', {}).get('ab', D[bk]['a']), *D['cx']['a'], *kap['beta'], *kap['eps'], *kap['x'], *kap['c1'], *kap['kappa'], kap['mc'], D['cx']['s']))
+uses_extra = any(D[k].get('bound') == 'exp' or 'stop' in D[k] for k, _ in SIDES)
+open(os.path.join(HERE, DST), 'w').write(HEAD + (EXTRA if uses_extra else '') + '\n' + '\n'.join(body) + '\n')
 print('wrote', DST)

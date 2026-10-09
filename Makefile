@@ -42,7 +42,8 @@ round8:
 
 # Round eight, heavy checks (a many-core machine, a few GB per process): the complex histogram rebuilt from the
 # word, the independent walk and exact Q(i) replay of that word, the exact replay of the sharing, and the
-# all-edges bit gate.
+# all-edges bit gate. Memory: replay.py about 8 GB, e2e_share.py at h = 24 more than 15 GB, each gate process
+# about 0.75 GB (run_gate.sh runs J = 12 at once).
 round8-heavy:
 	python3 independent/round8-coreshare/complex_hist.py
 	python3 independent/round8-complex-gate/build_word.py /tmp/round8_word24.pkl

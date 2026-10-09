@@ -1,4 +1,4 @@
-# Integer multiplication: a conditional witness above 2^-14
+# Integer multiplication: a conditional witness above 2^-13
 
 **Conditional research draft by Swapnil Jain.**
 
@@ -9,14 +9,68 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{3275885357429}{5\times10^{16}}\approx6.55177\times10^{-5}>2^{-14}}.
+\boxed{\kappa={KAPPA_TEX}\approx{KAPPA_SCI}>2^{-13}}.
 $$
 
-That is about 1.79 times our round-six witness `3.66657e-5`, 4.23 times our round-five witness `1.54788e-5`,
-5.47 times our round-four witness `1.19722e-5`, and about 8700 times our first witness `7499/10^12`. These figures
-compare asymptotic exponents, not practical runtimes.
+That is about {FOLD_R7} times our round-seven witness `6.55177e-5`, {FOLD_R6} times our round-six witness `3.66657e-5`,
+{FOLD_R5} times our round-five witness `1.54788e-5`, and about {FOLD_R1} times our first witness `7499/10^12`. These
+figures compare asymptotic exponents, not practical runtimes.
 
-## Round seven
+## Round eight
+
+`scripts/certificate_round8.py` certifies both savings from frozen child-width histograms
+(`certificates/round8/`) and assembles them with `scripts/certificate_round3.py` (`beta = 1/1000`, crude guard).
+
+**Bit side: opposite bank orders on our round-seven witness 2.** The schedule, frames and payload word of round
+seven's headline witness (`h = 23`, `R = 27794`) are unchanged; only the address geometry of each interchange is
+recompiled, following PR #104:
+
+- In one common generic rational basis, every residual idempotent of rank `r` has nonzero leading principal minors
+  `1..r` (a Zariski-density argument; all our residuals are rational idempotents because the frames are nested and
+  `G`-nondegenerate). Storing the tail bank in reverse atom order turns the generic anti-diagonal Bruhat cell of each
+  partial swap into **one contiguous reversed run**, so a residual of rank `r` is a single child of width `r`. The
+  family closes under this reversal, and an outer wrapper of three lower updates restores the ordinary interchange.
+- So the aux edge and its corner merge into one child `m - r_u`, every chain, `y_T`, `X_S` and centre step is one
+  child, and the data entrance is one run of `m - 2h + 1`. `W` and `s` are exactly round seven's.
+- The cross-bank adapters read a reversed atom index and are paid as atom loops, a linear toll. Stopping the
+  recursion at atom width `e^theta`, `theta = 1/1000`, makes it subordinate, and the usable saving is
+  `a_b = (1 - theta) a* + theta a_old` with `a_old = 12899/(2*10^8)`, our certified round-seven saving of the same
+  witness (valid because `theta > a_b`).
+
+This certifies the one-run saving `a* = {A_STAR}` and the stopped `a_b = {A_B}`.
+
+**Complex side: completed-core sharing on our two-stage complex word.** Our `h = 24` complex word (retained
+centres, PR #24's normal form for alternating residuals, PR #104's carrier matching, lifted frames, deferred
+readouts, V leaves and the phase-1 closure) is built on PR #117's frozen addition DAG (read as data; every support is
+recomputed). On top of it we reimplemented PR #128's completed-core sharing: the triples are split into 87
+binary-orthonormal groups (83 of size 24, 4 of size 8, PR #128's partition), the cores of a group run consecutively
+on one bank of auxiliaries with dirty scratch, and the per-core wrap child is replaced by one fix-up child per
+group and stream, merged into the core's last step where that is legal. This certifies `a_c = {A_C}`.
+
+Together: `kappa = {KAPPA_FRAC}` ({KAPPA_SCI}), bound by the {BINDING} side.
+
+Checks (`make round8`, standard library, minutes; `make round8-heavy`, a many-core machine with numpy and a C
+compiler, hours):
+
+- `scripts/certificate_round8.py`: both moment certificates with rigorous rational bounds
+  (`ln(m/w)` from its series, `exp x <= 1 + x + x^2/2 + x^3/(6(1 - x/4))`), the grid point checked to be the largest,
+  the stopped mix, and the assembly; `tests/test_round8.py`;
+- `independent/round8-oppbank/`: `bit_hist.py` rebuilds the bit histogram from the frozen round-seven schedule and
+  first reproduces round seven's certified saving; `run_gate.sh` checks, on **every** charged residual of the
+  witness, that one 60-bit random integer basis gives nonzero leading minors (fast primes, every zero re-checked
+  mod `2^61 - 1`), samples the reversed-run Bruhat profile, and runs negative controls; `wrap.py` checks the outer
+  wrapper and remainder pairing exactly;
+- `independent/round8-coreshare/`: `complex_hist.py` rebuilds the complex histogram from the word,
+  `e2e_share.py` replays the shared word exactly over `Q(i)` with dirty scratch and controls, and
+  `partition_check.py` checks the partition (exact cover, Gram `I`, even overlaps);
+- `independent/round8-complex-gate/`: a walk of the actual op sequence and an exact `Q(i)` dirty-scratch replay of
+  both stages of the unshared word, written without importing the word's builder.
+
+The moment certificates, the stopped mix and the assembly are also checked in Lean 4's kernel (`lean/Round8.lean`,
+`make lean`). Stage two as the complement time-reversal of stage one is assumed, as in rounds six and seven. The
+opposite-bank compile needs only the existence of the common basis; the all-edges check exhibits one.
+
+## Round seven (previous witness, `3275885357429/(5*10^16)`)
 
 `scripts/certificate_round7.py` rebuilds the bit side's child-width histogram from frozen schedules
 (`certificates/round7/`, about 8.2 MB compressed in all) and certifies it; the complex side is round six's. The bit
@@ -189,6 +243,8 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Two-stage side circuit at h=47 | Our generator (`independent/two-stage-bit/sidegen.py`) reproduces the published h=32 count, 123157, and an exact checker (`checkside.py`) verifies supports, disjoint children, common points and every output at h=28 to 50; `moment.py` builds the child histogram role by role and checks it sums to s |
 | Complex source frames | Written proof (`notes/complex-source-frames.tex`); exact label and phase checks of every endpoint case (`independent/complex-network/sourceframe_labels.py`); a three-stage scalar simulation of PR #7's network with source frames, arbitrary scratch and a negative control (`sourceframe_sim.py`); the histogram option `sf` keeps the exact rank sum s |
 | Round-seven bit side (deferred readouts, V leaves, lifted frames, late copies; two side programs) | Frozen schedules and frames (`certificates/round7/`); stdlib replays over F2 (and Z for witness 1) with arbitrary scratch, walks of the reordered op sequence, exact frame checks over Q, side lemma at one integer point, histogram rebuilt from the schedule, negative controls (`independent/deferred-readout/`); Lean kernel check of the moment certificates and assembly. Stage two as the complement time-reversal of stage one is assumed |
+| Round-eight bit side (opposite bank orders, stopped interchange) | Same frozen schedule as round seven; histogram rebuilt from it; all-edges common-basis check with fast-prime passes re-checked mod `2^61 - 1`, Bruhat sample and negative controls (`independent/round8-oppbank/`); Lean kernel check of the moment, stopped mix and assembly. The existence of the common basis, the factorization lemma and the stopped recurrence follow PR #104's written argument |
+| Round-eight complex side (completed-core sharing) | Histogram rebuilt from the word; exact `Q(i)` replays of the word and of the sharing with dirty scratch and controls; partition checked (`independent/round8-coreshare/`, `independent/round8-complex-gate/`) |
 | Topology-free guard | Written argument (docstring of `scripts/certificate_round3.py`); the witness is stated with this guard |
 | Prior results from PR #10, #13 and #15, and the two-stage motif | Assumed. We reproduced their rank moments, certified at least PR #15's fully batched saving from our own histogram, and found controlled-basis witnesses for PR #10 at h=8 to 14 |
 | Full upstream multiplication theorem | Assumed |
@@ -205,7 +261,9 @@ python3 independent/two-stage-bit/checkside.py 47
 make verify      # exact checks, numerical inverse checks, certificate, tests
 make roles       # independent recount of PR #7's role counts (clang++, ~1 GB)
 make round7      # round-seven certificate and checks of both witnesses (~45 min)
-make lean        # Lean 4 kernel checks of rounds five to seven
+make round8      # round-eight certificate, bit histogram rebuild, partition and wrapper checks (minutes)
+make round8-heavy  # round-eight word replays and the all-edges bit gate (many cores, numpy, a C compiler)
+make lean        # Lean 4 kernel checks of rounds five to eight
 make notes       # PDF notes (tectonic)
 ```
 

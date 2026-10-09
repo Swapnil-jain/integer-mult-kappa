@@ -1,4 +1,4 @@
-.PHONY: verify roles round4 round7 round8 round8-heavy round9 round9-heavy round10 round10-heavy lean notes
+.PHONY: verify roles round4 round7 round8 round8-heavy round9 round9-heavy round10 round10-heavy round11 round11-heavy lean notes
 verify:
 	python3 scripts/check_identities.py
 	python3 scripts/check_segmented_inverse.py
@@ -90,6 +90,17 @@ round10:
 round10-heavy:
 	bash independent/round10-heavy.sh
 
+# Round eleven, fast checks (standard library, seconds): round ten's certificate on the round-eleven inventories, with
+# PR #144's, round nine's and round ten's kappa reproduced first, and the tests.
+round11:
+	python3 scripts/certificate_round11.py
+	python3 -m unittest tests.test_round11 -v
+
+# Round eleven, heavier checks (numpy; about 3 GB and 10 minutes): the JSON-only bit ledger at p = 12, 9 and 7 with
+# its mutation controls, and the recycling checker of the complex word at p = 11, 9 and 7 with its controls.
+round11-heavy:
+	bash independent/round11-heavy.sh
+
 lean:
 	python3 lean/gen.py
 	lean lean/Round5.lean
@@ -104,6 +115,8 @@ lean:
 	lean lean/Round9.lean
 	python3 lean/gen.py round10-histograms.json Round10.lean
 	lean lean/Round10.lean
+	python3 lean/gen.py round11-histograms.json Round11.lean
+	lean lean/Round11.lean
 
 notes:
 	tectonic -X compile --outdir artifacts notes/segmented-inverse.tex

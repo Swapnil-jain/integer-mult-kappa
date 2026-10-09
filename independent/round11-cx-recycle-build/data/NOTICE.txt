@@ -1,0 +1,21 @@
+Input data from eumemic (with Anthropic Claude assistance), Apache-2.0, CrocSwap/integer-mult-bounds PR #168 at head
+commit 4a3c769e5c5430e7114c4d3e099ff34664677f17, used unchanged. The modules are pinned by #168's
+references/paired-cube/sources/SOURCE.json. The p = 11 recipe (cfgC1v4.json) uses:
+  tmod_TE_TD_TB3_1_1_4_full_6.0617964e-4.json   triple module
+      sha256 9dcdb6f4e33410418c01f55f092862edfa7c05001ceada3974f8d1196bcd894b
+  pmod_J0_full_6.0666810e-4.json                pair module
+      sha256 7d1ae23430e110d32aa1cab84415abdbc918dfab6b317cb24d30756fc90c5925
+  qmod_climb3u_best.json                        all-but-one module
+      sha256 3f85f6b2134af8781f16229186d0d7c1de71ab4d5235244259e1b79f2e3d14ba
+No other upstream data is shipped. up/pr117_dag.json.gz is the PR117 h=24 complex DAG (eumemic, #117), identical to
+certificates/round8/pr117_dag.json.gz. The small-p recipes (cfgC1sm) use it.
+
+The cube-local circuit is the configurable per-cube circuit. The idea and the 3^13 coordinate space are icekylinx's
+(#168 lineage); #181 (chafreaky) chose the shared-edge configuration. Our C1 choice (lmlocal.py, cfgC1*.json) is
+localmotif's: it moves the third long diagonal G to G[0,2,1], and its values are fixed by #144's decoder identity.
+The arcs come from our relaxed.py greedy scan in reverse order. That order explains #181's arcs.
+Ours: the compiler/recount/replay code, per-operation descent (pdescent.py), terminal-output deletions (#166's lemma,
+jamesyc; as used by #176, chafreaky; selected by t176.py), and dead-copy recycling (hpair3.py, wl.py).
+Rebuild: bash verify2.sh cfgC1v4.json 11 reverse; python3 hpair3.py rel/cfgC1v4_reverse_sinks_p11.json.gz OUT.json.gz
+         (small: cfgC1sm.json 9 fwd, cfgC1sm.json 7 fwd). lmlocal.py must sit in the parent directory of make_word.py
+         (make_word inserts dirname(HERE)); in this layout copy it next to the build dir or set PYTHONPATH.

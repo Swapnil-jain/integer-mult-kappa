@@ -112,11 +112,14 @@ class Regressions(unittest.TestCase):
 
 @unittest.skipUnless((FROZEN / 'bit_inventory.json.gz').exists(), 'round ten not frozen yet')
 class Round10(unittest.TestCase):
-    """the round-ten assembly from the frozen inventories (certificates/round10/)"""
+    """the round-ten assembly from the frozen inventories (certificates/round10/); round eleven reuses these tests
+    with its own folder and Lean input"""
+    frozen, lean_name = FROZEN, 'round10-histograms.json'
+
     @classmethod
     def setUpClass(cls):
-        cls.bit = c10.load(str(FROZEN / 'bit_inventory.json.gz'))
-        cls.cx = c10.load(str(FROZEN / 'cx_inventory.json.gz'))
+        cls.bit = c10.load(str(cls.frozen / 'bit_inventory.json.gz'))
+        cls.cx = c10.load(str(cls.frozen / 'cx_inventory.json.gz'))
         cls.r = c10.certify(cls.bit, cls.cx)
 
     def test_claims_pinned(self):
@@ -137,7 +140,7 @@ class Round10(unittest.TestCase):
         self.assertLess(k['minimum'] - k['kappa'], Q(1, c10.KGRID))
 
     def test_lean_input_matches(self):
-        with open(ROOT / 'lean' / 'round10-histograms.json') as f:
+        with open(ROOT / 'lean' / self.lean_name) as f:
             d = json.load(f)
         self.assertEqual(Q(*d['bit']['a']), self.r['bit']['astar'])
         self.assertEqual(Q(*d['bit']['stop']['ab']), self.r['bit']['a_bit'])

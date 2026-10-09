@@ -1,0 +1,21 @@
+Round-11 bit gate. The checker (ledger.py, cert.py, invcheck.py) is our own code and reads only the frozen JSON words.
+
+Upstream data used to build the word: CrocSwap/integer-mult-bounds PR #168 (eumemic, with Anthropic Claude
+assistance; Apache-2.0), head commit 4a3c769e5c5430e7114c4d3e099ff34664677f17. It was read as data only and none of
+its code was run.
+  research/paired-cube-bit/data/pair_module_p12.json
+      sha256 df5122d74add5f70de88eb14d4f6a41c79be3825a37922cb81862ca6dfa849f2
+      the annealed pair-disjoint module (442 additions), used unchanged
+  references/paired-cube/sources/local_L1.json
+      sha256 1861724ee3b58ea8acb3334416fbfd9172a9ae02ad11a6f6885a4909f8692f05
+      the L1 local-channel association: three G sums add long face diagonals; re-implemented as constants
+  research/paired-cube-bit/out/graph_p12.json
+      sha256 c2d9b3cec9686b336917c6eb2e956a1a1e193c9a301626ac30af97fdb5eca96b
+      used only to confirm that our builder reproduces #168 v4's bit graph byte for byte; it is not an input
+Lineage of the word:
+  the paired-cube bit decoder and partner-pair mixing: #155 / #168 (eumemic), after #144 (icekylinx);
+  merged face+edge reads: #161 / variant u;
+  the stack: nullity sharing, min-cut omission, node, group and per-operation frame descent (#131 / #169 / #164 ideas),
+    birth reuse (#124 / #143), all our own code;
+  terminal-sink absorption (#166's idea, jamesyc), our own lemma and code, with every sink re-checked by this ledger;
+  the cyclic-interval all-but-one module 1,2,3,5,7,9 / 01000: our own (defrag's cycplan family).

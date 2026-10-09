@@ -1,0 +1,19 @@
+{
+ "a_bit": "133893704947/200000000000000",
+ "a_c": "67147467/100000000000",
+ "astar": "134020033/200000000000",
+ "bit_binds": true,
+ "bit_layers": [
+  "measured"
+ ],
+ "cx_layers": [
+  "measured"
+ ],
+ "inherited_reserve": true,
+ "kappa": "6685733/10000000000",
+ "kappa_float": 0.0006685733,
+ "ladder": 1,
+ "ladder_open": null,
+ "log2": -10.546626638603621,
+ "theta": "1/1000"
+}

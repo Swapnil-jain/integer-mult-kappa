@@ -321,15 +321,17 @@ def lean_input(r, bit_inv, cx_inv):
                 row_degree=ROW_DEGREE, kappa=fr(k['kappa']))
 
 
-def freeze(r, bit_inv, cx_inv):
-    os.makedirs(FROZEN, exist_ok=True)
+def freeze(r, bit_inv, cx_inv, frozen=FROZEN, lean_name='round10-histograms.json'):
+    """pin the claims and write {bit,cx}_inventory.json.gz and summary.json into frozen, and the Lean input into
+    lean/lean_name (later rounds reuse this with their own folder)"""
+    os.makedirs(frozen, exist_ok=True)
     bit_inv = dict(bit_inv, claim=dict(astar=str(r['bit']['astar']), a_bit=str(r['bit']['a_bit'])))
     cx_inv = dict(cx_inv, claim=dict(a_c=str(r['cx']['a_c'])))
-    _dump_gz(os.path.join(FROZEN, 'bit_inventory.json.gz'), bit_inv)
-    _dump_gz(os.path.join(FROZEN, 'cx_inventory.json.gz'), cx_inv)
-    with open(os.path.join(ROOT, 'lean', 'round10-histograms.json'), 'w') as f:
+    _dump_gz(os.path.join(frozen, 'bit_inventory.json.gz'), bit_inv)
+    _dump_gz(os.path.join(frozen, 'cx_inventory.json.gz'), cx_inv)
+    with open(os.path.join(ROOT, 'lean', lean_name), 'w') as f:
         json.dump(lean_input(r, bit_inv, cx_inv), f)
-    with open(os.path.join(FROZEN, 'summary.json'), 'w') as f:
+    with open(os.path.join(frozen, 'summary.json'), 'w') as f:
         k = r['k']
         json.dump(dict(kappa=str(k['kappa']), kappa_float=float(k['kappa']), log2=math.log2(float(k['kappa'])),
                        a_bit=str(r['bit']['a_bit']), astar=str(r['bit']['astar']), a_c=str(r['cx']['a_c']),
@@ -337,7 +339,7 @@ def freeze(r, bit_inv, cx_inv):
                        bit_layers=r['bit']['p']['layers'], cx_layers=r['cx']['p']['layers'],
                        theta=str(r['bit']['theta']), ladder=r['bit']['ladder'],
                        ladder_open=LADDER_OPEN if r['bit']['ladder'] > 1 else None), f, indent=1, sort_keys=True)
-    print('froze certificates/round10/{bit,cx}_inventory.json.gz, summary.json and lean/round10-histograms.json')
+    print('froze %s/{bit,cx}_inventory.json.gz, summary.json and lean/%s' % (os.path.relpath(frozen, ROOT), lean_name))
 
 
 def main(argv):

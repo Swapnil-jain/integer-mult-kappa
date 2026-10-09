@@ -1,0 +1,11 @@
+check_word2_recycle.py: our check_word2.py (cube-prefix / localmotif, own code) extended by dead-copy recycling hosts
+(acct, own code). mutate_hosts.py: own code. No upstream code.
+
+Mechanism credit. Recycling a retired register with zero signal ("zero-fresh") into a later birth through a
+containing frame, with the dirty response recomputed from the new transcript and subtracted at frame 0, is Section 2a
+of icekylinx's source-assisted common-frame compression (CrocSwap/integer-mult-bounds PR #184, research by icekylinx
+with GPT-6 Astra assistance; read as text only, none of its code or data is used).
+Our instance takes no source controls (E = 0). Its kernel comes from pairs of retired copies of the same node,
+differenced in place. The selection, the ledger and the checker are ours.
+
+Word data: see ../round11-cx-recycle-build/data/NOTICE.txt (eumemic's #168 modules, sha-pinned).

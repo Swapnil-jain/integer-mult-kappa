@@ -1,0 +1,17 @@
+{
+  "base_commit": "741e7aa078392553815df7926ee17ac5e25a8c38",
+  "scope": "Pinned round-seven arithmetic and Lean inputs plus this focused additive certificate package. SOURCE.json excludes its own hash.",
+  "files": {
+    "lean/round7-histograms.json": "8fd0abe6c230980b9a0c4a175e06ca1808b0fe5ead0cf9f268496111c2e11d2c",
+    "lean/Round7.lean": "fc897ba78f0b4e429104bef7e15d728c9095f1b948f9e51b76252a368819631d",
+    "scripts/certificate_round3.py": "53deb36c0f5daffc68ee02dabf189d2700f39a2bb3f01b55c663c49cd315b9ae",
+    "independent/two-stage-bit/moment.py": "4ca6b15fa6cf799b7252d9a70d5c66dcbe86f3cc16b03b7c6f03ccda66df41be",
+    "research/round7-moment-refinement/README.md": "2dd5bb18677bb59278bf2d3b35ca28b042f7851ab10bb9c97a2045a8877ff20c",
+    "research/round7-moment-refinement/ENCLOSURE_PROOF.md": "d47de8432f0b15fb3768ee050b0f0c88f4e433343457a2cb5574a1f949df3a33",
+    "research/round7-moment-refinement/Round13Moment.lean": "db6404a8f459e94b00b1052f82f6791851c5421911c60b612538a2c52b79111e",
+    "research/round7-moment-refinement/check_sources.py": "eb55bb89d509c41b9035681eef439f745411a874d313ea5a528c87f4d7f18b72",
+    "research/round7-moment-refinement/independent_assembly.py": "4ab852cd0847c013a3f77065192c80eb57c2ab852bcbc746a2ba5d23e80975ab",
+    "research/round7-moment-refinement/independent_moment.py": "bbfc26b3c25fd3965322b0c83bc69aedf6c0ec56438bfbc288ddc112c72440af",
+    "research/round7-moment-refinement/refine_moment.py": "bd495bbfb08fa6c48394912bd953bd08363d9cddade8d0bac679bf98a31a7907"
+  }
+}

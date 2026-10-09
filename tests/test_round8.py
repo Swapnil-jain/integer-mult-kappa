@@ -1,4 +1,4 @@
-import json, pathlib, subprocess, sys, unittest
+import json, pathlib, sys, unittest
 from fractions import Fraction as Q
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -42,7 +42,8 @@ class Round8(unittest.TestCase):
         self.assertGreater(k['kappa'], c8.TARGET)
 
     def test_lean_input_matches(self):
-        d = json.load(open(ROOT / 'lean' / 'round8-histograms.json'))
+        with open(ROOT / 'lean' / 'round8-histograms.json') as f:
+            d = json.load(f)
         self.assertEqual(Q(*d['bit']['a']), self.r['astar'])
         self.assertEqual(Q(*d['bit']['stop']['ab']), self.r['a_b'])
         self.assertEqual(Q(*d['cx']['a']), self.r['a_c'])

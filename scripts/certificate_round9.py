@@ -61,10 +61,12 @@ BAD = Q(1, 10**16)              # rare-class fraction of edges that take the fal
 KGRID = 10**10                  # kappa is stated rounded down to this grid
 GRID = 1 << 120                 # ln and exp upper bounds are rounded up to this grid
 TARGET = Q(1, 2**12)
-# External row reserve of the finite bridge. PR #144 keeps the conservative bit row constants of the stopped-product
-# round (9909 for the old coarse saving, 252 for the ordinary leaf) unchanged, and charges the complex
-# halving degree times its wire bits on top. Our bit side has the same m = 69 and the same largest child, 66, and a
-# smaller W, so its own term is no larger. This is a proof interface: the constants are inherited, not re-derived.
+# External row reserve of the finite bridge. PR #144 keeps two inherited, conservative bit row constants unchanged
+# (9909 = 367 * 27, the partial-gauge round's coarse bit family; 252 = 9 * 28, the ordinary leaf), and
+# charges the complex halving degree times its wire bits on top. Neither constant is a term of the current bit cover:
+# its stock W0 q^(m^2 (w-1)) grows with the atom width, so it is borrowed and restored internally
+# (three-stage-cover-rows.tex) at any fixed m, and is never part of this external reserve. This is a proof
+# interface: the constants are inherited, not re-derived; see inherited_row_reserve in certificate_round10.py.
 ROW_RESERVE = 9909 + 252
 ROW_DEGREE = 70000
 

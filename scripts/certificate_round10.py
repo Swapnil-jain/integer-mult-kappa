@@ -42,6 +42,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import certificate_round9 as c9
 from certificate_round9 import load, fr, _dump_gz, BAD, BETA, ETA, CX_GAP, KGRID, ROW_RESERVE, ROW_DEGREE
+OLD_LEAF = Q(384599, 10**10)   # the ordinary leaf whose row degree (252) is in ROW_RESERVE
 
 ROOT = c9.ROOT
 FROZEN = os.path.join(ROOT, 'certificates', 'round10')
@@ -196,11 +197,25 @@ def finite_bridge(c, inv):
 
 
 def inherited_row_reserve(b):
-    """Proof-interface flag. ROW_RESERVE keeps PR #144's bit row constants (m = 69, largest child 66, W = 32408).
-    They carry over unchanged when our bit side has the same m, a largest child no wider and a W no larger;
-    otherwise the bit row term has to be re-derived before the reserve can be quoted."""
+    """Proof-interface flag: does PR #144's external row reserve ROW_RESERVE = 9909 + 252 cover this bit side?
+
+    Neither constant is a term of the current bit cover, so they do not depend on its m, largest child or W:
+      9909 = 367 * 27, the halving degree (529 -> 528) times the wire bits of the partial-gauge round's coarse
+           bit family, frozen in the three-stage-cover round as a conservative legacy charge;
+      252  = 9 * 28, the row degree of the ordinary leaf a_old = 384599/10^10 (copied-centers round).
+    The current bit cover's own row stock is W(w) = W0 q^(m^2 (w-1)) per coarse level (three-stage-cover-bit.tex),
+    which grows with the atom width w, so it cannot sit in any fixed external reserve p^ROW_DEGREE. It is borrowed
+    from the high radix-q digits and restored (three-stage-cover-rows.tex), at any fixed m: log_q S(e,w) = O(w log e)
+    with constants depending only on m, the halving degree of m -> largest child and W0, and q^k >= S holds
+    by the choice k = ceil(log_q S). PR #144 used this at bit m = 67 and m = 69, PR #168 at m = 72.
+    What that proof does need from the bit side:
+      - the leaf is the ordinary leaf whose row degree 252 is charged (a_old = 384599/10^10), with one stop
+        (a ladder nests stopped calls, see LADDER_OPEN);
+      - a_old < a* and a_bit < theta < 1 - a_bit (adapter and borrowing tolls lower order; asserted in bit_side);
+      - largest child < m (finite depth per width halving) and 2 m^3 / 2^80 < BAD (asserted in bit_side)."""
     p = b['p']
-    return p['m'] == 69 and p['maxchild'] <= 66 and p['W'] <= 32408
+    return (b['a_old'] == OLD_LEAF and b['ladder'] == 1 and p['maxchild'] < p['m']
+            and b['a_old'] < b['astar'] and b['a_bit'] < b['theta'] < 1 - b['a_bit'])
 
 
 # What the ladder still needs before it can be quoted (recursion agent, Prop D):

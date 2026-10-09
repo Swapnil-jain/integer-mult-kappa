@@ -82,7 +82,38 @@ This work builds on, and does not modify, the following:
   compensation reads, related to the frame descent and late reads of the round-ten complex word),
   #162 (DaysSky, head 1e8140f: the acceptance condition for extended carrier arcs, reimplemented from its
   description as the relaxed arcs of the round-ten complex word),
-  #55 (gupt1156, head 03e991a: dual skip-suffix strips; words compiled with them motivated round ten's checker fix).
+  #55 (gupt1156, head 03e991a: dual skip-suffix strips; words compiled with them motivated round ten's checker fix),
+  #168 again (eumemic, head 4a3c769e5c5430e7114c4d3e099ff34664677f17, v4: the modules and bit data of both
+  round-eleven words, read as data only, Apache-2.0; none of its code was run). Copied unmodified into
+  independent/round11-cx-recycle-build/data/ and used unchanged in the round-eleven complex word, pinned by
+  references/paired-cube/sources/SOURCE.json, SHA-256:
+    tmod_TE_TD_TB3_1_1_4_full_6.0617964e-4.json  9dcdb6f4e33410418c01f55f092862edfa7c05001ceada3974f8d1196bcd894b
+    pmod_J0_full_6.0666810e-4.json               7d1ae23430e110d32aa1cab84415abdbc918dfab6b317cb24d30756fc90c5925
+    qmod_climb3u_best.json                       3f85f6b2134af8781f16229186d0d7c1de71ab4d5235244259e1b79f2e3d14ba
+  Read as data by the round-eleven bit word (the frozen word in certificates/round11/ carries them), SHA-256:
+    research/paired-cube-bit/data/pair_module_p12.json  df5122d74add5f70de88eb14d4f6a41c79be3825a37922cb81862ca6dfa849f2
+      (the annealed bit pair module, used unchanged)
+    references/paired-cube/sources/local_L1.json        1861724ee3b58ea8acb3334416fbfd9172a9ae02ad11a6f6885a4909f8692f05
+      (the L1 local-channel association, reimplemented as constants)
+    research/paired-cube-bit/out/graph_p12.json         c2d9b3cec9686b336917c6eb2e956a1a1e193c9a301626ac30af97fdb5eca96b
+      (used only to confirm that our builder reproduces PR #168 v4's bit graph byte for byte; not an input)
+  Its paired-cube bit decoder (after #155) is the base of the round-eleven bit word, and its configurable cube-local
+  circuit is the space in which our C1 circuit was chosen),
+  #117 again: the h = 24 DAG is also copied, identical (SHA-256
+  3c034d0aae388ef567a454826f4f48b26fd8a94c71e8ffed4835271b349a783b), into
+  independent/round11-cx-recycle-build/up/ for the small-p complex recipes,
+  #184 (icekylinx, head 4b5fc7f: source-assisted common-frame compression; read as text only. The dead-copy
+  recycling of the round-eleven complex word is its Section 2a, zero-fresh recycling through a containing frame, used
+  with no source controls; the mechanism is icekylinx's, and the application, host selection, ledger and checker are
+  ours),
+  #166 (jamesyc, head 4dbc2af: the dirty-target terminal lemma; the terminal-output deletions of the round-eleven
+  complex word and the terminal sinks of the round-eleven bit word rest on it, with our own selection and checks),
+  #176 (chafreaky, head 96dc228: terminal paired cubes, the use of #166's deletions that our complex word follows),
+  #181 (chafreaky, head 7fb2194: the shared-edge choice of cube-local circuit, a configuration in the same class as
+  our C1 circuit; read as data only),
+  #146 (Th0rgal) and #162 (DaysSky) as above: the minimum-cut omission of the round-eleven bit word and the relaxed
+  carrier arcs of the round-eleven complex word,
+  #124 (jamesyc) and #143 (eumemic) as above: birth reuse and late compensation reads in both round-eleven words.
 - Upstream base of round nine: github.com/CrocSwap/integer-mult-bounds main at commit
   d1d6c070f5a8c684727ee7ec35d930f9ebfa9758 (PR #144 merged as reviewed in PR #149).
 - Paureel, github.com/Paureel/integer-mult-bounds commit c82d09e:

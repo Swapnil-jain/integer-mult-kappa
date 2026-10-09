@@ -9,14 +9,111 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{6153378}{10^{10}}\approx2^{-10.666}\approx6.15338\times10^{-4}>2^{-11}}.
+\boxed{\kappa=\frac{6685733}{10^{10}}\approx2^{-10.547}\approx6.68573\times10^{-4}>2^{-11}}.
 $$
 
-That is about 1.32 times our round-nine witness `4.66374e-4` (`2^-11.066`), 4.88 times our round-eight witness `1.26130e-4`, 9.39 times our round-seven witness
-`6.55177e-5`, and about 82100 times our first witness
-`7499/10^12`. These figures compare asymptotic exponents, not practical runtimes.
+That is about 1.09 times our round-ten witness `6.15338e-4` (`2^-10.666`), 1.43 times our round-nine witness `4.66374e-4`,
+5.30 times our round-eight witness `1.26130e-4`, 10.20 times our round-seven witness `6.55177e-5`, and about 89200 times our first
+witness `7499/10^12`. These figures compare asymptotic exponents, not practical runtimes.
 
-## Round ten
+## Round eleven
+
+`scripts/certificate_round11.py` runs round ten's certificate unchanged (the paired-cube /
+three-stage cover assembly of icekylinx's PR #144, on measured per-side inventories). Before certifying ours it
+reproduces PR #144's published `kappa = 4609169/10^10`, our round-nine `kappa = 4663738/10^10` and our round-ten
+`kappa = 6153378/10^10`. Both sides are new words, and both are measured histograms from independent replays.
+
+**Complex side: paired cubes with dead-copy recycling.** The base is icekylinx's paired-cube decoder (PR #144),
+rebuilt in our code at `p = 11` (`h = 22`, `m = 66`), as in round ten. The changes:
+- the triple, pair-disjoint and all-but-one modules are eumemic's PR #168 v4 modules, used as data and unchanged
+  (pinned by SHA-256 in `NOTICE`). Their contracts are re-checked when the word is built;
+- the cube-local circuit is configurable: the 13 local outputs are fixed by PR #144's decoder identity, and only how
+  each is summed is chosen (the configurable circuit and its coordinate space are icekylinx's, in the PR #168
+  lineage; chafreaky's PR #181 chose a configuration in the same class). Our choice, C1, moves the third long-diagonal
+  channel to `G[0,2,1]`. It was found by our own search and is about 1.3% better than PR #168's L1 in the same stack;
+- carrier links are extended under DaysSky's relaxed acceptance condition (PR #162), reimplemented, with our greedy
+  scan run in reverse order;
+- birth reuse (jamesyc's PR #124) with late compensation reads (eumemic's PR #143), by our exact maximum-weight
+  matching. All 2,332 gauges are paired, so NDS adds nothing;
+- a per-operation physical descent with the pairs fixed (ours; the bundle-descent idea is eumemic's, PR #168);
+- 42 terminal-output deletions: jamesyc's lemma (PR #166), as used by chafreaky (PR #176), with our selection;
+- dead-copy recycling. The word holds pairs of registers that retire holding the same node value. One gate
+  `P -= Q` at a frame containing both copies' last frames leaves `P` with zero signal and only dirty contents. A fresh
+  birth is then placed on `P` with no read, and the frame-0 compensation of every non-gauged role is recomputed over
+  the new transcript. This is Section 2a of icekylinx's PR #184 (zero-fresh recycling through a containing frame),
+  used here with no source controls. The kernel comes from the duplicated copies. Ours are the application to this
+  word, the host selection (an exact maximum-weight matching between copy pairs and births), the ledger and the
+  checker. 386 births are hosted. Each removes one unit of `W` and leaves the deficit unchanged.
+
+Completed-core sharing (an664, PR #128) is unchanged from PR #144. The result has `W = 12,922` (it was
+13,308 before recycling), deficit `1,320` and largest child `20`. Certified saving: `a_c = 67147467/10^11`.
+
+**Bit side: the PR #168 v4 bit word with our module and levers.** The base is eumemic's paired-cube bit decoder
+(PRs #155 and #168: transversal-triple ports, broadcast roots, partner-pair mixing), after icekylinx's PR #144, at
+`p = 12` (`h = 24`, `m = 72`). With v4's own modules, our builder reproduces PR #168 v4's bit graph byte
+for byte. On it:
+- the pair-disjoint module is PR #168 v4's annealed bit pair module (eumemic), used as data and unchanged;
+- the local-channel association is eumemic's L1 (PR #168), reimplemented as constants;
+- the all-but-one module is our cyclic-interval module (plan `1,2,3,5,7,9 / 01000`), in place of v4's annealed one;
+- merged face and edge reads, as in eumemic's PR #161; carrier links by our cover-weighted matching;
+- every gauge candidate kept, then the omitted gauges chosen by exact minimum cut (Th0rgal's formulation, PR #146),
+  with NDS on the kept gauges;
+- node, group and per-operation frame descent (ours);
+- birth reuse with late births (the lineage of jamesyc's PR #124), by exact maximum-weight matching: 1,762 pairs;
+- 24 terminal sinks: a sink writes onto a pivot target instead of keeping a register (jamesyc's idea, PR #166;
+  our lemma and selection, and every sink is re-checked by the ledger).
+
+This gives `W = 380341/20 ≈ 19,017.05`, deficit `1,936`, the coarse saving `a* = 670100165/10^12`, and, stopped at `theta = 1/10^3`
+with `a_old = 384599/10^10`, `a_bit = 669468524735/10^15`.
+
+Together: `kappa = 6685733/10^10` (about 6.68573e-04, `2^-10.547`), bound by the bit side. The minimum
+margin `eps q = 6.6857332707e-04` is rounded down to the `10^-10` grid. That is about 1.09 times our round-ten
+witness.
+
+**Proof interfaces.** Round ten's interfaces still apply: the three-stage cover lifting, the exterior rule and the
+stopped recurrence (PRs #130, #144); the `2^-P 3^-K` precision grid; block-factored frame representatives; stage two
+as the complement time-reversal of stage one; NDS with cube-type representatives; and a chain spliced across a birth
+hand-off charged as one ascending chain (PRs #124, #143). New this round, stated here but not machine-checked:
+
+- dead-copy recycling rests on the zero-fresh recycling argument of PR #184, Section 2a, with no source controls.
+  It is checked by F2 nesting of every chain (both copies' climbs to the mix frame included), the recycling
+  chronology, an exact ledger recount, and a dirty-scratch replay mod `2^61 - 1` with the compensation recomputed.
+  There is no literal frame replay of the mix gate at any size;
+- terminal-output deletions (complex) and terminal sinks (bit) rest on PR #166's lemma. The complex checker tests
+  sink eligibility and replays; the bit ledger checks every absorbed write exactly;
+- on the complex side, the literal frame replay of the stack is round ten's (nested prefix, merged reads, birth reuse
+  at `p = 6` and `7`). The C1 circuit, the per-operation descent and the recycling are checked at real size by the F2
+  recount and the scalar replay only;
+- the paired-cube bit word's partner-pair mixing lemma and its frame theorem follow eumemic's written argument (PRs
+  #155, #168), checked here through the replays below. NDS on the bit side is the per-slot construction; no literal
+  NDS replay on bit frames has been done;
+- the module, circuit, gauge and host searches were scored with cheaper objectives. Only the final words are
+  certified under the full objective;
+- the external row reserve of the finite bridge keeps PR #144's inherited bit constants (`ROW_RESERVE` = 9909 + 252: an earlier round's coarse bit family and the ordinary leaf). Neither is a term of the current bit cover, whose own row stock is borrowed and restored internally at any fixed `m` (PR #144's rows argument, used here at `m = 72`), so they carry over.
+
+Checks (`make round11`, standard library, seconds; `make round11-heavy`, a machine with numpy, about 3 GB):
+
+- `scripts/certificate_round11.py` runs the regressions and certifies ours, and `tests/test_round11.py` runs round
+  ten's frozen-assembly tests on the round-eleven files;
+- `independent/round11-bit-gate/`: `ledger.py` replays the frozen bit word from JSON alone and imports no
+  construction code. It checks an exact F2 replay with dirty scratch, forward and reflected; exact frames over Q and
+  their nondegeneracy; every absorbed-sink write; and the event histogram against the accounting. It runs on the
+  `p = 12` word and on the same recipe at `p = 9` and `7`, and eleven mutation controls must be rejected on the
+  `p = 7` word, which has sinks. `cert.py`
+  is the rational certificate with the next grid point rejected, and `invcheck.py` checks that the release inventory
+  equals the replay's measured histogram;
+- `independent/round11-cx-recycle-gate/`: `check_word2_recycle.py` reads only the frozen complex word. It checks the
+  decoder identity, sink eligibility, the recycling chronology, F2 legality of every role and target chain, the
+  ledger recounted from the chains, the deficit `2v - 3 loss`, the `10^-12` certificate with the next point rejected,
+  and a dirty replay mod `2^61 - 1` on two seeds. Its controls (birth, terminal, mix skipped, mix sign flipped) must
+  fail, and `mutate_hosts.py` writes three mutated words (unequal copies, an early birth, a tampered claim) that must
+  be rejected. It runs at `p = 11`, `9` and `7`. `README.md` there describes the mechanism and its ledger;
+- `independent/round11-cx-recycle-build/`: the construction, with the pinned modules and their notice in `data/`.
+
+The moment certificates, the stopped mix, the finite bridge and the 47-row assembly are also checked in Lean 4's
+kernel (`lean/Round11.lean`, `make lean`).
+
+## Round ten (previous witness, `6153378/10^10`)
 
 `scripts/certificate_round10.py` runs round nine's certificate (the paired-cube / three-stage cover assembly of
 icekylinx's PR #144) on cover profiles with fractional child weights and on measured per-side inventories. Each
@@ -432,6 +529,8 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Round-nine complex side (PR #144's paired cubes) | PR #144's published inventory; its `p = 12` module recounted role by role from the frozen PR #117 DAG and matching arcs (`independent/round9-complex-recount/`); cube identities, literal replays and cross-stage sharing checked with controls (`independent/round9-audit144/`); finite bridge and moment in Lean. The `2^-P 3^-K` precision grid and block-factored representatives are proof interfaces |
 | Round-ten bit side | The JSON-only ledger replays the p = 12 bit word, and the same pipeline at p = 9 and 7, exactly over F2 with dirty scratch, forward and reflected, on exact rational frames. The mutation controls are rejected at every size (7 of 7 at p = 12), and the measured histogram certifies a* = 632988409/10^12 on the 10^-12 grid with the next point rejected. |
 | Round-ten complex side | The p = 11 paired-cube word with the nested-prefix module, birth reuse and per-operation descent is re-checked from its frozen JSON alone: decoder identity, F2 chain legality, ledger recount and the 1e-12 certificate with the next point rejected. It is replayed exactly mod 2^61 - 1 with dirty scratch on two seeds, with mutated words and replay controls rejected, and the mechanism is replayed literally at p = 6 and 7. A second checker recomputes the finite guard and rejects the next grid point with a rigorous lower bound, and also checks a p = 7 word. |
+| Round-eleven bit side | The JSON-only ledger replays the p = 12 word with its 24 terminal sinks, and the same recipe at p = 9 and 7, exactly over F2 with dirty scratch, forward and reflected, on exact rational frames. Eleven mutation controls are rejected, and the measured histogram certifies a* = 670100165/10^12 on the 10^-12 grid with the next point rejected. Lean kernel check of the moment, stopped mix and assembly. Partner-pair mixing and the sink lemma are written arguments (PRs #155, #168, #166) |
+| Round-eleven complex side | The p = 11 recycled word is re-checked from its frozen JSON alone: decoder identity, sink eligibility, recycling chronology, F2 chain legality, ledger recount and the 10^-12 certificate with the next point rejected; a dirty replay mod 2^61 - 1 on two seeds; replay controls and three mutated words rejected; the same at p = 9 and 7. Zero-fresh recycling follows PR #184 Section 2a (written argument); the mix gate has no literal frame replay |
 | Topology-free guard | Written argument (docstring of `scripts/certificate_round3.py`); the witness is stated with this guard |
 | Prior results from PR #10, #13 and #15, and the two-stage motif | Assumed. We reproduced their rank moments, certified at least PR #15's fully batched saving from our own histogram, and found controlled-basis witnesses for PR #10 at h=8 to 14 |
 | Full upstream multiplication theorem | Assumed |
@@ -454,7 +553,9 @@ make round9      # round-nine certificate (with the PR #144 reproduction) and te
 make round9-heavy  # round-nine ledger, complex recount, cover replay and PR #144 mechanism checks (numpy)
 make round10     # round-ten certificate (with the PR #144 and round-nine regressions) and tests (seconds)
 make round10-heavy  # round-ten replays, recounts and certificate checks of both sides (numpy)
-make lean        # Lean 4 kernel checks of rounds five to ten
+make round11     # round-eleven certificate (with the PR #144, round-nine and round-ten regressions) and tests
+make round11-heavy  # round-eleven bit ledger and complex recycling checker, with controls (numpy)
+make lean        # Lean 4 kernel checks of rounds five to eleven
 make notes       # PDF notes (tectonic)
 ```
 

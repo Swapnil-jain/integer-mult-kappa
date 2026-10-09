@@ -39,7 +39,8 @@ This work builds on, and does not modify, the following:
   #112 (jamesyc, head 166d298: signed dependence reclamation, reimplemented from its description on our
   round-eight complex word),
   #117 (eumemic, head cbb05ce: the h = 24 complex addition DAG, read as data and frozen in
-  certificates/round8/pr117_dag.json.gz, Apache-2.0; the producer of our round-eight complex word),
+  certificates/round8/pr117_dag.json.gz, Apache-2.0; the producer of our round-eight complex word; an identical copy
+  is in independent/round10-cx-prefix-build/up/ for the round-ten triple module),
   #128 (an664, head 530588a: completed-core sharing, reimplemented from its description on our
   round-eight complex word, and its 87-group orthonormal triple partition after Zhang and Ge (2010), frozen in
   certificates/round8/pr128_partition_mrp24.json, Apache-2.0),
@@ -63,16 +64,25 @@ This work builds on, and does not modify, the following:
   (matching-arcs.json is references/paired-cube/selected-module/matching-arcs.json upstream)),
   #146 (Th0rgal, head 70355a3: the exact telescoping minimum-cut choice of omitted gauges, reimplemented from its
   description and applied to our witness 2 in round nine),
-  #161 (eumemic, head d14e29157bc905be1ced0776dd893d0714013f3a: the annealed pair-disjoint module
-  references/paired-cube/sources/pmod_C35_5.483127e-4.json, read as data in the round-ten complex word and copied
-  unmodified into certificates/round10/, Apache-2.0, SHA-256
-  55e1979722255b3b70acf0b93b3a62a1e4e603a56276b254858a5b99974f47a9; and its merged complex outputs, which the
-  merged reads of that word follow),
+  #161 (eumemic, head d14e29157bc905be1ced0776dd893d0714013f3a: the annealed p = 12 bit pair module and its
+  carrier arcs, research/paired-cube-bit/data/pair_module_p12.json and arcs_p12.json, read as data by the
+  round-ten bit word, Apache-2.0, SHA-256
+  9313f8d7a929ae7bbac65f7cb3e58fe3e3670ee23b7047c066d39452d6139133 and
+  c56d549cf6a785225a91a36a800fd3f6de6e03a5d95551fda89fa28da2465d24; and its merged face and edge outputs, which the
+  merged reads of both round-ten words follow),
+  #155 (eumemic: the paired-cube bit decoder with transversal-triple ports and partner-pair source mixing,
+  reimplemented from its description as the base of the round-ten bit word),
+  #168 (eumemic, commit 98c115b53742b6613ad630de4d493f37b0119da7: the annealed pair-disjoint module
+  references/paired-cube/sources/pmod_G37_w02_5.6098194e-4.json, used unchanged as data in the round-ten complex
+  word and copied unmodified into independent/round10-cx-prefix-build/data/, Apache-2.0, SHA-256
+  97173389fca3887c2aafa9ac25dbe3564d78b4152c0ef1cca9057ffb2ca1de25; and its nested-prefix all-but-one module and
+  bundle descent, reimplemented from their description in that word),
+  #150 (DaysSky: late births, in the lineage of the round-ten bit word's birth reuse),
   #131 and #143 (eumemic, heads 3acf2f9 and 803b28a: physical frame descent and scratch reuse on covers, and late
   compensation reads, related to the frame descent and late reads of the round-ten complex word),
   #162 (DaysSky, head 1e8140f: the acceptance condition for extended carrier arcs, reimplemented from its
   description as the relaxed arcs of the round-ten complex word),
-  #55 (gupt1156, head 03e991a: dual skip-suffix strips, used in the round-ten recompile of witness 2).
+  #55 (gupt1156, head 03e991a: dual skip-suffix strips; words compiled with them motivated round ten's checker fix).
 - Upstream base of round nine: github.com/CrocSwap/integer-mult-bounds main at commit
   d1d6c070f5a8c684727ee7ec35d930f9ebfa9758 (PR #144 merged as reviewed in PR #149).
 - Paureel, github.com/Paureel/integer-mult-bounds commit c82d09e:

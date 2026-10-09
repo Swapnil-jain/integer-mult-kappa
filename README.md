@@ -1,4 +1,4 @@
-# Integer multiplication: a conditional witness above 2^-12
+# Integer multiplication: a conditional witness above 2^-11
 
 **Conditional research draft by Swapnil Jain.**
 
@@ -9,14 +9,100 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{4663738}{10^{10}}\approx2^{-11.066}\approx4.66374\times10^{-4}>2^{-12}}.
+\boxed{\kappa=\frac{6153378}{10^{10}}\approx2^{-10.666}\approx6.15338\times10^{-4}>2^{-11}}.
 $$
 
-That is about 3.70 times our round-eight witness `1.26130e-4` (`2^-12.953`), 7.12 times our round-seven witness
-`6.55177e-5`, 12.72 times our round-six witness `3.66657e-5`, and about 62200 times our first witness
+That is about 1.32 times our round-nine witness `4.66374e-4` (`2^-11.066`), 4.88 times our round-eight witness `1.26130e-4`, 9.39 times our round-seven witness
+`6.55177e-5`, and about 82100 times our first witness
 `7499/10^12`. These figures compare asymptotic exponents, not practical runtimes.
 
-## Round nine
+## Round ten
+
+`scripts/certificate_round10.py` runs round nine's certificate (the paired-cube / three-stage cover assembly of
+icekylinx's PR #144) on cover profiles with fractional child weights and on measured per-side inventories. Each
+side's profile is built in layers, and every layer is checked: PR #144's parts, or a histogram measured by a replay;
+then nullity-dependent sharing (NDS), rebuilt from each gauge's type; then birth reuse, measured from the actual role
+chains. Every layer must keep the telescoping deficit `D = W m - s = 2v - 3 loss`. Before certifying ours, the script
+reproduces PR #144's published `kappa = 4609169/10^10` and our round-nine `kappa = 4663738/10^10`, both from the
+parts and from the bare histograms.
+
+**Complex side: paired cubes with nested-prefix modules, birth reuse and per-operation descent.** This is icekylinx's paired-cube decoder (PR #144: the signed channel graph, coordinate frames, the chronological
+partial-gauge filter and copied centres), rebuilt in our code from its data and notes, at `p = 11`
+(`h = 22`, `m = 66`). The changes:
+- the triple-exclusion module is our own searched restriction of eumemic's `h = 24` DAG (PR #117, used as data);
+- the pair-disjoint module is eumemic's annealed module G37 from PR #168, used as data and unchanged (pinned in
+  `NOTICE`). Its contract is re-checked when the word is built;
+- the all-but-one module is eumemic's nested prefix (PR #168), reimplemented from its description. Our version is
+  byte-identical to theirs;
+- face and edge outputs share merged reads, as in eumemic's PR #161, reimplemented;
+- carrier links come from a maximum matching under PR #144's test. They are then extended greedily under
+  DaysSky's relaxed acceptance condition (PR #162), reimplemented: an arc is added only if the graph stays acyclic and
+  the span stays inside the backward intersection;
+- frames descend node by node (ours; the physical-frame idea is eumemic's PR #131);
+- gauges are re-selected pair-aware (ours): a pairable candidate is charged its hand-off instead of its tail;
+- birth reuse (jamesyc's PR #124) with late compensation reads (eumemic's PR #143), reimplemented with our exact
+  maximum-weight matching. 3,180 of 3,180 gauges are paired;
+- a final per-operation physical descent with the pairs fixed, alternated with re-matching (the bundle-descent
+  idea of eumemic's PR #168, reimplemented with our exact recount as its objective).
+
+The result has `W = 14,592`, deficit `1,320` and largest child `20`. NDS adds nothing here, because every
+gauge is paired. Completed-core sharing (an664, PR #128) is unchanged from PR #144. Certified saving:
+`a_c = 61609676/10^11`.
+
+**Bit side: the paired-cube bit word with our levers.** The base is eumemic's paired-cube bit decoder (PR #155: transversal-triple ports, broadcast roots, partner-pair source mixing on the X registers) on icekylinx's face and edge modules (PR #144), at `p = 12` (`h = 24`, `m = 72`). Our builder re-implements it from its description and reproduces its published graph and child histogram exactly. The pair-disjoint module is eumemic's annealed module from PR #161, used as data (pinned in `NOTICE`). On it we stack our own levers, except where credited:
+- merged reads: one shared read node per pair of face and edge outputs, read at the singleton caps;
+- carrier links chosen by an exact maximum-weight matching on the cover objective;
+- every gauge candidate kept, then the omitted gauges chosen by exact minimum cut (Th0rgal's formulation, PR #146), with NDS on the kept gauges;
+- frame descent;
+- birth reuse with late births, by exact maximum-weight matching (the lineage of jamesyc's PR #124 and DaysSky's PR #150). It needs the merged reads: with unmerged reads no port label lies in any gauge's `sigma`, so no pair is compatible. Here 1,767 pairs are reused.
+
+This gives `W = 257897/12 ≈ 21,491.42`, deficit `1,936`, the coarse saving `a* = 632988409/10^12`, and, stopped at `theta = 1/10^3` with `a_old = 384599/10^10`, `a_bit = 632393880491/10^15`.
+
+Together: `kappa = 6153378/10^10` (about 6.15338e-04), bound by the complex side. The minimum margin
+`eps q = 6.1533781105e-04` is rounded down to the `10^-10` grid.
+
+**Proof interfaces.** Round nine's interfaces still apply: the three-stage cover lifting, the exterior rule and the
+stopped recurrence (PRs #130, #144); the `2^-P 3^-K` precision grid; block-factored frame representatives; the
+frozen PR #117 DAG; and stage two as the complement time-reversal of stage one. New this round, stated here but not
+machine-checked:
+
+- NDS needs cube-type (block-factored) representatives. It fails with the general frame representatives of PRs
+  #130, #131 and #137. Our literal NDS replay covers cube-type `sigma`s at `h = 8`;
+- on the complex side, birth reuse, merged reads, relaxed arcs and the per-operation frames are checked at real size
+  by an F2 recount from the role chains and by an exact scalar replay with dirty scratch, both with controls. Nested
+  role chains imply that the transitions are realisable at the stated ranks. The literal frame replay covers the
+  mechanism at `p = 6` and `7` only, not at `p = 11`;
+- a chain spliced across a birth hand-off (the donor's last frame inside the recipient's gauge) is charged as one
+  ascending chain. This is the interface of PRs #124 and #143;
+- the cube-local K block and the source histogram `[1, 2, h - 4]` are PR #144's;
+- the module and gauge searches were scored with cheaper objectives. Only the final words are certified under the
+  full objective;
+- the paired-cube bit word's partner-pair mixing lemma and its frame theorem, from eumemic's written argument (PR #155), checked here only through the replays below;
+- NDS on the bit side is the per-slot construction; no literal NDS replay on bit frames has been done;
+- the external row reserve of the finite bridge keeps PR #144's inherited bit constants (`ROW_RESERVE` = 9909 + 252: an earlier round's coarse bit family and the ordinary leaf). Neither is a term of the current bit cover, whose own row stock is borrowed and restored internally at any fixed `m` (PR #144's rows argument, used here at `m = 72`), so they carry over.
+
+Checks (`make round10`, standard library, seconds; `make round10-heavy`, a machine with numpy and a few GB):
+
+- `scripts/certificate_round10.py` runs the regressions and certifies ours, and `tests/test_round10.py` checks it.
+  The tests include a truth table for the kept-copy rule below;
+- `independent/round10-cx-prefix-gate/`: `check_word.py` reads only the frozen complex word. It checks the decoder identity mod 2^61 - 1, the F2 legality of every operation frame, spliced role chain, birth pair and read order, the child-histogram and `W` recount with the deficit `2v - 3 loss`, and the `10^-12` certificate with the next point rejected. It also runs an aliased dirty-scratch replay on two seeds with three controls. `mutate_word.py` writes four mutated words (sign, frame, claim, pair), and each must be rejected. `lit_prefix.py` is the literal small-`p` replay of the nested prefix, merged reads and birth reuse, with three controls;
+- `independent/round10-cx-prefix-build/`: the construction. `final2.py` rebuilds the word, and `export_word.py`, the only adapter, writes the frozen JSON the gate reads. The pinned pair module and its notice are in `data/`;
+- `independent/round10-bit-gate/`: `ledger.py` replays the frozen bit word from JSON alone and imports no construction code. It checks an exact F2 replay with arbitrary dirty scratch, forward and reflected; every frame re-canonicalised over Q, with strictly nested moves; data inside the frame at every gate, read, centre copy and birth; nondegeneracy of every frame; birth hand-offs only after the donor's last gate; and the event histogram against the accounting. It runs seven mutation controls. `cert.py` is the rational certificate and the stopped mix, and `invcheck.py` checks that the release inventory equals the replay's measured histogram;
+- `independent/round10-standing-gate/`: a second gate written separately from both builds. `cxguard.py` recomputes the finite semantic guard from PR #144's formulas at the complex word's `m`, and `twosided.py` rejects the next certificate point with a rigorous lower bound.
+
+**Checker fix.** The repository's F2 checkers (`independent/joint-frame-stack/check_schedule.py` and
+`independent/round9-bit-ledger/ledger.py`) used to identify a kept V copy by its (copy, source) role pair. Words
+compiled with skip-suffix strips and the gm order gate that same pair a second time, later and at a higher frame.
+The old rule misread that later gate as the copy, which skipped its walk and data checks. Kept copies are now
+identified by op index (`jfdata.kept_copy_ops`). On witness 2 both rules pick the same 4,210 ops, so rounds seven to
+nine are unchanged, and their checks still pass.
+
+The moment certificates (fractional weights scaled to integers, with the bit fallback), the stopped mix, the finite
+bridge and the 47-row assembly are also checked in Lean 4's kernel (`lean/Round10.lean`, `make lean`).
+
+Support compute: https://buymeacoffee.com/jainswapnil138
+
+## Round nine (previous witness, `4663738/10^10`)
 
 `scripts/certificate_round9.py` is our own implementation of the paired-cube / three-stage cover assembly of
 icekylinx's PR #144 (merged upstream through PR #149). It reads frozen inventories (`certificates/round9/`), rebuilds
@@ -344,6 +430,8 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Round-eight complex side (signed reclaim, completed-core sharing) | Histogram rebuilt from the word; exact `Q(i)` replay of the shared word with dirty scratch on two seeds, walk, exterior and certificate checks, written without importing the construction; partition checked (`independent/round8-coreshare/`, `independent/round8-complex-gate/`). The alternating normal form, exterior address adapters and the stopped interchange's row stock are proof interfaces |
 | Round-nine bit side (witness 2 in PR #144's cover, gauge omission) | Source-bound ledger of the modified word: exact frame paths, complete forward and reflected F2 shear, target chains as deleted subsequences, histogram from events, negative controls (`independent/round9-bit-ledger/`); independent re-certification; Lean kernel check of the moment with the full fallback, the stopped mix and the 47-row assembly. The cover lifting, exterior rule and stopped recurrence follow icekylinx's written argument (PRs #130, #144) |
 | Round-nine complex side (PR #144's paired cubes) | PR #144's published inventory; its `p = 12` module recounted role by role from the frozen PR #117 DAG and matching arcs (`independent/round9-complex-recount/`); cube identities, literal replays and cross-stage sharing checked with controls (`independent/round9-audit144/`); finite bridge and moment in Lean. The `2^-P 3^-K` precision grid and block-factored representatives are proof interfaces |
+| Round-ten bit side | The JSON-only ledger replays the p = 12 bit word, and the same pipeline at p = 9 and 7, exactly over F2 with dirty scratch, forward and reflected, on exact rational frames. The mutation controls are rejected at every size (7 of 7 at p = 12), and the measured histogram certifies a* = 632988409/10^12 on the 10^-12 grid with the next point rejected. |
+| Round-ten complex side | The p = 11 paired-cube word with the nested-prefix module, birth reuse and per-operation descent is re-checked from its frozen JSON alone: decoder identity, F2 chain legality, ledger recount and the 1e-12 certificate with the next point rejected. It is replayed exactly mod 2^61 - 1 with dirty scratch on two seeds, with mutated words and replay controls rejected, and the mechanism is replayed literally at p = 6 and 7. A second checker recomputes the finite guard and rejects the next grid point with a rigorous lower bound, and also checks a p = 7 word. |
 | Topology-free guard | Written argument (docstring of `scripts/certificate_round3.py`); the witness is stated with this guard |
 | Prior results from PR #10, #13 and #15, and the two-stage motif | Assumed. We reproduced their rank moments, certified at least PR #15's fully batched saving from our own histogram, and found controlled-basis witnesses for PR #10 at h=8 to 14 |
 | Full upstream multiplication theorem | Assumed |
@@ -364,7 +452,9 @@ make round8      # round-eight certificate, bit histogram rebuild, partition and
 make round8-heavy  # round-eight word replays and the all-edges bit gate (many cores, numpy, a C compiler)
 make round9      # round-nine certificate (with the PR #144 reproduction) and tests (seconds)
 make round9-heavy  # round-nine ledger, complex recount, cover replay and PR #144 mechanism checks (numpy)
-make lean        # Lean 4 kernel checks of rounds five to nine
+make round10     # round-ten certificate (with the PR #144 and round-nine regressions) and tests (seconds)
+make round10-heavy  # round-ten replays, recounts and certificate checks of both sides (numpy)
+make lean        # Lean 4 kernel checks of rounds five to ten
 make notes       # PDF notes (tectonic)
 ```
 

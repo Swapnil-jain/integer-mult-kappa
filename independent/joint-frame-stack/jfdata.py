@@ -67,6 +67,26 @@ def load_frames(h=23):
     return EX, {i: canon[EX[i]] for i in EX}
 
 
+def kept_copy_ops(ops, copies, s0):
+    """The op index of every kept V copy: the FIRST op touching the copy role, which must be ('add', c, s0[x]).
+
+    Gotcha: do not identify a kept copy by its role pair (a in kept and b == s0[kept[a]]). Words compiled with
+    skip-suffix strips and the gm point order gate the same (copy, source) pair a second time, later, at a higher
+    frame; that later op is an ordinary gate and must get the walk and data-in-frame checks. Witness 2 never does
+    this, so both rules agree on it (tests/test_round10.py has the truth table)."""
+    kept = {c: x for x, cs in copies.items() for c in cs}
+    first = {}
+    for i, op in enumerate(ops):
+        for r in (op[1:2] if op[0] == 'src' else op[1:3]):
+            first.setdefault(r, i)
+    idx = set()
+    for c, x in kept.items():
+        i = first.get(c)
+        assert i is not None and tuple(ops[i]) == ('add', c, s0[x]), ('kept copy is not its role\'s first op', c)
+        idx.add(i)
+    return idx
+
+
 def release_orders(K):
     """the release rule: deferred readouts by (dim sigma, id), deferred V gates by (dim F0, id), early V in X_S order."""
     W, X = K['W'], K['X']; R = W['R']; f = W['f']; srcop = W['srcop']

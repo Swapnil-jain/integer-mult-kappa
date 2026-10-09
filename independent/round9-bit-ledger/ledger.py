@@ -203,12 +203,13 @@ for s in early_V: source(s, True)
 A1 = set(W['A']); ph1 = [i for i in range(len(ops)) if i in A1 and ops[i][0] == 'add']
 ph2 = [i for i in range(len(ops)) if i not in A1 and ops[i][0] == 'add']
 kept = {c: x for x, cs in W['copies'].items() for c in cs}; s0 = W['s0']; opfr = X['opfr']
+KCOP = jfdata.kept_copy_ops(ops, W['copies'], s0)   # kept copies by op index, never by role pair (see jfdata)
 def gate(i, active):
     _, a_, b_ = ops[i]
     if not active: fr = kF
-    elif a_ in kept and b_ == s0[kept[a_]]: fr = kvs[a_]; need(kvs[a_] == kvs[b_], 'kept copy V starts differ')
+    elif i in KCOP: fr = kvs[a_]; need(kvs[a_] == kvs[b_], 'kept copy V starts differ')   # by op index, not pair
     else: fr = kex(opfr[i])
-    lab = ('kept' if fr == kvs.get(a_) and a_ in kept else 'gate') if active else False
+    lab = ('kept' if i in KCOP else 'gate') if active else False
     move(AUX + a_, fr); move(AUX + b_, fr); xor(AUX + a_, AUX + b_, lab)
 for i in ph1: gate(i, True)
 centres = {}

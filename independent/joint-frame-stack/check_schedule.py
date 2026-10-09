@@ -218,6 +218,7 @@ def at(s, key, what):
     if k == len(ch): bad[what] += 1
     else: ptr[s] = k
 kept = {c: x for x, cs in copies.items() for c in cs}
+KCOP = jfdata.kept_copy_ops(ops, copies, s0)     # by op index, never by role pair (see jfdata)
 for s in range(R):
     if s not in sel and ptr[s] != -1: bad['pass1'] += 1
 for s in early_V: at(s, ('v', s), 'earlyV')
@@ -225,7 +226,8 @@ def gate(i):
     op = ops[i]
     if op[0] != 'add': return
     a_, b_ = op[1], op[2]
-    if a_ in kept and b_ == s0[kept[a_]]:                        # kept V copy: at the shared V start
+    if i in KCOP:                       # kept V copy (by op index): at the shared V start; a later gate on the same
+                                        # pair is an ordinary gate and is walked below
         at(a_, ('v', a_), 'keptcopy'); at(b_, ('v', b_), 'keptcopy'); return
     k = eqid[opfr[i]]; at(a_, k, 'gate'); at(b_, k, 'gate')
 for i in ph1: gate(i)
@@ -261,7 +263,7 @@ def dgate(i):
     op = ops[i]
     if op[0] != 'add': return
     a_, b_ = op[1], op[2]
-    if a_ in kept and b_ == s0[kept[a_]]: a[a_] ^= a[b_]; return            # V-start membership is checked in part C
+    if i in KCOP: a[a_] ^= a[b_]; return            # kept V copy by op index; V-start membership is checked in part C
     m = allow(eqid[opfr[i]]); badd += bool((a[a_] | a[b_]) & ~m); a[a_] ^= a[b_]; badd += bool(a[a_] & ~m)
 for i in ph1: dgate(i)
 for s, c in ret.items(): badd += bool(a[s] & ~allow(eqid[rootret[s]]))

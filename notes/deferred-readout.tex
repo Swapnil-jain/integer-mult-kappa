@@ -6,18 +6,22 @@
 \title{Deferred readouts in the two-stage bit interchange}
 \date{Draft, October 9, 2026}
 \begin{document}
+\sloppy
 \maketitle
 
 This note describes the round-seven bit side. It keeps the round-six interchange (flag basis, retained point totals
-with copied centres, side roles batched one level down, data-entrance run) and changes three things: the side
-program comes from PR~\#62's producer, its frames are lifted and its fan-out copies are made late, and the stage-one
-word is reordered so that most slots read their garbage out at a nonzero frame. All objects are frozen in
-\texttt{certificates/round7/}; \texttt{scripts/certificate\_round7.py} rebuilds the child-width histogram from the
-schedule, and the checks in \texttt{independent/deferred-readout/} verify every fact used below. Throughout, $h=23$,
+with copied centres, side roles batched one level down, data-entrance run) and changes three things: the frames of
+the side program are lifted and its fan-out copies are made late, and the stage-one word is reordered so that most
+slots read their garbage out at a nonzero frame. We give two witnesses with two different side programs: witness~1
+uses PR~\#62's producer (\S\ref{sec:pr62}), witness~2, the headline, PR~\#57's joint frame compiler
+(\S\ref{sec:jf}); the second needs a stricter rule for the first phase of the reordered word (\S\ref{sec:closure}).
+All objects are frozen in \texttt{certificates/round7/}; \texttt{scripts/certificate\_round7.py} rebuilds both
+child-width histograms from the schedules, and the checks in \texttt{independent/deferred-readout/} (witness~1) and
+\texttt{independent/joint-frame-stack/} (witness~2) verify every fact used below. Throughout, $h=23$,
 $m=h^2$, $v=\binom h3$, $N=v^2$, $G=I-J/9$, and for a triple $T$ the root frame of the output wire $y_T$ is
 $t_T^\perp=\ker\,(9t_T-3\mathbf 1)^{\mathsf T}$; the frame of a retained total of $c$ is $U_c=\ker(\mathbf 1-3e_c)^{\mathsf T}$.
 
-\section{The side program: PR \#62's producer}
+\section{Witness 1: PR \#62's producer}\label{sec:pr62}
 The side DAG has the $v$ triples as leaves and disjoint additions as nodes; its roots are the $3v$ outputs
 $\mathrm{out}(c,T)=\{S: S\cap T=\{c\}\}$ and the $h$ retained totals $\mathrm{star}(c)$. We build it with PR~\#62's
 producer (ikeboy): interval strips and core-aware pair assembly, with PR~\#41's alternating order and links
@@ -26,6 +30,17 @@ non-pivot slot of a donor gate to a later use of the same value, so the number o
 $R=\#\text{additions}+3v+h-\#\text{links}=28866$. Only the DAG enters the certificate, and it is checked from the
 definitions: every addition is disjoint, every output and total has the support above, and every node is reachable
 from a root (\texttt{check\_lifted.py}, part~A; \texttt{check\_word.py}, part~A).
+
+\section{Witness 2: the joint frame compiler}\label{sec:jf}
+Witness~2 builds the side DAG with the same producer and PR~\#69's balanced coarse sums (eumemic; every four-edge
+coarse sum as two column pair sums and a total) and compiles it with PR~\#57's joint frame compiler (eumemic) in
+PR~\#60's rank-first reclamation order (chafreaky): roles are reused across regions of the DAG, and every gate acts at
+the frame of its region. The compiled program has $R=27794$ roles. Its regions are lifted as below
+($M_g=\operatorname{span}(g)+(U_g\cap F_{j(g)})$ for a region $g$, with $U_g$ the common kernel of the root covectors
+reachable from $g$ along the roles), and late copies sit at exact intersections of their use frames. The compiler's
+region maps are $\mathbb F_2$-linear, so its word identity holds over $\mathbb F_2$, which is all the bit network
+needs (\S\ref{sec:uses}); it is checked by an exact symbolic $\mathbb F_2$ replay with every scratch bit a separate
+symbol, for the compiled, the lifted and the final program.
 
 \section{Lifted frames and late copies}
 For an addition $n$ let $U_n$ be the common kernel of the root covectors reachable from $n$ and $F_j$ the span of
@@ -52,7 +67,7 @@ readouts happen at frame $0$, before the second pass. B-defer splits the second 
 
 \begin{itemize}
 \item \emph{Phase 1} is the closure of the retained totals' last operations under per-slot sequence precedence: every
-  op that must precede a total's completion. The totals complete, and their copies read every target containing
+  op that must precede a total's completion (for witness~2 with the frame-order edges of \S\ref{sec:closure}). The totals complete, and their copies read every target containing
   their centre at $0$ (copied centres, as in round six).
 \item A slot that phase 1 neither reads nor writes still holds its garbage after phase 1. It reads it out
   \emph{now}, at a frame $\sigma_u\le F_0(u)\cap\bigcap_{T}t_T^\perp$ (over its targets $T$), then the rest of $L$ runs,
@@ -67,6 +82,23 @@ in increasing $\dim\sigma_u$, and applies the deferred $V$ gates (below) in incr
 every $y_T$ sequence is nested in time order, exactly over $\mathbb Q$, for both the $\mathbb Z$ and the
 $\mathbb F_2$ supports of $C$; the reversed order breaks 11879 chains.
 
+\section{The phase-1 closure}\label{sec:closure}
+Phase~1 must contain every op that has to run before a retained total completes. Read/write precedence alone is
+enough for witness~1, whose slots move along a single chain of node frames. Under the joint frame compiler a role
+passes through several regions, and an op that touches a role at an earlier frame of its chain must run before any
+op that touches it at a later frame, or the role would have to step down its chain. The rule is therefore the
+closure of the retained totals' last writes under
+\begin{itemize}
+\item read/write edges: an op follows the last write of each role it reads or writes, and a write follows the
+  earlier reads of that role;
+\item frame-order edges: an op touching role $b$ at chain position $k$ follows every op touching $b$ at a lower
+  position (positions from the walk of the chain in the original op order, frames compared as exact subspaces).
+\end{itemize}
+For witness~2 the read/write closure has 25942 ops and the full closure 31542. The checks walk the actual reordered
+op sequence (phase~1, centre reads, deferred readouts, deferred $V$ gates, phase~2, output reads), and require every
+event to sit at a frame of both roles' chains with pointers that only move up; with the read/write closure alone that
+walk fails. The reordering keeps the version of every role seen by every op, so $L$ is unchanged as a map.
+
 \section{V leaves as late copies on $X_S$}
 A leaf $S$ is used by several gates. Instead of copying $x_S$ by fan-out, every use $i$ gets its own $V$ gate on the
 data wire $X_S$, into a slot that starts at
@@ -77,16 +109,17 @@ $s_i$ instead of $\langle t_S\rangle$. The $V$ gates of deferred slots come afte
 is $\langle t_S\rangle$, the early $V$ frames (by dimension), the deferred $V$ frames (by the rule above), $F$, and it
 is checked nested exactly in that order. The number of slots is unchanged.
 
-\section{What the certificate uses}
+\section{What the certificate uses}\label{sec:uses}
 \paragraph{Only the $\mathbb F_2$ flag identity.} The bit network is used over $\mathbb F_2$: the word must add exactly
 $x_T$ to every $y_T$ and restore every slot, for arbitrary scratch. The replay checks this over $\mathbb F_2$ with
 the parity coefficients (the actual circuit) and, separately, over $\mathbb Z$ with the exact path-count
-coefficients; the histogram and $a_b$ are the same with either support.
+coefficients (witness~1); the histogram and $a_b$ are the same with either support. For witness~2 the replay is
+symbolic over $\mathbb F_2$.
 
 \paragraph{The stage-two complement.} Stage two is the complement time-reversal of stage one, with the same edge
 multiset. This is the same assumption as in round six; it is stated, not machine-checked here.
 
-\paragraph{Frames and genericity.} Every $\sigma_u$ and $s_i$ is a primitive integer basis (entries at most 13).
+\paragraph{Frames and genericity.} Every $\sigma_u$ and $s_i$ is a primitive integer basis (entries at most 14).
 Exactly over $\mathbb Q$: $\sigma_u\le F_0(u)$, $\sigma_u\le t_T^\perp$, $t_S\le s_i\le N_i$, $G$ nondegenerate. Every
 high-rank step ($2r>h$) that the reordered word adds (slot starts, gauged corners $\sigma_u\to F$, $y_T$ and $X_S$
 chain steps) has the generic north-east pivots under both conjugations at the integer point of
@@ -97,14 +130,16 @@ Per stage and invocation: every slot contributes its auxiliary edge (block $m-2r
 by the inner lemma, and its chain steps; every centre copy its step $U_c\to0$ of rank $h-1$; every $y_T$ and every
 $X_S$ its chain of total rank $h-1$; the data entrance its block $m-4h+2$ and corner; one copy-correction singleton per
 pair. The rank sum is exactly $s=Wm-N+L$ with $W=2N+2vR$, $L=2vh(h-1)$, so the histogram re-partitions the round-six
-budget. The moment certificate gives
+budget. The moment certificate gives, with the staircase entrance corner (runs $h-2,h-5,1^6$) and with the round-six
+corner,
 \begin{align*}
- a_b&=31987/(5\cdot10^8) &&\text{(staircase entrance corner, runs $h-2,h-5,1^6$)},\\
- a_b&=12599/(2\cdot10^8) &&\text{(round-six entrance corner)},
+ \text{witness 2:}\quad a_b&=32761/(5\cdot10^8), &a_b&=12899/(2\cdot10^8),\\
+ \text{witness 1:}\quad a_b&=31987/(5\cdot10^8), &a_b&=12599/(2\cdot10^8),
 \end{align*}
-and with round six's complex interchange ($a_c=36926111/(5\cdot10^{11})$, $h=24$) the assembly gives
-$\kappa=1599247689723/(2.5\cdot10^{16})\approx6.39699\times10^{-5}$ with the staircase corner and
-$\kappa=6299103187973/10^{17}$ with the round-six corner. The staircase corner is certified by
-\texttt{check\_stair.py} at the same integer point; the entrance edge is not changed by the reordering.
+and with round six's complex interchange ($a_c=36926111/(5\cdot10^{11})$, $h=24$) the assembly gives the headline
+$\kappa=3275885357429/(5\cdot10^{16})\approx6.55177\times10^{-5}$ (witness~2, staircase corner); witness~2 with the
+round-six corner gives $3224542033151/(5\cdot10^{16})$, and witness~1 gives $1599247689723/(2.5\cdot10^{16})$ and
+$6299103187973/10^{17}$. The staircase corner is certified by \texttt{check\_stair.py} at the same integer point;
+the entrance edge is not changed by the reordering.
 
 \end{document}

@@ -1,11 +1,13 @@
-"""Round-seven witness, bit side: PR #62's producer (interval strips, core-aware pair assembly) on our two-stage
-interchange with retained totals, lifted frames and late copies, and the stage-1 word reordered (deferred readouts,
-V leaves); notes/deferred-readout.tex.
+"""Round-seven witnesses, bit side: our two-stage interchange with retained totals, lifted frames and late copies,
+and the stage-1 word reordered (deferred readouts, V leaves); notes/deferred-readout.tex. Two side programs:
+  1. PR #62's producer (interval strips, core-aware pair assembly), checked in independent/deferred-readout/;
+  2. PR #57's joint frame compiler on the COARSE=col side DAG (PR #69's balanced coarse sums, PR #60's
+     reclamation order), with the phase-1 closure of read/write and frame-order edges, checked in
+     independent/joint-frame-stack/. This is the headline.
 
-The child-width histogram is rebuilt here from the frozen schedule (certificates/round7/): every slot's frame chain
-from the nodes it holds, the deferred readout levels on every target from the garbage-coefficient supports of the
-schedule, and the X_S chains from the V-gate order. Frame dimensions are taken from the data file;
-independent/deferred-readout/check_frames.py re-derives each of them exactly, and check_word.py replays the word.
+The child-width histogram is rebuilt here from the frozen schedule (certificates/round7/): every role's frame chain
+in time, the deferred readout levels on every target from the readout rows, and the X_S chains from the V-gate
+order. Frame dimensions are taken from the data files; the checkers re-derive each frame exactly and replay the word.
 Two data-entrance corners are reported: the round-six corner (runs h-2, 1^(h+1)) and the staircase corner (runs h-2,
 h-5, 1^6, independent/deferred-readout/check_stair.py).
 
@@ -14,7 +16,8 @@ import os, sys
 from fractions import Fraction as Q
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path[:0] = [HERE, os.path.join(HERE, '..', 'independent', 'two-stage-bit'),
-                os.path.join(HERE, '..', 'independent', 'deferred-readout')]
+                os.path.join(HERE, '..', 'independent', 'deferred-readout'),
+                os.path.join(HERE, '..', 'independent', 'joint-frame-stack')]
 import moment
 import deferred as dr
 from certificate_round3 import evaluate
@@ -24,19 +27,30 @@ A_C, M_C, S_C = Q(36926111, 5 * 10**11), 576, 119453132304     # round-six compl
 # Every round-seven bit witness: its frozen files and its claimed savings with the two entrance corners.
 # The headline is the staircase variant of the last entry.
 WITNESSES = [
-    dict(name='PR #62 producer, lifted frames, late copies, deferred readouts, V leaves', h=23,
+    dict(name='PR #62 producer, lifted frames, late copies, deferred readouts, V leaves', kind='deferred', h=23,
          witness='witness_23.json.gz', data='deferred_23.json.gz',
          plain=(Q(12599, 200000000), Q(6299103187973, 10**17)),
          staircase=(Q(31987, 500000000), Q(1599247689723, 25 * 10**15))),
+    dict(name='joint frame compiler (COARSE=col), lifted frames, late copies, deferred readouts, V leaves', kind='jfstack', h=23,
+         plain=(Q(12899, 200000000), Q(3224542033151, 5 * 10**16)),
+         staircase=(Q(32761, 500000000), Q(3275885357429, 5 * 10**16))),
 ]
 HEADLINE = WITNESSES[-1]
 CORNERS = (('plain', 'round-six entrance corner', dr.ROUND6_CORNER), ('staircase', 'staircase entrance corner', dr.STAIRCASE_CORNER))
 
 
 def build(wit=HEADLINE):
-    h = wit['h']; W, D = dr.load(h, wit['witness'], wit['data']); S = dr.Schedule(W, D)
-    cov = S.adjoint(); ylev = S.ylevels(cov); rk = dr.chain_ranks(S); xd = S.xdata()
+    h = wit['h']
+    if wit['kind'] == 'jfstack':
+        import jfdata
+        K = jfdata.load(h); _, eqid = jfdata.load_frames(h)
+        rk, ylev, xd, ro = jfdata.accounting(K, eqid); S = jfdata.Shape(K)
+        S.readout = ro['defer_order']; S.vstart = K['VS']
+    else:
+        W, D = dr.load(h, wit['witness'], wit['data']); S = dr.Schedule(W, D)
+        cov = S.adjoint(); ylev = S.ylevels(cov); rk = dr.chain_ranks(S); xd = S.xdata()
     assert all(sum(x) == h - 1 for x in xd)
+    assert sum(r * c for r, c in rk.items()) == sum(h - f for f in S.f)        # chain ranks == corner ranks
     return S, rk, ylev, xd
 
 
@@ -64,7 +78,7 @@ def certify(wit):
 def main():
     for wit in WITNESSES:
         S, out = certify(wit)
-        print('%s: h=%d R=%d, deferred slots %d, V-leaf slots %d' % (wit['name'], S.h, S.R, len(S.readout), len(S.vstart)))
+        print('%s: h=%d R=%d, deferred roles %d, V-leaf roles %d' % (wit['name'], S.h, S.R, len(S.readout), len(S.vstart)))
         for key, label, _ in CORNERS:
             a, k, c = out[key]
             print('  %s: s = Wm - N + L = %d (rank sum exact), W = %d, a_b = %s (%.6e), kappa = %s (%.7e) ok=%s' % (

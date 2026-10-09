@@ -156,7 +156,7 @@ def garbage(B, W):
 
 def run(h, flags, eta, seed, control=None):
     B = c7.build(h, allE='allE' in flags, lift='lift' in flags, defer='defer' in flags, late='late' in flags,
-                 vleaf='vleaf' in flags, climb='climb' in flags, pstar=(6 if 'ival+' in flags else 5 if 'ival' in flags else 4 if 'dual+' in flags else 3 if 'dual' in flags else 2 if 'pstar2' in flags else 1 if 'pstar' in flags else 0), links='links' in flags, pasm='pasm' in flags, ivec='ivec' in flags, prio='prio' in flags, clos='clos' in flags, dag=None, alt='alt' in flags, verbose=False)
+                 vleaf='vleaf' in flags, climb='climb' in flags, pstar=(6 if 'ival+' in flags else 5 if 'ival' in flags else 4 if 'dual+' in flags else 3 if 'dual' in flags else 2 if 'pstar2' in flags else 1 if 'pstar' in flags else 0), links='links' in flags, pasm='pasm' in flags, ivec='ivec' in flags, prio='prio' in flags, alt='alt' in flags, verbose=False)
     W = updates(B); badG = garbage(B, W)
     if control == 'skipread':
         k = next(i for i, w in enumerate(W) if w[2] == 'read' and w[1] and w[3]); W[k][3] = []

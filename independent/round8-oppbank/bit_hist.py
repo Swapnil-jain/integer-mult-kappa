@@ -54,13 +54,14 @@ def main(argv):
     assert (c['W'], c['s']) == (base['W'], base['s']), 'W and s must equal round seven'
     out = dict(side='bit', source='opposite-bank one-run compile of round-7.1 witness 2 (h=%d)' % S.h,
                m=c['m'], W=c['W'], s=c['s'], hist=sorted(c['hist'].items()),
+               bound='inv', den=10**9,                    # the bound and grid of the gated a_b
                stop=dict(theta=str(THETA), a_old=str(a_old)))
     print('h=%d R=%d W=%d s=%d widths=%d max=%d a_old=%s' % (S.h, S.R, c['W'], c['s'], len(c['hist']), max(c['hist']), a_old))
     if argv:
         json.dump(out, open(argv[0], 'w')); print('wrote', argv[0]); return
     with gzip.open(os.path.join(ROOT, 'certificates', 'round8', 'bit_hist.json.gz'), 'rt') as f:
         fz = json.load(f)
-    same = all(fz[k] == out[k] for k in ('m', 'W', 's', 'stop')) and [list(p) for p in out['hist']] == fz['hist']
+    same = all(fz[k] == out[k] for k in ('m', 'W', 's', 'stop', 'bound', 'den')) and [list(p) for p in out['hist']] == fz['hist']
     print('matches certificates/round8/bit_hist.json.gz:', same)
     assert same
 

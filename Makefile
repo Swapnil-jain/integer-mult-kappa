@@ -40,17 +40,21 @@ round8:
 	python3 -I independent/round8-coreshare/partition_check.py certificates/round8/pr128_partition_mrp24.json | grep 'PASS$$'
 	python3 -m unittest tests.test_round8 -v
 
-# Round eight, heavy checks (a many-core machine, a few GB per process): the complex histogram rebuilt from the
-# word, the independent walk and exact Q(i) replay of that word, the exact replay of the sharing, and the
-# all-edges bit gate. Memory: replay.py about 8 GB, e2e_share.py at h = 24 more than 15 GB, each gate process
-# about 0.75 GB (run_gate.sh runs J = 12 at once).
+# Round eight, heavy checks (a many-core machine with numpy and a C compiler): the complex histogram rebuilt from the
+# word (about 7 GB), the independent exact Q(i) replay of the shared word in /tmp/round8-cx (build about 9 GB,
+# replay about 9 GB, two seeds), its walk, exterior and certificate checks, and the all-edges bit gate (J processes
+# of about 0.75 GB each).
 round8-heavy:
 	python3 independent/round8-coreshare/complex_hist.py
-	python3 independent/round8-complex-gate/build_word.py /tmp/round8_word24.pkl
-	cd independent/round8-complex-gate && python3 walkcheck.py /tmp/round8_word24.pkl | grep "'PASS': True"
-	cd independent/round8-complex-gate && python3 replay.py /tmp/round8_word24.pkl 1 | grep "'PASS': True"
+	mkdir -p /tmp/round8-cx
+	cd /tmp/round8-cx && python3 $(CURDIR)/independent/round8-complex-gate/build_word.py 24 allE,alt,links,dag117 pr128 w24.pkl
+	cd /tmp/round8-cx && python3 $(CURDIR)/independent/round8-complex-gate/sreplay.py w24.pkl 1 own | grep "'PASS': True"
+	cd /tmp/round8-cx && python3 $(CURDIR)/independent/round8-complex-gate/sreplay.py w24.pkl 2 own | grep "'PASS': True"
+	cd /tmp/round8-cx && python3 $(CURDIR)/independent/round8-complex-gate/walk2.py w24.pkl | grep "'PASS': True"
+	cd /tmp/round8-cx && python3 $(CURDIR)/independent/round8-complex-gate/excheck.py w24.pkl | grep '"PASS": true'
+	cd /tmp/round8-cx && python3 $(CURDIR)/independent/round8-complex-gate/cert2.py hist_w24_1_own.pkl
+	python3 independent/round8-coreshare/complex_hist.py --gate /tmp/round8-cx/hist_w24_1_own.pkl
 	cd independent/round8-complex-gate && python3 endpoint.py
-	python3 independent/round8-coreshare/e2e_share.py 24 allE,alt,links,dag117,lift,defer,vleaf,clos 2 | grep "'PASS': True"
 	independent/round8-oppbank/run_gate.sh
 
 lean:

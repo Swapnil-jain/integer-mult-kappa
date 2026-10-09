@@ -7,16 +7,19 @@ width e^theta and the usable bit saving is the mix
     a_b = (1 - theta) a* + theta a_old,   valid iff theta > a_b,
 with a* the moment saving of the one-run histogram and a_old an already certified saving of the same witness
 (round seven, round-six entrance corner).
-Complex side: our two-stage complex word (allE, alt, links, PR #117 DAG, lifted frames, B-defer, V leaves, closure)
-with completed-core scratch sharing (PR #128's mechanism, independent/round8-coreshare/).
+Complex side: our two-stage complex word on eumemic's frozen addition DAG (PR #117) with signed dependence
+reclamation (James Chang, PR #112) and completed-core sharing (Andrey Mas, PR #128), one fix-up child per group and
+stream (independent/round8-coreshare/, gated by independent/round8-complex-gate/).
 
-Both savings are certified with rigorous rational bounds: L_w >= ln(m/w) (moment.ln_upper, rounded up) and
-exp(x) <= 1 + x + x^2/2 + x^3/(6(1 - x/4)), so (m/w)^a <= exp_up(a L_w); lean/Round8.lean checks the same bound in the
-kernel (momentExpOK). Assembly: certificate_round3.evaluate(a_b, a_c, 1/1000, 'crude',
-m_c, s_c) with s_c the complex rank sum.
+Savings are certified with rigorous rational bounds: L_w >= ln(m/w) (moment.ln_upper, rounded up), and either
+(m/w)^a <= 1/(1 - a L_w) ('inv', the bound of rounds five to seven; the bit side, grid 10^-9, as gated) or
+(m/w)^a <= exp_up(a L_w) with exp(x) <= 1 + x + x^2/2 + x^3/(6(1 - x/4)) ('exp'; the complex side, grid 10^-12).
+lean/Round8.lean checks the same bounds in the kernel (momentOK, momentExpOK). Assembly: certificate_round3.evaluate(
+a_b, a_c, 1/1000, 'crude', m_c, s_c) with s_c the complex rank sum; extra_rows() is the hook for further rows.
 
-A histogram file is JSON (optionally gzipped): {side, source, m, W, s, hist: [[width, count], ...]}; the bit file
-also carries stop = {theta, a_old} as 'p/q' strings. Optional 'claim' (bit: a_star, complex: a_c) is asserted.
+A histogram file is JSON (optionally gzipped): {side, source, m, W, s, hist: [[width, count], ...]}, optionally
+bound ('exp' default, or 'inv' = (m/w)^a <= 1/(1 - a L_w)) and den (grid, default 10^12); the bit file also carries
+stop = {theta, a_old} as 'p/q' strings. Optional 'claim' (bit: a_star, complex: a_c) is asserted.
 
 Usage:
   python3 scripts/certificate_round8.py                       # check the frozen files in certificates/round8/
@@ -74,15 +77,24 @@ def F_exp_upper(c, a, lu):
     return sum(Q(n * w, m) * exp_up(a * lu[w]) for w, n in c['hist'].items()) / c['W']
 
 
-def certify_saving(c, den=DEN):
-    """Largest a on the 1/den grid with F_exp_upper(c, a) < 1, by bisection on the exact upper bound.
-    The same bound (same L_w, same exp_up) is checked in the Lean kernel by momentExpOK. Returns (a, float root)."""
+def F_inv_upper(c, a, lu):
+    """moment.F_upper: (m/w)^a <= 1/(1 - a L_w), the bound of rounds five to seven (momentOK in Lean)."""
+    return moment.F_upper(c, a, lu)
+
+
+BOUNDS = {'exp': F_exp_upper, 'inv': F_inv_upper}
+
+
+def certify_saving(c, den=DEN, bound='exp'):
+    """Largest a on the 1/den grid with BOUNDS[bound](c, a) < 1, by bisection on the exact upper bound.
+    Lean checks the same bound (momentExpOK for 'exp', momentOK for 'inv'). Returns (a, float root)."""
+    F = BOUNDS[bound]
     lu = {w: ln_up_grid(Q(c['m'], w)) for w in c['hist']}
     lo, hi = 0.0, 0.05
     for _ in range(200):
         mid = (lo + hi) / 2
         lo, hi = (mid, hi) if moment.F_float(c, mid) < 1 else (lo, mid)
-    ok = lambda n: n == 0 or F_exp_upper(c, Q(n, den), lu) < 1
+    ok = lambda n: n == 0 or F(c, Q(n, den), lu) < 1
     a, b = 0, int(lo * den) + 2                  # ok(a) holds; ok(b) fails (the float root bounds the exact one)
     assert not ok(b)
     while b - a > 1:
@@ -103,8 +115,8 @@ def check_hist(d):
 
 def certify(bit, cx):
     cb, cc = check_hist(bit), check_hist(cx)
-    astar, root_b = certify_saving(cb)
-    a_c, root_c = certify_saving(cc)
+    astar, root_b = certify_saving(cb, int(bit.get('den', DEN)), bit.get('bound', 'exp'))
+    a_c, root_c = certify_saving(cc, int(cx.get('den', DEN)), cx.get('bound', 'exp'))
     theta, a_old = Q(bit['stop']['theta']), Q(bit['stop']['a_old'])
     a_b = (1 - theta) * astar + theta * a_old
     assert 0 < a_old < astar and theta > a_b, 'stopping: theta must exceed a_b'
@@ -147,9 +159,9 @@ def freeze(r, bit, cx):
     lean = dict(sides=[['bit', 'bit interchange, opposite bank orders (one-run histogram, moment at a*)'],
                        ['cx', 'complex interchange, completed-core sharing']],
                 kappas=[['kappa', 'bit']],
-                bit=dict(a=fr(r['astar']), bound='exp', m=r['cb']['m'], W=r['cb']['W'], s=r['cb']['s'], hist=bit['hist'],
+                bit=dict(a=fr(r['astar']), bound=bit.get('bound', 'exp'), m=r['cb']['m'], W=r['cb']['W'], s=r['cb']['s'], hist=bit['hist'],
                          stop=dict(theta=fr(r['theta']), a_old=fr(r['a_old']), ab=fr(r['a_b']))),
-                cx=dict(a=fr(r['a_c']), bound='exp', m=r['cc']['m'], W=r['cc']['W'], s=r['cc']['s'], hist=cx['hist']),
+                cx=dict(a=fr(r['a_c']), bound=cx.get('bound', 'exp'), m=r['cc']['m'], W=r['cc']['W'], s=r['cc']['s'], hist=cx['hist']),
                 kappa=dict(beta=fr(BETA), eps=fr(k['eps']), x=fr(k['x']), c1=fr(k['c1']), kappa=fr(k['kappa']), mc=r['cc']['m']))
     json.dump(lean, open(os.path.join(ROOT, 'lean', 'round8-histograms.json'), 'w'))
     print('froze certificates/round8/{bit,cx}_hist.json.gz and lean/round8-histograms.json')

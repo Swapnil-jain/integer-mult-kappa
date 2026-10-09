@@ -52,7 +52,7 @@ if __name__ == '__main__':
     a, Mup, Mlo_next = certify(H, W, m)
     print(dict(a_c=str(a), a_c_float=float(a), upper_M_at_a=float(Mup), lower_M_next=float(Mlo_next),
                certified=Mup < 1, largest=Mlo_next > 1))
-    sys.path.insert(0, os.path.expanduser('~/integer-mult-kappa/scripts'))
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'scripts'))
     import certificate_round3 as C
     r = C.evaluate(Q(6338633, 5 * 10 ** 10), a, Q(1, 1000), 'crude', m_c=576, s_c=s)
     print(dict(ok=r['ok'], kappa=str(r['kappa']), kappa_float=float(r['kappa']), binding=r['binding'], bad=r['bad'], eps=float(r['eps'])))

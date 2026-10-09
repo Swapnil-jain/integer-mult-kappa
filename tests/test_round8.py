@@ -25,16 +25,24 @@ class Round8(unittest.TestCase):
         self.assertEqual(self.r['a_c'], Q(self.cx['claim']['a_c']))
 
     def test_grid_point_is_largest(self):
-        for c, a in ((self.r['cb'], self.r['astar']), (self.r['cc'], self.r['a_c'])):
+        for d, c, a in ((self.bit, self.r['cb'], self.r['astar']), (self.cx, self.r['cc'], self.r['a_c'])):
+            F, den = c8.BOUNDS[d.get('bound', 'exp')], int(d.get('den', c8.DEN))
             lu = {w: c8.ln_up_grid(Q(c['m'], w)) for w in c['hist']}
-            self.assertLess(c8.F_exp_upper(c, a, lu), 1)
-            self.assertFalse(c8.F_exp_upper(c, a + Q(1, c8.DEN), lu) < 1)
+            self.assertLess(F(c, a, lu), 1)
+            self.assertFalse(F(c, a + Q(1, den), lu) < 1)
 
     def test_stopped_mix(self):
         r = self.r
         self.assertEqual(r['a_b'], (1 - r['theta']) * r['astar'] + r['theta'] * r['a_old'])
         self.assertLess(r['a_b'], r['theta'])
         self.assertLess(r['a_b'], r['astar'])
+
+    def test_release_values(self):
+        # the gated values of the round-eight release
+        self.assertEqual(self.r['a_b'], Q(6338633, 5 * 10**10))
+        self.assertEqual(self.r['a_c'], Q(3945999, 31250000000))
+        self.assertEqual((self.r['cc']['s'], self.r['cc']['W'], max(self.r['cc']['hist'])), (7410813248, 12869228, 529))
+        self.assertEqual(self.r['k']['kappa'], Q(12612978530233, 10**17))
 
     def test_kappa(self):
         k = self.r['k']

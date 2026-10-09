@@ -8,6 +8,7 @@ step), so u needs no fresh copy. If the linked value is args[x][0], x takes args
 (orientation change). Each donor gives one slot, each use receives at most one: maximum bipartite matching
 (Hopcroft-Karp). Slots: R = #additions + #roots - #links."""
 from collections import defaultdict, deque
+PIVOT_SMALL_DEAD = [False]
 
 
 def hopcroft_karp(adj, nl):
@@ -84,7 +85,9 @@ def compile_links(c, lab, X, tperp, tkey, verbose=True):
             u = ulist[ml[i]]
             pos = next(k % 2 for k in adj[i] if k // 2 == ml[i])
             link[u] = (x, pos)
-    piv = {x: 0 for x in donors}
+    # unlinked donors: the larger argument stays in place, so the slot left behind holds the smaller signal
+    # (easier to clear exactly by dependence reclamation); PIVOT_SMALL_DEAD = False keeps the original order
+    piv = {x: (1 if PIVOT_SMALL_DEAD[0] and bin(c.sup[args[x][1]]).count('1') > bin(c.sup[args[x][0]]).count('1') else 0) for x in donors}
     for u, (x, pos) in link.items():
         piv[x] = 1 - pos                         # the linked value's slot must be the non-pivot one
     # slot assignment

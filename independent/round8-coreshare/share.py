@@ -78,3 +78,73 @@ def shared(B, w, groups=GROUPS, mode='merge'):
 
 def est(H, W, m, s):
     lam = sum(n * r * math.log(m / r) for r, n in H.items()); return (W * m - s) / lam
+
+
+def drop_choice(B, groups=GROUPS):
+    """Deferred slots whose deferral no longer pays under sharing: the shared fix-up costs f(e + k sigma) - f(e) per
+    group (merged) while deferral saves k [f(old chain steps) - f(new)] per group. Returns the slots to un-defer
+    (their readout goes back to frame 0, pass one). The y-chain change is not priced here; the exact re-walk is."""
+    X = B['X']; h = B['h']; m = B['m']; F = X.F
+    chs = slot_chains(B); drop = []
+    steps = lambda c: [abs(len(b) - len(a)) for a, b in zip(c, c[1:]) if a != b]
+    for q, ch in enumerate(chs):
+        if not ch[0]: continue
+        old = steps(ch); new = steps([()] + ch[1:])
+        merge = len(ch) >= 2 and ch[-1] == F and ch[-2] != F and X.le(ch[0], ch[-2])
+        e = len(F) - len(ch[-2]) if merge else 0
+        sig = len(ch[0]); gain = 0.0
+        for k in groups:
+            comp = (h - k) * h
+            fix_keep = lamf(e + k * sig + comp, m) - lamf(e, m) if merge else lamf(k * sig + comp, m)
+            fix_drop = (lamf(e + comp, m) - lamf(e, m)) if merge else lamf(comp, m)
+            gain += k * (sum(lamf(r, m) for r in new) - sum(lamf(r, m) for r in old)) - (fix_keep - fix_drop)
+        if gain < 0: drop.append(q)
+    return drop
+
+
+def undefer(B, drop):
+    """move the readouts of the given slots to frame 0 (front of the word, with the other pass-one readouts)."""
+    drop = set(drop); front = []; rest = []
+    for o in B['ops']:
+        if o[2] == 'read' and o[1] and o[0][0][1] in drop:
+            o = list(o); o[1] = (); front.append(type(B['ops'][0])(o) if isinstance(B['ops'][0], tuple) else o)
+        elif o[2] == 'read' and not o[1]: front.append(o)
+        else: rest.append(o)
+    B = dict(B); B['ops'] = front + rest
+    B['sigma'] = {q: s for q, s in B.get('sigma', {}).items() if q not in drop}
+    return B
+
+
+def drop_choice(B, groups=GROUPS):
+    """Deferred slots whose deferral no longer pays under sharing: the shared fix-up costs f(e + k sigma) - f(e) per
+    group (merged) while deferral saves k [f(old chain steps) - f(new)] per group. Returns the slots to un-defer
+    (their readout goes back to frame 0, pass one). The y-chain change is not priced here; the exact re-walk is."""
+    X = B['X']; h = B['h']; m = B['m']; F = X.F
+    chs = slot_chains(B); drop = []
+    steps = lambda c: [abs(len(b) - len(a)) for a, b in zip(c, c[1:]) if a != b]
+    for q, ch in enumerate(chs):
+        if not ch[0]: continue
+        old = steps(ch); new = steps([()] + ch[1:])
+        merge = len(ch) >= 2 and ch[-1] == F and ch[-2] != F and X.le(ch[0], ch[-2])
+        e = len(F) - len(ch[-2]) if merge else 0
+        sig = len(ch[0]); gain = 0.0
+        for k in groups:
+            comp = (h - k) * h
+            fix_keep = lamf(e + k * sig + comp, m) - lamf(e, m) if merge else lamf(k * sig + comp, m)
+            fix_drop = (lamf(e + comp, m) - lamf(e, m)) if merge else lamf(comp, m)
+            gain += k * (sum(lamf(r, m) for r in new) - sum(lamf(r, m) for r in old)) - (fix_keep - fix_drop)
+        if gain < 0: drop.append(q)
+    return drop
+
+
+def undefer(B, drop):
+    """move the readouts of the given slots to frame 0 (front of the word, with the other pass-one readouts)."""
+    drop = set(drop); front = []; rest = []
+    for o in B['ops']:
+        if o[2] == 'read' and o[1] and o[0][0][1] in drop:
+            o2 = list(o); o2[1] = (); front.append(tuple(o2) if isinstance(o, tuple) else o2)
+        elif o[2] == 'read' and not o[1]: front.append(o)
+        else: rest.append(o)
+    B = dict(B); B['ops'] = front + rest
+    B['sigma'] = {q: s for q, s in B.get('sigma', {}).items() if q not in drop}
+    return B

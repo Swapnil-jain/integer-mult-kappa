@@ -1,4 +1,4 @@
-"""Own GF(2) linear algebra for the gate (written independently of independent/round8-coreshare/frames.py).
+"""Own GF(2) linear algebra for the gate (written independently of independent/round8-coreshare/lib/frames.py).
 Vectors are Python ints (bit i = coordinate i). A subspace is any list of spanning vectors; key() gives a canonical
 form (fully reduced row echelon keyed by the highest set bit), so two spans are equal iff their keys are equal."""
 

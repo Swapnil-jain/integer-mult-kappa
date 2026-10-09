@@ -1,4 +1,4 @@
-.PHONY: verify roles round4 round7 round8 round8-heavy lean notes
+.PHONY: verify roles round4 round7 round8 round8-heavy round9 round9-heavy lean notes
 verify:
 	python3 scripts/check_identities.py
 	python3 scripts/check_segmented_inverse.py
@@ -57,6 +57,28 @@ round8-heavy:
 	cd independent/round8-complex-gate && python3 endpoint.py
 	independent/round8-oppbank/run_gate.sh
 
+# Round nine, fast checks (standard library, seconds): PR #144's published kappa, constraints and margins reproduced
+# from its published inventories, then our certificate from the frozen inventories, and the tests.
+round9:
+	python3 scripts/certificate_round9.py
+	python3 -m unittest tests.test_round9 -v
+
+# Round nine, heavier checks (numpy; about 1.5 GB and a few minutes each): the source-bound ledger of witness 2 with
+# gauge omission and its negative controls, the independent re-certification, the role-by-role recount of PR #144's
+# complex module, the cube algebra, literal replays and cross-stage sharing, and the three-stage cover replay.
+round9-heavy:
+	cd independent/round9-bit-ledger && python3 ledger.py --out /tmp/round9_ledger.json | grep 'ALL PASS'
+	cd independent/round9-bit-ledger && python3 cert.py /tmp/round9_ledger.json | grep '"kappa_floor_1e10": 4663738'
+	for c in drop_prelude_read wrong_coefficient chain_not_subsequence late_prelude; do \
+	  ! (cd independent/round9-bit-ledger && python3 ledger.py --ctl $$c 2>&1 | grep -q 'ALL PASS') || exit 1; done
+	cd independent/round9-complex-recount && python3 recount144.py | grep 'children == published: True'
+	cd independent/round9-audit144 && python3 cube_alg.py 4 5 | grep 'ALL OK'
+	cd independent/round9-audit144 && python3 cube_lit.py 5 lit 6 gauge omit | grep 'ALL PASS'
+	cd independent/round9-audit144 && ! python3 cube_lit.py 5 lit 7 gauge omit control=noprelude | grep -q 'ALL PASS'
+	cd independent/round9-audit144 && python3 share_lit.py 3 1 | grep 'ALL PASS'
+	cd independent/round9-audit144 && ! python3 share_lit.py 3 1 lockstep | grep -q 'ALL PASS'
+	cd independent/round9-cover-e2e && python3 cover_e2e.py 10 allE,dual+,alt,links,pasm,ivec,lift,defer,vleaf,clos 1 2 | grep "'PASS': True"
+
 lean:
 	python3 lean/gen.py
 	lean lean/Round5.lean
@@ -67,6 +89,8 @@ lean:
 	lean lean/Round7.lean
 	python3 lean/gen.py round8-histograms.json Round8.lean
 	lean lean/Round8.lean
+	python3 lean/gen.py round9-histograms.json Round9.lean
+	lean lean/Round9.lean
 
 notes:
 	tectonic -X compile --outdir artifacts notes/segmented-inverse.tex

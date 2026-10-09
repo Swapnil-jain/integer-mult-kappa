@@ -22,8 +22,9 @@ figures compare asymptotic exponents, not practical runtimes.
 (`certificates/round8/`) and assembles them with `scripts/certificate_round3.py` (`beta = 1/1000`, crude guard).
 
 **Bit side: opposite bank orders on our round-seven witness 2.** The schedule, frames and payload word of round
-seven's headline witness (`h = 23`, `R = 27794`) are unchanged; only the address geometry of each interchange is
-recompiled, following PR #104:
+seven's headline witness (`h = 23`, `R = 27794`; Avi Eisenberg's producer, ikeboy, PR #62, compiled by eumemic's
+joint frame compiler, PR #57) are unchanged; only the address geometry of each interchange is
+recompiled with opposite bank orders (IceKylin, icekylinx, PR #104):
 
 - In one common generic rational basis, every residual idempotent of rank `r` has nonzero leading principal minors
   `1..r` (a Zariski-density argument; all our residuals are rational idempotents because the frames are nested and
@@ -40,10 +41,12 @@ recompiled, following PR #104:
 This certifies the one-run saving `a* = {A_STAR}` and the stopped `a_b = {A_B}`.
 
 **Complex side: completed-core sharing on our two-stage complex word.** Our `h = 24` complex word (retained
-centres, PR #24's normal form for alternating residuals, PR #104's carrier matching, lifted frames, deferred
-readouts, V leaves and the phase-1 closure) is built on PR #117's frozen addition DAG (read as data; every support is
-recomputed). On top of it we reimplemented PR #128's completed-core sharing: the triples are split into 87
-binary-orthonormal groups (83 of size 24, 4 of size 8, PR #128's partition), the cores of a group run consecutively
+centres, the normal form for alternating residuals (IceKylin, icekylinx, PR #24), carrier matching (IceKylin,
+icekylinx, PR #104), lifted frames, deferred
+readouts, V leaves and the phase-1 closure) is built on the frozen `h = 24` addition DAG of eumemic (PR #117), read as
+data, with every support recomputed. On top of it we reimplemented completed-core sharing (Andrey Mas, an664,
+PR #128): the triples are split into 87
+binary-orthonormal groups (83 of size 24, 4 of size 8; Andrey Mas's partition, after Zhang and Ge), the cores of a group run consecutively
 on one bank of auxiliaries with dirty scratch, and the per-core wrap child is replaced by one fix-up child per
 group and stream, merged into the core's last step where that is legal. This certifies `a_c = {A_C}`.
 
@@ -243,7 +246,7 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Two-stage side circuit at h=47 | Our generator (`independent/two-stage-bit/sidegen.py`) reproduces the published h=32 count, 123157, and an exact checker (`checkside.py`) verifies supports, disjoint children, common points and every output at h=28 to 50; `moment.py` builds the child histogram role by role and checks it sums to s |
 | Complex source frames | Written proof (`notes/complex-source-frames.tex`); exact label and phase checks of every endpoint case (`independent/complex-network/sourceframe_labels.py`); a three-stage scalar simulation of PR #7's network with source frames, arbitrary scratch and a negative control (`sourceframe_sim.py`); the histogram option `sf` keeps the exact rank sum s |
 | Round-seven bit side (deferred readouts, V leaves, lifted frames, late copies; two side programs) | Frozen schedules and frames (`certificates/round7/`); stdlib replays over F2 (and Z for witness 1) with arbitrary scratch, walks of the reordered op sequence, exact frame checks over Q, side lemma at one integer point, histogram rebuilt from the schedule, negative controls (`independent/deferred-readout/`); Lean kernel check of the moment certificates and assembly. Stage two as the complement time-reversal of stage one is assumed |
-| Round-eight bit side (opposite bank orders, stopped interchange) | Same frozen schedule as round seven; histogram rebuilt from it; all-edges common-basis check with fast-prime passes re-checked mod `2^61 - 1`, Bruhat sample and negative controls (`independent/round8-oppbank/`); Lean kernel check of the moment, stopped mix and assembly. The existence of the common basis, the factorization lemma and the stopped recurrence follow PR #104's written argument |
+| Round-eight bit side (opposite bank orders, stopped interchange) | Same frozen schedule as round seven; histogram rebuilt from it; all-edges common-basis check with fast-prime passes re-checked mod `2^61 - 1`, Bruhat sample and negative controls (`independent/round8-oppbank/`); Lean kernel check of the moment, stopped mix and assembly. The existence of the common basis, the factorization lemma and the stopped recurrence follow IceKylin's written argument (icekylinx, PR #104) |
 | Round-eight complex side (completed-core sharing) | Histogram rebuilt from the word; exact `Q(i)` replays of the word and of the sharing with dirty scratch and controls; partition checked (`independent/round8-coreshare/`, `independent/round8-complex-gate/`) |
 | Topology-free guard | Written argument (docstring of `scripts/certificate_round3.py`); the witness is stated with this guard |
 | Prior results from PR #10, #13 and #15, and the two-stage motif | Assumed. We reproduced their rank moments, certified at least PR #15's fully batched saving from our own histogram, and found controlled-basis witnesses for PR #10 at h=8 to 14 |

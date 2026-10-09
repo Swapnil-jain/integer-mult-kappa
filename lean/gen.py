@@ -1,5 +1,5 @@
 """Emit a Lean 4 (core only) file that checks, in the kernel with exact arithmetic, the moment certificates of a
-witness (round five by default; rounds six to nine from their histogram files; round nine uses emit_cover144) for every child-width histogram,
+witness (round five by default; rounds six to ten from their histogram files; rounds nine and ten use emit_cover144) for every child-width histogram,
   (1) the widths times multiplicities sum to the total rank s;
   (2) every width w < m, and the rational upper bound L_w of ln(m/w) is computed from its series formula
       (ln x = k ln 2 + 2 atanh((y-1)/(y+1)), partial sum of 30 terms plus a geometric tail);
@@ -198,7 +198,33 @@ def assemblyOK (ab ac beta eta gap kappa : Q) : Bool :=
 '''
 
 
-def emit_cover144():
+# Round ten (kind = 'cover10', scripts/certificate_round10.py --freeze): round nine's checks on fractional cover
+# profiles. Each side's counts, W, s and edges are multiplied by its lcm L of weight denominators (the moment
+# inequality is homogeneous, so the scaled integers certify the same saving), and the bridge is bridgeOK10, which
+# takes L and multiplies the data roles by it, as certificate_round10.finite_bridge does.
+EXTRA10 = r'''
+-- round nine's bridgeOK with the per-vertex stock scaled by L: W0 and s0 are already L times the per-vertex values,
+-- the data count is N = V v L, and the local program size uses the unscaled v and R
+def bridgeOK10 (m r W0 s0 v L h R cAdd mops dc wc reserve degree : Nat) : Bool :=
+  let n := m / 2
+  let V := 2 ^ (m - 1 + (n - 1) * (n - 1)) * prod4 (n - 1)
+  let N := V * v * L
+  let W := V * W0
+  let s := V * s0
+  let loc := 4 * (cAdd + v) + 10 * v + 4 * h * v + 4 * h * h + 8 * h + 8 + 2 * h + 8 * R * v * (mops + 16) + 32 * v
+  let logical := 3 * V * loc + 8 * W + 4 * N + 8 * m * R * V
+  let G := 64 * (m + 1) ^ 3 * (logical + 1) * (W + 1) ^ 2
+  let E := 64 * (W + m + G + 1) ^ 3
+  let charge := 2 * G * W * W + 8 * s + 4 * W + 4 + 32 * m
+  let B := s + E
+  (0 < r) && (r < m) && (0 < L) && (charge < E) && (s + E ≤ 2 * B * (m - r)) && (2 * B + 18 < 32 * m * B * B)
+    && (0 < dc) && (2 * r ^ dc < m ^ dc) && (dc == 1 || m ^ (dc - 1) ≤ 2 * r ^ (dc - 1))
+    && (0 < wc) && (2 ^ (wc - 1) ≤ W) && (W < 2 ^ wc)
+    && (51 * (dc * wc + reserve) < 25 * degree)
+'''
+
+
+def emit_cover144(round10=False):
     b, c = D['bit'], D['cx']
     fb = (32 * b['m'] ** 2 * b['edges'] * D['bad'][0], D['bad'][1])
     st = b['stop']
@@ -209,23 +235,32 @@ def emit_cover144():
                *b['a'], b['m'], b['W'], *fb),
            'theorem bit_stopped : stopOK9 (%d, %d) (%d, %d) (%d, %d) (%d, %d) = true := by decide +kernel' % (
                *b['a'], *st['a_old'], *st['theta'], *st['ab']),
+           *(['theorem bit_rung_%d : stopOK9 (%d, %d) (%d, %d) (%d, %d) (%d, %d) = true := by decide +kernel' % (
+               j, *b['a'], *st['rungs'][j - 1], *st['theta'], *st['rungs'][j]) for j in range(1, len(st['rungs']) - 1)]
+             if len(st.get('rungs', [])) > 2 else []),
            '-- complex side: %s' % c['label'],
            'def cxHist : List (Nat × Nat) := %s' % lst(c['hist']),
            'theorem cx_rank_sum : rankSum cxHist = %d := by decide +kernel' % c['s'],
            'theorem cx_moment : momentCoverOK cxHist (%d, %d) %d %d (0, 1) = true := by decide +kernel' % (
                *c['a'], c['m'], c['W']),
-           'theorem cx_bridge : bridgeOK %d %d %d %d %d %d %d %d %d %d %d %d %d = true := by decide +kernel' % (
+           ('theorem cx_bridge : bridgeOK10 %d %d %d %d %d %d %d %d %d %d %d %d %d %d = true := by decide +kernel' % (
+               c['m'], c['maxchild'], c['W'], c['s'], c['v'], c['lcm'], c['h'], c['R'], c['cAdd'], c['mops'],
+               c['halving'], c['wire_bits'], D['row_reserve'], D['row_degree'])) if round10 else
+           ('theorem cx_bridge : bridgeOK %d %d %d %d %d %d %d %d %d %d %d %d %d = true := by decide +kernel' % (
                c['m'], c['maxchild'], c['W'], c['s'], c['v'], c['h'], c['R'], c['cAdd'], c['mops'], c['halving'],
-               c['wire_bits'], D['row_reserve'], D['row_degree']),
+               c['wire_bits'], D['row_reserve'], D['row_degree'])),
            '-- assembly: kappa = %d/%d' % tuple(D['kappa']),
            'theorem kappa_assembly : assemblyOK (%d, %d) (%d, %d) (%d, %d) (%d, %d) (%d, %d) (%d, %d) = true := by decide +kernel' % (
                *st['ab'], *c['a'], *D['beta'], *D['eta'], *D['cx_gap'], *D['kappa'])]
-    open(os.path.join(HERE, DST), 'w').write(HEAD + EXTRA9 + '\n' + '\n'.join(out) + '\n')
+    if round10:
+        out[0:0] = ['-- every count, W, s and edges below are L times the per-vertex values (bit L = %d, complex L = %d)' % (
+            b['lcm'], c['lcm'])]
+    open(os.path.join(HERE, DST), 'w').write(HEAD + EXTRA9 + (EXTRA10 if round10 else '') + '\n' + '\n'.join(out) + '\n')
     print('wrote', DST)
 
 
-if D.get('kind') == 'cover144':
-    emit_cover144()
+if D.get('kind') in ('cover144', 'cover10'):
+    emit_cover144(round10=D['kind'] == 'cover10')
     sys.exit(0)
 
 body = []

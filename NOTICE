@@ -62,7 +62,17 @@ This work builds on, and does not modify, the following:
     matching-arcs.json              22c90ed078d765e58ac824d6f9558cc4620961b48644a32c0115bdb9852de771
   (matching-arcs.json is references/paired-cube/selected-module/matching-arcs.json upstream)),
   #146 (Th0rgal, head 70355a3: the exact telescoping minimum-cut choice of omitted gauges, reimplemented from its
-  description and applied to our witness 2 in round nine).
+  description and applied to our witness 2 in round nine),
+  #161 (eumemic, head d14e29157bc905be1ced0776dd893d0714013f3a: the annealed pair-disjoint module
+  references/paired-cube/sources/pmod_C35_5.483127e-4.json, read as data in the round-ten complex word and copied
+  unmodified into certificates/round10/, Apache-2.0, SHA-256
+  55e1979722255b3b70acf0b93b3a62a1e4e603a56276b254858a5b99974f47a9; and its merged complex outputs, which the
+  merged reads of that word follow),
+  #131 and #143 (eumemic, heads 3acf2f9 and 803b28a: physical frame descent and scratch reuse on covers, and late
+  compensation reads, related to the frame descent and late reads of the round-ten complex word),
+  #162 (DaysSky, head 1e8140f: the acceptance condition for extended carrier arcs, reimplemented from its
+  description as the relaxed arcs of the round-ten complex word),
+  #55 (gupt1156, head 03e991a: dual skip-suffix strips, used in the round-ten recompile of witness 2).
 - Upstream base of round nine: github.com/CrocSwap/integer-mult-bounds main at commit
   d1d6c070f5a8c684727ee7ec35d930f9ebfa9758 (PR #144 merged as reviewed in PR #149).
 - Paureel, github.com/Paureel/integer-mult-bounds commit c82d09e:

@@ -1,4 +1,4 @@
-.PHONY: verify roles round4 round7 round8 round8-heavy round9 round9-heavy lean notes
+.PHONY: verify roles round4 round7 round8 round8-heavy round9 round9-heavy round10 round10-heavy lean notes
 verify:
 	python3 scripts/check_identities.py
 	python3 scripts/check_segmented_inverse.py
@@ -79,6 +79,17 @@ round9-heavy:
 	cd independent/round9-audit144 && ! python3 share_lit.py 3 1 lockstep | grep -q 'ALL PASS'
 	cd independent/round9-cover-e2e && python3 cover_e2e.py 10 allE,dual+,alt,links,pasm,ivec,lift,defer,vleaf,clos 1 2 | grep "'PASS': True"
 
+# Round ten, fast checks (standard library, seconds): PR #144's and round nine's kappa reproduced by the round-ten
+# certificate (parts and bare histograms), then our certificate from the frozen inventories, and the tests.
+round10:
+	python3 scripts/certificate_round10.py
+	python3 -m unittest tests.test_round10 -v
+
+# Round ten, heavier checks (numpy; see the script for sizes): the gates' replays, recounts and certificate checks
+# of both sides, each with its negative controls.
+round10-heavy:
+	bash independent/round10-heavy.sh
+
 lean:
 	python3 lean/gen.py
 	lean lean/Round5.lean
@@ -91,6 +102,8 @@ lean:
 	lean lean/Round8.lean
 	python3 lean/gen.py round9-histograms.json Round9.lean
 	lean lean/Round9.lean
+	python3 lean/gen.py round10-histograms.json Round10.lean
+	lean lean/Round10.lean
 
 notes:
 	tectonic -X compile --outdir artifacts notes/segmented-inverse.tex

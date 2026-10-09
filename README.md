@@ -1,4 +1,4 @@
-# Integer multiplication: a conditional witness above 2^-13
+# Integer multiplication: a conditional witness above 2^-12
 
 **Conditional research draft by Swapnil Jain.**
 
@@ -9,21 +9,96 @@ it gives the conditional witness
 
 $$
 T(n)=O\!\left(n(\log n)^{1-\kappa}\right),\qquad
-\boxed{\kappa=\frac{12612978530233}{10^{17}}\approx1.26130\times10^{-4}>2^{-13}}.
+\boxed{\kappa=\frac{4663738}{10^{10}}\approx2^{-11.066}\approx4.66374\times10^{-4}>2^{-12}}.
 $$
 
-That is about 1.93 times our round-seven witness `6.55177e-5`, 3.44 times our round-six witness `3.66657e-5`,
-8.15 times our round-five witness `1.54788e-5`, and about 16800 times our first witness `7499/10^12`. These
-figures compare asymptotic exponents, not practical runtimes.
+That is about 3.70 times our round-eight witness `1.26130e-4` (`2^-12.953`), 7.12 times our round-seven witness
+`6.55177e-5`, 12.72 times our round-six witness `3.66657e-5`, and about 62200 times our first witness
+`7499/10^12`. These figures compare asymptotic exponents, not practical runtimes.
 
-## Round eight
+## Round nine
+
+`scripts/certificate_round9.py` is our own implementation of the paired-cube / three-stage cover assembly of
+icekylinx's PR #144 (merged upstream through PR #149). It reads frozen inventories (`certificates/round9/`), rebuilds
+each side's cover child histogram from its parts, certifies both savings with rigorous rational bounds, applies the
+stopped mix, checks the finite router bridge, and checks all 47 strict constraints and 7 cost margins. Before
+certifying ours, it reproduces PR #144's published `kappa = 4609169/10^10` from PR #144's published inventories
+(`certificates/round9/pr144/`, read as data), matching every constraint and margin exactly. None of PR #144's code is
+run.
+
+**The cover (icekylinx, PRs #130 and #144).** Each interchange is lifted to a three-stage Cayley cover with
+`m = 3h` coordinates, and one physical role per slot runs through all three stages, so `W = 2v + R` roles per
+vertex. PR #144 adds paired cubes on the complex side and shared completed cores (the sharing principle of an664's
+PR #128). The sequential dirty reuse across stages follows eumemic's padded triple covers (PR #137), and the
+complex supplier's lineage includes jamesyc's birth-read slot reuse (PR #124).
+
+**Bit side: our witness 2 with gauge omission.** We put our round-seven headline witness (witness 2: deferred readouts,
+V leaves, lifted frames and late copies at `h = 23`, `R = 27794`) into the `m = 69` bit cover in place of the PR #97
+word. A retained deferred gauge costs an exterior child of width `3f`. An omitted one reads its old value at frame 0
+in a prelude instead, which costs no exterior but lengthens the target chains. We omit 1,504 of the 10,922 deferred
+gauges. The selection is optimal for this accounting: at a fixed saving, the moment is a sum of per-slot terms and
+nonnegative interval costs along each target chain, so the best subset is an exact s-t minimum cut. That
+formulation is Th0rgal's (PR #146, for the PR #97 word), reimplemented from its description and applied to our
+witness (`certificates/round9/w2_omission.json`).
+This gives `W = 31336`, `s = 2160160`, deficit `2024 = 2v - 3h(h-1)`, the coarse saving `a* = 467238028/10^12`, and, stopped at
+`theta = 1/1000` with `a_old = 384599/10^10`, `a_bit = 466809249872/10^15`.
+
+**Complex side: PR #144's paired cubes, unchanged.** This is icekylinx's `h = 24` complex inventory on eumemic's frozen
+PR #117 addition DAG (`m = 72`, `W = 29937`, `s = 2153528`, largest child `60`), at PR #144's certified
+`a_c = 4856569/10^10`. We rebuilt its frozen `p = 12` module role by role from PR #144's published data (the PR #117 DAG
+and its 6,074 matching arcs). Every transition is nested, and the recount reproduces the published histogram
+exactly (`independent/round9-complex-recount/`).
+
+Together: `kappa = 4663738/10^10` (about 4.66374e-04), bound by the bit side. The minimum margin
+`eps q = 4.6637382065e-04` is rounded down to the `10^-10` grid, as PR #144 states its own kappa.
+
+**Proof interfaces.** As in earlier rounds, stage two is assumed to be the complement time-reversal of stage one.
+This witness also rests on the following, which are stated here but not machine-checked:
+
+- the three-stage cover lifting, the arbitrary-subspace frame theorem, the exterior rule (`3f` per retained gauge,
+  none for an omitted one) and the stopped recurrence, from PRs #130 and #144;
+- the frozen PR #117 DAG and PR #144's `p = 12` module. Both are rebuilt and recounted here from their published
+  data, but the module's matching arcs are taken as given;
+- the PR #97 word's frame theorem, inherited by our witness 2 through rounds seven and eight;
+- the `2^-P 3^-K` precision grid of the semantic assembly. The star scatter of the cubes divides by 3, so the grid
+  is no longer dyadic. This looks benign (exact linear arithmetic, about `log2 3` more bits per level), but only
+  dyadic grids were audited before;
+- block-factored frame representatives `T_{k(U+O)} = P_k (T_U (x) T_O) P_k^{-1}`. The cross-stage sharing tail has
+  rank `3 dim sigma` with these. With generic representatives the sharing is still correct, but the tail rank rises.
+  A factored choice always exists;
+- the external row reserve of the finite bridge, which keeps PR #144's conservative bit constants
+  (`ROW_RESERVE` in the certificate).
+
+Checks (`make round9`, standard library, seconds; `make round9-heavy`, a machine with numpy and a few GB):
+
+- `scripts/certificate_round9.py` reproduces PR #144 exactly and certifies ours, and `tests/test_round9.py` checks it;
+- `independent/round9-bit-ledger/`: `ledger.py` builds a source-bound ledger of the modified word. Every register
+  walks an explicit path of exact frames, and the ledger replays the complete forward F2 shear (1,051,969 events) and
+  the reflected word. It also checks every gate's frame and that target chains are deleted subsequences, then
+  rebuilds the child histogram from the events, with negative controls (`--ctl`). `cert.py` re-certifies the saving
+  with independent two-sided ln/exp bounds, and first reproduces PR #144's published bit values;
+- `independent/round9-complex-recount/`: `recount144.py` follows every one of the `R = 26417` physical roles of PR
+  #144's complex module through its op list. Every transition must be nested on subspaces, and the result must
+  equal the published histogram;
+- `independent/round9-audit144/`: `cube_alg.py` (the cube identity `I = K + H + B`, `K^2 = I`, the root-group schedule),
+  `cube_lit.py` (literal `Z[i][1/2]` replays with dirty scratch, gauge omission and controls) and `share_lit.py`
+  (cross-stage sharing on one bank with a `3 dim sigma` tail, and controls);
+- `independent/round9-cover-e2e/`: `cover_e2e.py` replays the three-stage cover exactly over `Q(i)` on our own local
+  complex word, with controls.
+
+The moment certificates (with the fallback), the stopped mix, the finite bridge and the 47-row assembly are also
+checked in Lean 4's kernel (`lean/Round9.lean`, `make lean`).
+
+Support compute: https://buymeacoffee.com/jainswapnil138
+
+## Round eight (previous witness, `12612978530233/10^17`)
 
 `scripts/certificate_round8.py` certifies both savings from frozen child-width histograms
 (`certificates/round8/`) and assembles them with `scripts/certificate_round3.py` (`beta = 1/1000`, crude guard).
 
-**Bit side: opposite bank orders (IceKylin, icekylinx, PR #104) on our deferred witness.** The schedule, frames and
+**Bit side: opposite bank orders (icekylinx, PR #104) on our deferred witness.** The schedule, frames and
 payload word of our round-seven headline witness (deferred readouts, V leaves, lifted frames and late copies at
-`h = 23`, `R = 27794`, with Avi Eisenberg's producer, ikeboy, PR #62, compiled by eumemic's joint frame compiler,
+`h = 23`, `R = 27794`, with ikeboy's producer, PR #62, compiled by eumemic's joint frame compiler,
 PR #57) are unchanged; only the address geometry of each interchange is recompiled:
 
 - In one common generic rational basis, every residual idempotent of rank `r` has nonzero leading principal minors
@@ -41,16 +116,16 @@ PR #57) are unchanged; only the address geometry of each interchange is recompil
 This certifies the one-run saving `a* = 25367/(2*10^8)` and the stopped `a_b = 6338633/(5*10^10)`.
 
 **Complex side: signed reclaim and completed-core sharing on eumemic's DAG.** Our `h = 24` two-stage complex word
-(retained centres, carrier matching after IceKylin, icekylinx, PR #104, and the normal form for alternating
-residuals, IceKylin, PR #24) is built on eumemic's frozen `h = 24` addition DAG (PR #117), read as data with every
+(retained centres, carrier matching after icekylinx, PR #104, and the normal form for alternating
+residuals, icekylinx, PR #24) is built on eumemic's frozen `h = 24` addition DAG (PR #117), read as data with every
 support recomputed. Two mechanisms, both reimplemented from their descriptions, go on top:
 
-- **Signed dependence reclamation** (James Chang, jamesyc, PR #112). When an auxiliary is read for the last time,
+- **Signed dependence reclamation** (jamesyc, PR #112). When an auxiliary is read for the last time,
   its signal is cleared by exact signed shears from slots that are still live (a duplicate, a difference with a
   user, a sum of its arguments, or a decomposition down the DAG to depth 6), and the cleared slot is reused by a
   later fresh slot. This takes the word from 28,705 to `R = 26874` auxiliaries.
-- **Completed-core sharing** (Andrey Mas, an664, PR #128). The 2024 triples are split into 87 binary-orthonormal
-  groups (83 of size 24, 4 of size 8; Andrey Mas's partition, after Zhang and Ge). The cores of a group run
+- **Completed-core sharing** (an664, PR #128). The 2024 triples are split into 87 binary-orthonormal
+  groups (83 of size 24, 4 of size 8; an664's partition, after Zhang and Ge). The cores of a group run
   consecutively on one bank of auxiliaries with dirty scratch, and the per-core wrap child is replaced by one
   separate fix-up child per group and stream. This cuts `W` to `12869228` at the same deficit `D = 1862080`.
 
@@ -61,7 +136,7 @@ Together: `kappa = 12612978530233/10^17` (about 1.26130e-04), bound by the compl
 **Proof interfaces.** Like rounds six and seven, this witness assumes that stage two is the complement
 time-reversal of stage one. It also rests on three interfaces that are stated, not machine-checked, here:
 
-- the normal form for alternating residuals (IceKylin, PRs #24 and #104), which the complex replay uses for every
+- the normal form for alternating residuals (icekylinx, PRs #24 and #104), which the complex replay uses for every
   alternating child;
 - binary address adapters for the exterior (fix-up) children of the sharing, whose cost we take as subordinate
   (eumemic's PR #129 prices them at `64 m^2`);
@@ -91,8 +166,6 @@ compiler, hours):
 The moment certificates, the stopped mix and the assembly are also checked in Lean 4's kernel (`lean/Round8.lean`,
 `make lean`). The opposite-bank compile needs only the existence of the common basis; the all-edges check exhibits
 one.
-
-Support compute: https://buymeacoffee.com/jainswapnil138
 
 ## Round seven (previous witness, `3275885357429/(5*10^16)`)
 
@@ -267,8 +340,10 @@ Gaussian row capping `eps < 1/2`. The binding constraint is now the butterfly ro
 | Two-stage side circuit at h=47 | Our generator (`independent/two-stage-bit/sidegen.py`) reproduces the published h=32 count, 123157, and an exact checker (`checkside.py`) verifies supports, disjoint children, common points and every output at h=28 to 50; `moment.py` builds the child histogram role by role and checks it sums to s |
 | Complex source frames | Written proof (`notes/complex-source-frames.tex`); exact label and phase checks of every endpoint case (`independent/complex-network/sourceframe_labels.py`); a three-stage scalar simulation of PR #7's network with source frames, arbitrary scratch and a negative control (`sourceframe_sim.py`); the histogram option `sf` keeps the exact rank sum s |
 | Round-seven bit side (deferred readouts, V leaves, lifted frames, late copies; two side programs) | Frozen schedules and frames (`certificates/round7/`); stdlib replays over F2 (and Z for witness 1) with arbitrary scratch, walks of the reordered op sequence, exact frame checks over Q, side lemma at one integer point, histogram rebuilt from the schedule, negative controls (`independent/deferred-readout/`); Lean kernel check of the moment certificates and assembly. Stage two as the complement time-reversal of stage one is assumed |
-| Round-eight bit side (opposite bank orders, stopped interchange) | Same frozen schedule as round seven; histogram rebuilt from it; all-edges common-basis check with fast-prime passes re-checked mod `2^61 - 1`, Bruhat sample and negative controls (`independent/round8-oppbank/`); Lean kernel check of the moment, stopped mix and assembly. The existence of the common basis, the factorization lemma and the stopped recurrence follow IceKylin's written argument (icekylinx, PR #104) |
+| Round-eight bit side (opposite bank orders, stopped interchange) | Same frozen schedule as round seven; histogram rebuilt from it; all-edges common-basis check with fast-prime passes re-checked mod `2^61 - 1`, Bruhat sample and negative controls (`independent/round8-oppbank/`); Lean kernel check of the moment, stopped mix and assembly. The existence of the common basis, the factorization lemma and the stopped recurrence follow icekylinx's written argument (PR #104) |
 | Round-eight complex side (signed reclaim, completed-core sharing) | Histogram rebuilt from the word; exact `Q(i)` replay of the shared word with dirty scratch on two seeds, walk, exterior and certificate checks, written without importing the construction; partition checked (`independent/round8-coreshare/`, `independent/round8-complex-gate/`). The alternating normal form, exterior address adapters and the stopped interchange's row stock are proof interfaces |
+| Round-nine bit side (witness 2 in PR #144's cover, gauge omission) | Source-bound ledger of the modified word: exact frame paths, complete forward and reflected F2 shear, target chains as deleted subsequences, histogram from events, negative controls (`independent/round9-bit-ledger/`); independent re-certification; Lean kernel check of the moment with the full fallback, the stopped mix and the 47-row assembly. The cover lifting, exterior rule and stopped recurrence follow icekylinx's written argument (PRs #130, #144) |
+| Round-nine complex side (PR #144's paired cubes) | PR #144's published inventory; its `p = 12` module recounted role by role from the frozen PR #117 DAG and matching arcs (`independent/round9-complex-recount/`); cube identities, literal replays and cross-stage sharing checked with controls (`independent/round9-audit144/`); finite bridge and moment in Lean. The `2^-P 3^-K` precision grid and block-factored representatives are proof interfaces |
 | Topology-free guard | Written argument (docstring of `scripts/certificate_round3.py`); the witness is stated with this guard |
 | Prior results from PR #10, #13 and #15, and the two-stage motif | Assumed. We reproduced their rank moments, certified at least PR #15's fully batched saving from our own histogram, and found controlled-basis witnesses for PR #10 at h=8 to 14 |
 | Full upstream multiplication theorem | Assumed |
@@ -287,7 +362,9 @@ make roles       # independent recount of PR #7's role counts (clang++, ~1 GB)
 make round7      # round-seven certificate and checks of both witnesses (~45 min)
 make round8      # round-eight certificate, bit histogram rebuild, partition and wrapper checks (minutes)
 make round8-heavy  # round-eight word replays and the all-edges bit gate (many cores, numpy, a C compiler)
-make lean        # Lean 4 kernel checks of rounds five to eight
+make round9      # round-nine certificate (with the PR #144 reproduction) and tests (seconds)
+make round9-heavy  # round-nine ledger, complex recount, cover replay and PR #144 mechanism checks (numpy)
+make lean        # Lean 4 kernel checks of rounds five to nine
 make notes       # PDF notes (tectonic)
 ```
 

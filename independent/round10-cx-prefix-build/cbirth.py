@@ -71,13 +71,16 @@ def gfirst_frames(W):
 
 _SP = {}
 def spans_of(G):
+    # The cache is keyed by id(G), and Python reuses the id of a freed graph. A process that scores many graphs
+    # (an annealer or a module search) could otherwise be handed the previous graph's spans, so each entry also
+    # keeps the graph itself and is reused only when it is the same object.
     k = id(G)
-    if k not in _SP:
+    if k not in _SP or _SP[k][0] is not G:
         args = G['args']; inputs = G['inputs']; n = len(args); sp = [()] * n
         for x in range(1, n):
             sp[x] = (inputs[x - 1],) if args[x] is None else basis(sp[args[x][0]] + sp[args[x][1]])
-        _SP[k] = sp
-    return _SP[k]
+        _SP[k] = (G, sp)
+    return _SP[k][1]
 
 def late_tau(W, F, strict_only=True):
     """latest legal read clock of every gauged role: <= its first op's clock, and target order kept. On a target the

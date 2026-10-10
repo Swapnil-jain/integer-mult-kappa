@@ -114,7 +114,7 @@ Checks (`make round11`, standard library, seconds; `make round11-heavy`, a machi
 - `independent/round11-cx-recycle-build/`: the construction, with the pinned modules and their notice in `data/`.
 
 The moment certificates, the stopped mix, the finite bridge and the 47-row assembly are also checked in Lean 4's
-kernel (`lean/Round11.lean`, `make lean`).
+kernel (`lean/Round11.lean`, `make lean`). The toolchain is pinned in `lean-toolchain` (Lean 4.34.1). An independent replay on Lean 4.31.0 (macOS arm64) also passes; see issue #4.
 
 ## Round ten (previous witness, `6153378/10^10`)
 

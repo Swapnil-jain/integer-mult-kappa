@@ -11,7 +11,7 @@ import c7, reclaim as RC, share
 h = int(sys.argv[1]); cfg = sys.argv[2]; gs = sys.argv[3]; out = sys.argv[4]
 fl = set(cfg.split(','))
 t0 = time.time()
-RC.DEEP = int(os.environ.get('DEEP', '12'))
+RC.DEEP = int(os.environ.get('DEEP', '6'))   # complex_hist.py's depth; the published word was built at 6
 B, Wu = RC.base(h, cfg)
 rcx = RC.reclaim(B, Wu, lazy=int(os.environ.get('LAZY', '3000')), rels=('dup', 'diff', 'sum', 'deep'), verbose=False)
 B = RC.assemble(B, Wu, rcx, h_targets=os.environ.get('HT', '1') == '1')   # frame-0 readouts declare all targets (as e2e_share.py)

@@ -16,6 +16,9 @@ That is about 1.09 times our round-ten witness `6.15338e-4` (`2^-10.666`), 1.43 
 5.30 times our round-eight witness `1.26130e-4`, 10.20 times our round-seven witness `6.55177e-5`, and about 89200 times our first
 witness `7499/10^12`. These figures compare asymptotic exponents, not practical runtimes.
 
+**Working on this problem?** Read [docs/CLOSED_IDEAS.md](docs/CLOSED_IDEAS.md) first: it lists the routes we tried
+that do not improve kappa, with the reason for each, so effort is not duplicated. Contributions are welcome.
+
 ## Round eleven
 
 `scripts/certificate_round11.py` runs round ten's certificate unchanged (the paired-cube /

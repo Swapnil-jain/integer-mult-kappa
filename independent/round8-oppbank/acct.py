@@ -64,8 +64,15 @@ def F_dec(a):
         tot += Decimal(c) * Decimal(w) / md * x.exp()
     return tot / Decimal(W)
 slack = Decimal(10) ** -45                        # >> accumulated rounding of ~100 correctly rounded ops at 60 digits
-Fa = F_dec(astar); Fn = F_dec(astar + Q(1, 10**9))
-rep('A7. independent Decimal bound: F(a*) = 1 - %.3e < 1 rigorously; F(a* + 1e-9) = 1 + %.3e (a* is the 1e-9 floor)' % (1 - Fa, Fn - 1), Fa + slack < 1 and Fn > 1)
+Fa = F_dec(astar)
+rep('A7. independent Decimal bound: F(a*) = 1 - %.3e < 1 rigorously' % (1 - Fa), Fa + slack < 1)
+# moment.certify picks a* as the last 1e-9 step under its rational majorant F_upper, which bounds (m/w)^a by
+# 1/(1 - a ln(m/w)) and so lies above the Decimal F: maximality is a statement about F_upper, not about F
+step = Q(1, 10**9); lu = {w: moment.ln_upper(Q(m, w)) for w in H}
+rep('A7b. a* is the 1e-9 floor of the certifier: F_upper(a*) < 1 <= F_upper(a* + 1e-9)', moment.F_upper(NEWc, astar, lu) < 1 <= moment.F_upper(NEWc, astar + step, lu))
+k_dec = 0
+while k_dec < 1000 and F_dec(astar + (k_dec + 1) * step) + slack < 1: k_dec += 1
+print('  (the Decimal bound alone would admit %d more 1e-9 steps, to a* + %de-9: the rational majorant is the conservative one)' % (k_dec, k_dec), flush=True)
 mu1 = Q(s, W * m)
 rep('A8. mu_1 = s/(W m) = 1 - %.3e < 1 (linear toll absorbable)' % float(1 - mu1), mu1 < 1)
 # ---- stopped composition
@@ -115,3 +122,4 @@ for w, c in H.items():
 aord, _ = moment.certify(dict(h=h, m=m, W=W, s=s, hist=ORD))
 rep('N-A5. same generic basis, ordinary bank order (longest cell) certifies only a = %.3e < a_old' % float(aord), aord < a_old)
 print('ALL PASS' if all(ok.values()) else 'FAIL: %s' % [k for k, x in ok.items() if not x])
+sys.exit(0 if all(ok.values()) else 1)
